@@ -1,0 +1,27 @@
+Hi guys
+
+I have not had time to read Marc's draft, but I have given Diana's proposal for an experiment some thought.
+
+While I'm enthousiastic about the general idea, I'm sceptical as to whether it is going to work, particularly in the Software Architecture course.
+In the software architecture course there is currently no talk of goal models. The discussion os more on various views on architectures, issues, options, etc. This can be translated to goals, but thay's not trivial.
+I have one lecture (90 mins) and one lab session (90 mins) in which we can do experiments. However, it has to be useful for all the students, so we cannot have one "un-trained" group. 
+The lecture/lab is end of January, which is quite soon and we really need to prepare quite well for such a controlled experiment. Also, this probably means that Marc cannot join us for analysing and writing up the results, which will take some time.
+So my worry is that inserting it in the SA course will cost more than we benefit from it: we need to develop new teaching materials and teach them a new way of thinking. It's Jan Martijn's (my colleague's) course, so he has to gain something as well. He's interested in design reasoning and argumentation, but not in an goal-model related way. And probably Marc will not be available to help with the analysis anyway.
+
+The discussion about SA did remind me of the work that two students did with Jan Martijn and me: they transcribed the reasoning of student teams perfoming a software design task. These transcriptions were afterwards coded with design issues, options, and so forth. However, there is no reason that they could not be coded with goals, arguments, and so on.
+
+I attach the two MSc theses as well as a paper that came out of one. I also attach some of the transcripts. Have a look at the experiment we did, and whether we can use this material for our purposes.
+
+As for the experiment itself, my main worry is how we will measure the following
+==> we measure the accuracy of the interpretation vs. the intended design; 
+==> we measure how many elements were identified correctly using each framework
+==> we measure how many ambiguities and problems were identified by each group
+
+Can you explain precisely how this works? What is "correctly identified"? What is "accuracy"? And: can you come up with an example problem that is interesting enough (i,e. no toy example), but small enough to be done in a few hours? Note that the Sing et al paper about argumentation and goals is based on a pre-prepared dataset, and the measurements are also based on that.
+
+We still have the Enterprise Architecture course in period 3 (Feb-April), which is given by Marcella Ruiz. She has knowledge of goal models and is very happy to work with us on an experiment. 
+
+Diana, can you explore the various options? 
+
+Best wishes,
+Floris

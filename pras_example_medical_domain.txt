@@ -1,0 +1,47 @@
+A concrete example of using PRAS comes from the medical domain, where Atkinson and colleagues use practical reasoning to formalize a system for reasoning about the treatment of a patient~\cite{atkinson2006argumentation}. The system in this example consists of a group of experts in different areas, such as \emph{treatment knowledge} and \emph{patient knowledge}.\footnote{The original application uses a single expert using different knowledge bases, but we changed this to a group of experts, each with a different expertise, in order to make the comparison with goal modeling more apparent.} There are five critical questions relevant to the application:
+\begin{enumerate}
+\item[CQ1] Are there alternative ways of realizing the same effects?
+\item[CQ2] Are there alternative ways of realizing the same goal?
+\item[CQ3] Are the assumptions on which the argument is based true?
+\item[CQ4] Does performing the action have side effects which demotes some other value?
+\item[CQ5] Will the action have the effects described?
+\end{enumerate}
+
+The experts can construct an argumentation framework for a medical treatment by instantiating PAS and posing critical questions CQ1-CQ5. Consider for instance a patient whose health is threatened by blood clotting. The experts start with the null option \--- do nothing (EA0). Then, suppose that the treatment knowledge experts suggests blood clotting can be prevented by reducing platelet adhesion, which can, assuming aspirin is not contraindicated, be achieved by prescribing aspirin. This information is used to instantiate PAS:\\
+
+\noindent
+\textbf{EA1.} \emph{Assuming no contradictions, we should prescribe aspirin, which will reduce platelet adhesion, preventing blood clotting, and so is an efficacious course of action.}\\
+
+\noindent
+This argument is then subjected to the critical questions. CQ1 asks for alternative solutions to reduce platelet adhesion. The expert may reply by stating chlopidogrel also reduces platelet adhesion. Asking CQ2 forces the expert to seek further solutions for preventing blood clotting, which results in an alternative action, namely to administer streptokinase, which has the same goal of preventing blood clotting. These are formed into two arguments, EA2 and EA3:\\
+
+\noindent
+\textbf{EA2.} \emph{Assuming no contradictions, we should prescribe chlopidogrel, which will reduce platelet adhesion, preventing blood clotting, and so is an efficacious course of action.}\\\\
+\textbf{EA3}. \emph{Assuming no contradictions, we should prescribe streptokinase, which will increase blood clot dispersal, preventing blood clotting, and so is an efficacious course of action.}\\
+
+\noindent
+These three arguments all mutually attack one another, resulting in the argumentation framework shown in figure~\ref{fig:pras:example1}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.4]{img/pras-example1}
+\caption{Initial argumentation framework from~\cite{atkinson2006argumentation}}
+\label{fig:pras:example1}
+\end{figure}
+
+Each of the arguments are in mutual conflict, so it is not clear which action to pursue. This depends on the preferences of the experts. For this, suppose the experts vote and agree the effect `reduce platelet adhesion' is a preferred means by which the goal can be realized. Moreover, they prefer aspirin to chlopidogrel because it is cheaper.
+
+These preferences are represented in the argumentation framework by removing attacks of unfavorable actions, so EA1 is no longer attacked, and EA3 no longer attacks EA2. In this case, EA1 forms the preferred extension, and its action is currently the best candidate. However, there are still remaining critical questions that can be asked. For instance, EA1 assumes that aspirin was not contraindicated, and CQ3 instructs us to test this assumption. Suppose that the patient knowledge expert notes the patient has a history of gastritis, and infers that aspirin is contraindicated because its acidity may result in gastric ulceration. The expert forms this into an argument motivated by the value of safety:\\
+
+\noindent
+\textbf{EA4.} \emph{Where there is a history of gastritis and no acid reducing therapy, we should not prescribe aspirin, which would cause excess acidity, which would risk ulceration, and so is unsafe.}\\
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.4]{img/pras-example2}
+\caption{Final argumentation framework showing all critiques from~\cite{atkinson2006argumentation}}
+\label{fig:pras:example2}
+\end{figure}
+
+\floris{please explain EA5, 6 and 7 as well}
+In a similar manner the experts construct three more arguments that attack other arguments in various ways, resulting in the argumentation framework shown in figure~\ref{fig:pras:example2}. In order to determine which arguments are accepted, the preferred extension is computed by first adding the arguments with no attackers, which are EA5, EA6, and EA7. EA7 defeats EA4, which means that EA1 can be included, since its only attacker is defeated. EA1 therefore defeats EA2 and EA4, and also excludes EA0. Thus, in the end, the winning argument is EA1, which prescribes aspirin. 

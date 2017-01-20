@@ -1,0 +1,75 @@
+
+
+
+In general, answering a critical questions can have two effects:
+\begin{enumerate}
+\item
+Answering the critical question unfavorably results in a new argument attacking the original argument (\emph{attack}).
+\item
+Answering the critical question unfavorably results in a new argument not attacking the original argument, but representing an alternative (\emph{no attack}).
+\end{enumerate}
+The last column of table~\ref{table:argument-schemes} shows for each critical question whether it results in an attack on the original argument or not. 
+
+\floris{you do not provide a formal definition of GMAS}
+
+\subsection{Example: Airport Assistant}
+
+We now provide a simple scenario of arguments created by instantiating AS1-AS9, and demonstrate how new arguments can be generated through critical questions, possibly attacking the original arguments.
+
+Consider a system for assisting users at the airport. The assistant should be able to guide users through the airport, inform them about delays, and provide other information such as the location of the check-in register for each airline company. When constructing a goal model for this system, one stakeholders argues that the user interface of the assistant should by easy to use, and that this can be realized by using a Graphical User Interface (GUI). We can formalize this as an instantiation of AS6:\\
+
+\noindent
+\textbf{$A_1$.} \emph{Task ``Use GUI'' contributes to softgoal ``easy to use'' (AS6)}.\\
+
+\noindent
+This argument can be subjected to critical questions. In this case, there are five critical questions that can be used on AS6, namely CQ6a-CQ6e. Critical question CQ6a asks for alternative solutions to contribute to softgoal ``easy to use''. One of the stakeholders may reply by stating a natural language interface is easy to use as well.\\
+
+\noindent
+\textbf{$A_2$.} \emph{Task ``Use NL interface'' contributes to softgoal ``easy to use'' (CQ6a/AS6)}.\\
+
+\noindent
+Note that $A_2$ does not create an attack on $A_1$, since both are valid tasks to contribute to the softgoal. Instead, $A_2$ actually generates new elements that will appear in the goal model.  Now both $A_1$ and $A_2$ can be questioned. Suppose CQ6b is used by a stakeholder to argue that a side effect of using a natural language interface is that not all users may be able to understand it. When using a GUI, it may be easier to let the user change its language.\\
+
+\noindent
+\textbf{$A_3$.} \emph{Task ``Use NL interface'' contributes negatively to softgoal ``easy to use'' because choosing a language is difficult (CQ6b).}\\
+
+Suppose another stakeholder uses critical question CQ6c to question $A_1$: she notes that implementing a GUI is probably quite expensive, because they don't have a graphical designer, so they will have to outsource this.\\
+
+\noindent
+\textbf{$A_4$.} \emph{Task ``Use GUI'' contributes negatively to softgoal ``low costs''}.\\
+
+\noindent
+The resulting argumentation framework of these four arguments is shown in figure~\ref{fig:example:airport:arguments}. As we can see, argument $A_1$ and $A_4$ are both not attacked by any argument. However, $A_2$ and $A_3$ are in direct conflict. Recall from sectin~\ref{sect:background:pras} that the stakeholders now have to decide about their preferences. Suppose the stakeholders decide that argument $A_3$ is stronger, or more preferred, than $A_2$. As a result, the accepted arguments are $A_1, A_3$, and $A_4$. 
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=2]
+\node (a1) at (0,1) {$A_1$};
+\node (a2) at (1,1) {$A_2$};
+\node (a3) at (1,0) {$A_3$};
+\node (a4) at (0,0) {$A_4$};
+\draw [->] (a2) to [out=-60, in=60] (a3);
+\draw [->] (a3) to [out=120, in=-120] (a2);
+\end{tikzpicture}
+\caption{Argumentation framework for Airport Assistant example.}
+\label{fig:example:airport:arguments}
+\end{figure}
+
+It is now possible to translate this argumentation framework into a GRL model, which is shown in figure~\ref{fig:example:airport:grl}. Argument $A_1$ results in a contribution link from task ``use GUI'' to softgoal ``lower costs'', similarly for $A_4$. Since the conflict between $A_2$ and $A_3$ has been resolved in favor of $A_3$, there is a negative contribution link from task ``use NL interface'' to softgoal ``Easy to use''.
+
+We can make a number of observations about the obtained GRL model and the underlying arguments:
+\begin{itemize}
+\item The underlying arguments contain information that is not represented in the GRL model. For instance, the decision to reject $A_2$ (i.e., that a natural language interface is easy to use) is not visible in the GRL model, but it is in the underlying arguments.
+\item There is a direct relation between the accepted arguments and the elements that appear in the goal model. If an element or relation has an underlying accepted argument, it appears in the goal model, while rejected ones do not appear. Therefore, if the underlying arguments change \--- for instance if the stakeholders change their preference from $A_2$ to $A_3$ \-- then the resulting goal model changes as well.
+\item In the current example each GRL element and relation is supported by an argument. However, this is not required. One could imagine that the stakeholders choose to add additional elements to the goal model without rationalizing them by arguments. We explain this in more detail in the RationalGRL methodology in section~\ref{sect:methodology}. 
+\item Although it may be intuitively understandable how to translate argument $A_1-A_4$ and the argumentation framework of figure~\ref{fig:example:airport:arguments} into the GRL model of figure~\ref{fig:example:airport:grl}, we have not yet formally specified how to make the translation from GMAS to GRL, and visa versa.
+\end{itemize}
+
+In this section we have fulfilled requirement three of the introduction: (3) it (the practical reasoning and argumentation theory) must be adaptable for use in goal modeling. However, we have not yet considered the fourth requirement: (4) the adapted theory must produce repeatable results that can be formalized and implemented. This is what we do in the next section by providing formal mappings from GMAS to GRL, and discussing implementation details.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{img/grl_example_airport}
+\caption{GRL model for Airport Assistant example.}
+\label{fig:example:airport:grl}
+\end{figure}

@@ -1,0 +1,23 @@
+RATIONALGRL
+
+Meeting Floris & Marc (29 nov, 2016)
+
+Methodology:
+- You can start with arguments or with GRL. If you start with arguments you start by instantiating a scheme
+- There are automatic traceability links between GRL and arguments
+- If you are arguing, the GRL elements are automatically generated
+- In GRL, you can *right click* on an element and start a discussion
+- Perhaps no NL description, this only makes it more complicated
+
+Introduction/Preliminaries paper
+- Remove all formal stuff from introduction and add it to GMAS. Give a formal framework for GMAS
+- Reduce PRAS to 1,5 page, change example from medical domain to meeting scheduler
+- Rewrite introduction to avoid plagiarism
+
+GMAS
+- Argument schemes can be extended with more, for instance argument schemes from expert opinion, or evidence. Some kind of layered approach
+- More formal descriptions. 
+
+Empirical evaluation
+- First try using transcripts as case study
+- Possibility: Think of example for qualitative evaluation. Let one group work with argumentation and one without, analyze resulting models and give questionnaire. Example should be usable for both groups.
