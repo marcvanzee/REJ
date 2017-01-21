@@ -1,0 +1,236 @@
+\section{Argument Schemes for Goal Modeling (GMAS): First Iteration}
+\label{sect:gmas}
+
+In this section we develop an initial set of argument schemes and critical questions for goal modeling, based by the argument scheme for practical reasoning as described in the previous section. In the next section, we validate and improve this list by annotating arguments found in transcripts of discussions about an information system.
+
+\begin{table*}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Argument scheme}} & \multicolumn{2}{c|}{\textbf{Critical Questions}}\\
+\hline
+AS0 & Actor $a$ is relevant & CQ0 &Is the actor relevant?\\
+\hline
+AS1 & Actor $a$ has resource $R$ & CQ1 &Is the resource available?\\
+\hline
+AS2 & Actor $a$ can perform task $T$ & CQ2 &Is the task possible?\\
+\hline
+AS3 & Actor $a$ has goal $G$ & CQ3 & Can the desired goal be realized?\\
+\hline
+AS4 & Actor $a$ has softgoal $S$ & CQ4 & Is the softgoal a legitimate softgoal?\\
+\hline
+\hline
+AS5 & Task $T$ contributes to goal $G$ & CQ5a & Does the task contribute to the desired goal?\\
+& & CQ5b & Are there alternative ways of realizing the same goal?\\
+\hline
+AS6 & Task $T$ contributes to softgoal $S$& CQ6a & Does the task contribute to the softgoal?\\
+&& CQ6b & Are there alternative ways of contributing to the same softgoal? \\
+&& CQ6c & Does the task have a side effect which contribute negatively to some other softgoal?\\
+&& CQ6d & Does the task contribute to some other softgoal?\\
+\hline
+AS7 & Goal $G$ contributes to softgoal $S$ & CQ7a & Does the goal contribute to the softgoal?\\
+&& CQ7b & Does the goal contribute to some other softgoal?\\
+\hline
+AS8 & Resource $R$ contributes to task $T$ & CQ8 & Is the resource required in order to perform the task?\\
+\hline
+AS9 & Actor $a$ depends on actor $b$ & CQ9 & Does the actor depend on any actors?\\
+\hline
+\end{tabular}
+\caption{Initial list of argument schemes and critical questions for GRL elements (AS0-AS4) and relationships (AS5-AS16).}
+\label{table:argument-schemes}
+\end{table*}
+
+\subsection{Argument schemes and critical questions}
+
+Where PRAS consists of the single argument scheme PAS, our approach is to split this into a family of argument schemes, such that each separate argument scheme can be applied to a specific part of a goal model. Similar to PRAS, someone who does not accept the presumptive argument may challenge it by applying critical questions. We have modified Atkinson et al.'s original 16 questions associated with the scheme \cite{atkinson2006argumentation} by removing those questioning elements not part of GRL (\emph{circumstances}), adding questions for additional elements GRL (\emph{resources}), and renaming concepts and relationships (e.g., the \emph{promotes} relationship).
+
+The initial list We developed a total of 10 argument schemes and 18 critical questions, which are shown in table~\ref{table:argument-schemes}. Argument schemes AS0-AS4 can be instantiated for individual GRL elements, and each have a single critical question. CQ2-CQ4 are critical questions by Atkinson rephrased using the GRL terminology, while CQ1 is added in order to question a resource element, which does not appear in PRAS. AS5-AS9 are argument schemes for various GRL relationships between elements. As we mentioned before, this list is not meant to be exhaustive, since GRL does not put restrictions on any of relationships, so in theory any type of element can be combined with any type of elements, using any relationship. Here we merely use the critical questions developed by Atkinson et al.
+ 
+Answering a critical question results in the creation of a new argument, which may or may not attack the original arguments, depending on which question is answered. For instance, answering CQ1 with ``no'' results in a new argument attacking the argument that actor $a$ has resource $R$ available. In contrary, answering CQ5b with ``yes'' does not result in an attack on the original argument, but creates a new argument stating that some other task realizes the goal as well. We will return to this issue in more detail in the next section. In the current section, we restrict our analysis to the development of appropriate argument schemes and critical questions.
+
+\section{GMAS: Second iteration}
+\label{sect:gmas:2}
+
+The argument schemes and critical questions of Table~\ref{table:argument-schemes} are based on the theoretical work by Atkinson, and our own observations about the differences with GRL. However, it is unclear whether this list is exhaustive, or even whether the schemes and questions are actually used in practice. In order to evaluate this, we annotate transcripts of discussions between students with the arguments occurring in them, and analyze the results in order to refine our list.
+
+\subsection{Empirical evaluation with transcripts}
+
+The transcripts we used are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}.
+
+\paragraph{Subjects} The subjects for the case study are three teams of Master students from the University of Utrecht, following a Software Architecture course. Two teams consist of three students, and one team consists of two students.
+
+\paragraph{Experimental Setup} The assignment used for the experiments is to design a traffic simulator. Designers are provided a problem description, requirements, and a description of the desired outcomes. The original version of the problem descrption~\cite{UCIworkshop} is well known in the field of design reasoning since it has been used in a workshop\footnote{\url{http://www.ics.uci.edu/design-workshop/}}, and transcripts of this workshop have been analyzed in detail~\cite{Petre:2013:SDA:2535028}. Although the concepts of traffic lights, lanes, and intersections are common and appear to be simple, building a traffic simulator to represent these relationships and events in real time turns out to be challenging. Participants were asked to use a think-aloud method during the design session. For the student groups the assignment was slightly adjusted to include several viewpoints as end products in order to conform to the course material~\cite{Bass:2012:SAP:2392670}. The final problem descriptions can be found in Appendix A of Schriek's master thesis~\cite{masterthesis1}. All groups were instructed to apply the functional architecture method (FAM), focusing on developing the Context, the Functional, and the Informational viewpoint of the traffic simulator software. The students had two hours for the tasks, and the transcripts document the entire discussion. The details of the transcripts are shown in table~\ref{table:transcripts:info}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+& transcript $t_1$ & transcript $t_2$ & transcript $t_3$\\
+\hline
+participants & 2 & 3 & 3\\
+\hline
+duration & 1h34m52s & 1h13m39s & 1h17m20s\\
+\hline
+\end{tabular}
+\caption{Number of participants and duration of the transcripts.}
+\label{table:transcripts:info}
+\end{table}
+
+\paragraph{Annotation method} We annotated transcripts with the arguments and critical questions of table~\ref{table:argument-schemes}. If we found arguments or critical questions that did not appear in the list, we added them and counted them as well. Most of the occurrences were not literally found back, but had to be inferred from the context. For instance, if a participant questions an argument with a statement such as ``I don't know about that'', then we interpret this as a critical question.
+
+It is generally known in the argumentation literature that it can be very difficult to annotate arguments correctly.\todo{Marc}{Floris}{add citation} Arguments are often imprecise, lack conclusion, and may be supported by non verbal communication that is not captured in the transcripts. Still, since research on argument extraction in the requirement engineering domains is in its infancy, we believe that our evaluation is useful by itself. Furthermore, our annotation is openly available\footnote{\todo{Marc}{Marc}{provide url}}, we provide parts of our annotation in Appendix~\ref{sect:transcripts:excerpts}, and most of the examples from this article come from the transcripts. In this way, we aim to make our annotation process as transparent as possible.
+
+\subsubsection{Results}
+
+Some examples of annotation can be found in appendix~\ref{sect:transcripts:excerpts}. We found a total of 120 instantiations of the existing argument schemes AS0-AS9 in the transcripts. The most used argument scheme was AS2: ``Actor $A$ has task $T$'', but each argument scheme has been found back in the transcripts at least twice (table~\ref{table:transcripts:results:argumentschemes}). Examples of argument schemes are AS1, an argument for a resource (table~\ref{table:transcript:as1-as8}); AS2, an argument for a task (tables~\ref{table:transcript:as2-cq_star_1-cq2},~\ref{table:transcript:as2-cq_star_2}, and~\ref{table:transcript:as2-as10}); AS4, an argument for a softgoal, AS5, an argument for a goal, AS7, an argument for a contribution from goal to softgoal (table~\ref{table:transcript:as4-as5-as7}); and AS8, an argument for a contribution from resource to task (table~\ref{table:transcript:as1-as8}). 
+
+Of our critical questions, we annotated 9 instantiations. Example of critical questions are CQ0, questioning the relevance of an actor (table~\ref{table:transcript:as0-cq0}) and CQ2, questioning the possibility of a task (table~\ref{table:transcript:as2-cq_star_1-cq2}).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|l|>{\bfseries}l|}
+\hline
+\textbf{Argument Schemes} & $t_1$ & $t_2$ & $t_3$ & \textbf{total}\\
+\hline 
+AS0: Actor & 2 & 2 & 5 & 9\\
+\hline
+AS1: Resource & 2 & 4 & 5 & 11\\
+\hline
+AS2: Task/action & 20 & 21 & 17 & 58\\
+\hline
+AS3: Goal & 0 & 2 & 2 & 4\\
+\hline
+AS4: Softgoal & 3 & 4 & 2 & 9\\
+\hline
+AS5: Goal decomposes into Task & 4 &0& 4 & 8\\
+\hline
+AS6: Task contributes to softgoal & 6 & 2 &0& 8\\
+\hline
+AS7: Goal contributes to softgoal &0& 1 & 1 & 2\\
+\hline
+AS8: Resource contributes to task & 0 & 4 & 3 & 7\\
+\hline
+AS9: Actor depends on actor &0& 1 & 3 & 4\\
+\hline
+\hline
+\textbf{TOTAL} & 37& 41 & 42 & 120\\
+\hline
+\end{tabular}
+\caption{Number of occurrences of AS0-AS9 in the transcripts.}
+\label{table:transcripts:results:argumentschemes}
+
+\begin{tabular}{|l|l|l|l|>{\bfseries}l|}
+\hline
+\textbf{Critical questions} & $t_1$ & $t_2$ & $t_3$ & \textbf{total}\\
+\hline 			
+CQ2: Task is possible? & 2 & 2 & 1 & 5\\
+\hline		
+CQ5a: Does the task contribute to the the goal? & 0 & 1 & 0 & 1\\
+\hline
+CQ5b: Alternative ways to realize the same goal? & 1 & 0 & 0 & 1\\
+\hline
+CQ6b: Task has negative side effects? & 2 & 0 & 0 & 2\\
+\hline
+\hline
+\textbf{TOTAL} & 5 & 2 & 1 & 9\\
+\hline
+\end{tabular}
+\caption{Number of occurrences of critical questions CQ0-CQ9 in the transcripts. Critical questions not appearing in this table were not found back in the transcripts.}
+\label{table:transcripts:results:criticalquestions}
+\end{table}
+
+Additionally, we identified 85 statements that did not fit our existing argument schemes and critical questions, leading to 2 new argument schemes (39 occurrences) and 8 new critical questions (29 occurrences). The new argument schemes and critical questions are shown in table~\ref{table:transcripts:results:new}. 
+
+\subsubsection{Analysis}
+
+The analysis of the results of our empirical evaluation consists of three parts. First, we analyze the argument schemes, then the critical questions, and finally we analyze the effect of posing a new argument.
+
+\paragraph{Analysis of the argument schemes}
+The difference between the initial list of argument schemes and those found back in the transcripts is quite small. We found it surprising that we were able to find back all the schemes in the transcript at least twice, even more since the topic of discussion wasn't goal models, but more generally the architecture of an information system. This gives us an indication that these argument schemes are able to capture arguments used in those type of discussions to some extent. However, we also found the following additional argument schemes:
+\begin{itemize}
+\item
+\emph{AS10: Task decomposes into task.} While our initial list of argument schemes contains a scheme to decompose goals into tasks (AS5), it does not contain one for task decomposition. We found that are large part of the discussions were focused around the tasks that the information system should provide. In the first phase of the discussion, participants often listed a number of tasks the information system should provide (table~\ref{table:transcript:as2-cq_star_1-cq2}), which were then later refined through task decomposition (table~\ref{table:transcript:as2-as10}).
+\item 
+\emph{AS11: Task contributes negatively to softgoal.}  We found that participants occasionally discuss negative contributions as well (table~\ref{table:transcript:as11}).
+\end{itemize}
+More generally, we observed that our initial list is rather limited, which is a consequence of the fact that it is derived from PRAS. Since PRAS only considers very specific types of relationships, we are not able to capture many other relationships existing in GRL. GRL has four types of intentional elements (softgoal, goal, task, resource) and four types of relationships (positive contribution, negative contribution\footnote{In fact, a contribution can be any integer in the domain [-100,100], but for the sake of simplicity we only consider two kinds of contributions here.}, dependency, decomposition), allowing theoretically $4^3=64$ different types of argument schemes, of which we currently only consider 5. Our analysis shows that many of these schemes are not often used, but we should at least add the possibility for task decomposition (AS10) and negative contribution (AS11).
+
+\begin{table*}[ht]
+\centering
+\begin{tabular}{|l|l|l|l|>{\bfseries}l|}
+\hline
+\textbf{New annotation} & $t_1$ & $t_2$ & $t_3$ & \textbf{total}\\
+\hline
+AS10: Task decomposes into task & 11 & 14 & 11 & 36\\
+\hline
+- CQ10a: Does the task decompose into other tasks? & 1 &2 &0&3\\
+\hline
+- CQ10b: Is the decomposition correct (AND/OR/XOR)? &1 &0& 1 &2\\
+\hline
+AS11: Task contributes negatively to softgoal&2&1	&0&3\\
+\hline
+\hline
+TI: Topic introduction & 5 & 3 & 7 &15\\
+\hline
+REM: Removing useless/irrelevant/redundant element & 2 & 3 & 2 &7\\
+\hline
+CLAR: Clarifying an element &3 &10 & 3 & 16\\
+\hline
+GEN: Generic counterargument	& 0& 2 & 2 & 4\\
+\hline
+\textbf{TOTAL}&24&34&25&87\\
+\hline
+\end{tabular}
+\caption{Number of occurrences of new argument schemes and critical questions in the transcripts.}
+\label{table:transcripts:results:new}
+\end{table*}
+
+\paragraph{Analysis of the critical questions} The difference between the initial list of critical questions and those we found back in the transcripts is much larger than for the critical questions. On the one hand, we found back few of the critical questions we initially proposed. However, this does not mean that they weren't implicitly used in the minds of the participants. If a participants makes an argument for a contribution from a task to a softgoal, it may very well be that she was asking herself the question ``Does the task contribute to some other softgoal?''. However, many of these critical questions are not mentioned explicitly. If we assume this explanation is at least partially correct, then this would mean that critical questions may still play a role when formalizing the discussions leading up to a goal model, and it would be limiting to leave them out of our framework. In the context of tool support, we feel that having these critical questions available may stimulate discussions.
+
+On the other hand, we found back relatively many new critical questions that were not on our initial list. We found back two critical questions for the new argument schemes AS10:
+\begin{itemize}
+\item \emph{CQ11a: Does the task decompose into other tasks?} (table~\ref{table:transcript:cq:task_decomp}).
+\item \emph{CQ11b: Is the decomposition correct? (AND/OR/XOR)} The initial list of critical questions does not distinguish between the type of decomposition that may occur. However, we found that this is sometimes discussed by participants (table~\ref{table:transcript:cq11b}).
+\end{itemize}
+Moreover, we found four types arguments that we could not classify as an instantiation of an argument scheme or a critical question:
+\begin{itemize}
+\item \emph{Topic introduction.} Before posing arguments, participants often proposed to discuss a certain topic, for instance by stating ``we have to determine who the users of the system are gonna be'' (table~\ref{table:transcript:as-star})..
+\item \emph{Removing useless/irrelevant/redundant element} We found this critical question especially in relation with tasks (table~\ref{table:transcript:as2-cq_star_1-cq2}).
+\item \emph{Clarifying an element} Given the large body of literature on clarification \todo{Marc}{Marc}{add citations}, it is not surprising that we found this type of argument relatively often. We do not aim to provide a detailed analysis of the different types of clarification techniques in this article, but we merely want to be able to capture an argument clarifying a previous argument in a course grained way. Such an analysis in the context of argumentation and requirement engineering can be found elsewhere~\cite{Jureta:RE2008}. See table~\ref{table:transcript:as2-cq_star_2} for an example of a clarification argument.
+
+\item \emph{CQ: Generic counterargument.} Participants occasionally posed counterarguments against arguments or critical questions as well, which we could not classify further (table~\ref{table:transcript:as0-cq0-cq_counterarg}).
+\end{itemize}
+
+\paragraph{Analysis of the effect of a new argument} When a new argument is put forward, this can have varying effects on the previous arguments. For instance, in the excerpt of table~\ref{table:transcript:as0-cq0}, the answer to the critical questions results in an argument attacking the original argument for actor ``Development team'', which ensures that ``Development team'' is no longer considered to be a relevant actor of the system. In table~\ref{table:transcript:as2-cq_star_2}, answering the critical question also results in an attack on the original argument for task ``car influx'', but at the same time also generates a new argument for a more specific task ``control car influx per road''. In general, we found the following four operations that may be associated with the arguments:
+
+\todo{Marc}{Marc/Floris}{Say that an argument is attacked in different ways and we have to distinguish this}
+\begin{itemize}
+\item \emph{INTRO: Introduce new element/link.} This operation does not attack anything, but generates new elements. Examples are CQ5b, CQ6c, and \emph{Topic introduction}.
+\item \emph{DISABLE: Disable element/link.} This operation generates an attack on an element or link but does not replace it with anything. Examples are CQ0-CQ4, CQ5a, and \emph{Clarifying an element}.
+\item \emph{REPLACE: Replace element/link.} This operation replaces the description of the intentional element, or it replaces the type of link (e.g., from positive contribution to negative contribution, or from AND-decomposition or OR-decomposition). An example is \emph{Clarifying an element}.
+\item \emph{GENERIC: Generic counterargument.} This operation simply directly attacks an argument. It is different from DISABLE in the sense that it only attacks one argument directly, while DISABLE attacks an argument for an element/link, and all possible previous replacements for it. We explain this in more detail in the next section where we introduce our algorithms.
+\end{itemize}
+
+\subsection{Final argument schemes and critical questions}
+
+Our final set of argument schemes are AS0-AS9 (table~\ref{table:argument-schemes} and AS10-AS11 (table~\ref{table:transcripts:results:new}, and the final set of critical questions are CQ0-C9 (table~\ref{table:argument-schemes} and CQ10 (table~\ref{table:transcripts:results:new}. Additionally, we add the four arguments TI, REM, CLAR, and GEN (table~\ref{table:transcripts:results:new}.
+
+In the end of the previous section we distinguished four operations (REPLACE, DISABLE, INTRO, and GENERIC) that can be applied when instantiating an argument scheme or answering a critical question. In table~\ref{table:operation-mappings} we provide a mapping form our argument schemes, critical questions, and additional arguments to these four operations. In the next section, we formalize these operations as algorithms.
+
+\begin{table}[ht]
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Argument} & \textbf{Operation}\\
+\hline
+AS0-AS11, CQ5b,CQ6b-d,CQ7b,TI& INTRO\\
+\hline
+CQ0-CQ4,CQ5a,CQ6a,CQ7a,CQ8,CQ9,REM & DISABLE\\
+\hline
+CLAR & REPLACE\\
+\hline
+GEN & GENERIC\\
+\hline
+\end{tabular}
+\caption{Mapping from the final argument schemes AS0-AS11, final critical questions CQ0-CQ10, and additional arguments TI, REM, CLAR, GEN to the operations.}
+\label{table:operation-mappings}
+\end{table}

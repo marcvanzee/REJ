@@ -1,0 +1,47 @@
+\section{The Formal Framework}
+\label{sect:formalframework}
+
+We briefly summarize our results so far and our tasks for the current section. In the previous two sections we developed argument schemes and critical questions for goal modeling in two iterations. In section~\ref{sect:gmas} we proposed an initial list, which we derived from PRAS and the elements and relationships used in GRL (table~\ref{table:argument-schemes}). We then validated this set using transcripts in section~\ref{sect:gmas:2}. This resulted in new argument schemes and critical questions, and also in four new types of arguments that we distinguished from argument schemes and critical questions, namely Topic Introduction (TI), Removing redundant elements (REM), Clarifying an element (CLAR), and Generic counterargument (GEN) (table~\ref{table:transcripts:results:new}). We distinguished four types of operations that can be applied when putting forward an argument, namely Introducing a new element (INTRO), Disabling an element (DISABLE), Replacing an element (REPLACE), and adding a Generic Counterargument (GENERIC). In table~\ref{table:operation-mappings} we provided a mapping from our final list of arguments to these operations.
+
+In this section we develop a formal framework for the arguments and operations on them. In the first subsection we develop a formal language for a GRL model, consisting of actors, intentional elements (softgoals, goals, tasks, and resources), and links (decomposition, positive contribution, negative contribution, and dependency) between intentional elements. In the second subsection we then provide formal definitions of all argument schemes, which are simply statements about a goal model. In the third subsection we formalize the critical questions.
+
+\subsection{Formal Language for a GRL Model}
+
+In order to formalize the arguments used when discussing a goal model, we first provide a formal language for a goal model. The arguments are simply statements in using this language.
+
+In our language, each element of a goal model is denoted by a non-negative integer. We distinguish the actors, intentional elements (softgoals, goals, tasks, and resources), the links (decomposition, positive contribution, negative contribution, and dependency) between intentional elements in three separate sets.
+
+\begin{definition}[Elements]
+Let $\{i_1,\ldots,i_n\}\subset \mathbb{N}$ denote the set of elements of a goal model.
+The actors are denoted by $Actors=\{i_1,\ldots,i_k\}$, the intentional elements are denoted by $IEs=\{i_{k+1},\ldots,i_m\}$, and the relationships are denoted by $Links=\{i_{m+1},\ldots,i_n\}$.
+\end{definition}
+
+We formalize the description of an actor or an intentional element with a proposition $name(i,p)$. Note that links do not have a description.
+
+\begin{definition}[Name of IE or Actor]
+The name $p$ of a element $i\in IEs\cup Actors$ is denoted by $name(i,p)$.
+\end{definition}
+
+All intentional elements are collected in the set $IEs$. In order to distinguish softgoals, goals, tasks, and resources, we use the following definition.
+
+\begin{definition}[Intentional Element]
+Given an intentional element $i\in IEs$, if $i$ is a softgoal, goal, task, or resource, then this is respectively denoted by $softgoal(i), goal(i), task(i)$, and $resource(i)$.
+\end{definition}
+
+In the same way, we distinguish between the different types of links between IEs using the following definition.
+
+\begin{definition}[Links]
+Given a link $i\in Links$, we denote with $contrib(i,src,dest,type)$ a contribution from $src\in IEs$ to $dest\in IEs$, where $type\in\{pos,neg\}$ means a positive resp. negative contribution. We denote with $decomp(i,src,\{dest_1,\ldots,dest_n\},type)$ a decomposition of $src\in IEs$ into $\{dest_1,\dots,dest_n\}\subseteq IEs$, where $type\in\{AND,OR,XOR\}$ means respective an AND, OR, and XOR decomposition. We denote with $dep(i,d_1,d_2,d_3)$ a dependency from $d_1\in IEs$ via $d_2\in IEs$ to $d_3\in IEs$.
+\end{definition}
+
+In order to denote that an intentional element or a link belongs to an actor, we use $has$ statements.
+
+\begin{definition}[Elements of an actor]
+Given an actor $i\in Actors$ and a element $j\in IEs\cup Links$, we use $has(i,j)$ to denote that element $j$ belongs to actor $j$.
+\end{definition}
+
+\todo{Marc}{Marc}{Provide example here}
+
+\subsection{Formalizing the argument schemes}
+
+In order to formalize the argument schemes we first note that an 
