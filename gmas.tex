@@ -169,51 +169,109 @@ For each transcript, we manually create a GRL model from the argument schemes an
 
 We now discuss various instantiations of argument schemes and the result of answering critical questions in more detail. The examples below come from all three transcripts, and therefore not always correspond to the goal model in figure~\ref{fig:transcripts:grl}. For each example we provide transcript excerpts, a visualization of the arguments, and the corresponding goal model elements.
 
-\subsubsection{Irrelevant actor}
+\subsubsection{Example 1: Introducing a new element (INTRO)}
 
-The transcript excerpt of the first example is shown in table~\ref{table:transcript:irrelevant-actor} in the appendix. It consists of participant P1 putting forth the suggestion to include actor \emph{Development team} into the model. This is then questioned by person P2, who argues that the professor will develop the software, so there won't be any development team. 
 
-We formalized the first statement as an instantiation of argument scheme AS0: \emph{Actor development team is relevant}. This argument is then attacked by answering critical question CQ0: \emph{Is actor development team relevant?} with \emph{No}. This results in two arguments, AS0 and CQ0, where CQ0 attacks AS0. This is shown in figure~\ref{fig:examples:relevant-actor:arguments}.
+\subsubsection{Example 2: Disabling an element (DISABLE)}
 
-Argument scheme AS0 is an argument to include actor \emph{Development team} into the GRL model. Therefore, by attacking it the argument is no longer accepted, and as a result the actor is disabled in the resulting GRL model (figure~\ref{fig:examples:relevant-actor:grl}). Note we added a red traceability link from the rejected argument to the disabled GRL element.
-
-\begin{figure}[ht!]
-\centering
-\begin{subfigure}[b]{0.22\textwidth}
-        \centering
-        \begin{tikzpicture}[->]
-        \node (a0) [shape=rectangle, draw=black!60, text=black!40] at (0,0) {
-            \begin{tabularx}{\textwidth}{X}
-                \textbf{(AS0)} Development team is relevant 
-            \end{tabularx}
-        } ;
-        \node (a1) [shape=rectangle,draw] at (0,-2){
-            \begin{tabularx}{\textwidth}{X}
-                \textbf{(CQ0)} Development team is not relevant (\emph{The professor makes the software})
-            \end{tabularx}
-        };
-        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt] (trace) at (1.2,-0.3) {};
-        
-         \path[line width=1mm]
-    (a1) edge[draw=black] (a0);
-\end{tikzpicture}
-        \caption{Arguments}
-        \label{fig:examples:relevant-actor:arguments}
-    \end{subfigure}\hfill
-    \begin{subfigure}[b]{0.22\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{img/actor_disabled}
-        \caption{GRL elements}
-        \label{fig:examples:relevant-actor:grl}
-    \end{subfigure}
-\caption{Argument schemes and critical questions (left) and GRL model (right) of a discussion about the relevance of actor Development team.}
-\label{fig:examples:relevant-actor}
-\end{figure}
-
-We see from this example that answering critical question CQ0 affirmatively has the effect of disabling the corresponding actor \emph{Development team}. Therefore, critical question CQ0 has the associated effect DISABLE in table~\ref{table:argument-schemes}.
+\subsubsection{Example 3: Change decomposition type (REPLACE)}
 
 \begin{figure*}[h]
 \includegraphics[width=\textwidth]{img/transcript_grl}
 \caption{The GRL model manually constructed from transcript 1. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.}
 \label{fig:transcripts:grl}
 \end{figure*}
+
+\subsubsection{Example 4: Clarifying an element (REPLACE)}
+
+The transcript excerpt of the second example is shown in table~\ref{table:transcript:task-clarification} in the appendix and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \emph{Choose a road pattern}. 
+
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}[->]
+        \node (a0) [shape=rectangle, draw=black!60, text=black!40] at (-2,0) {
+            \begin{tabularx}{0.2\textwidth}{X}
+                \textbf{(AS2)} Actor \emph{student} has task \emph{create road}
+            \end{tabularx}
+        };
+        \node (a1) [shape=rectangle, draw=black!60, fill=white, text=black!40] at (-2,-2) {
+            \begin{tabularx}{0.2\textwidth}{X}
+                \textbf{(AS2)} Actor \emph{student} has task \emph{choose a pattern}
+            \end{tabularx}
+        };
+        \node (a2) [shape=rectangle, draw=black!60, fill=white, text=black!40] at (-2,-4.2) {
+            \begin{tabularx}{0.2\textwidth}{X}
+                \textbf{(AS2)} Actor \emph{student} has task \emph{choose a pattern preference}
+            \end{tabularx}
+        };
+        \node (a3) [shape=rectangle] at (-2,-6.7) {
+            \begin{tabularx}{0.2\textwidth}{X}
+                \textbf{(AS2)} Actor \emph{student} has task \emph{choose a road pattern}
+            \end{tabularx}
+        };
+        \node[draw=none] (actor) at (2.3,-4) { \includegraphics[scale=0.5]{img/task_choose_road_pattern} };
+        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=8pt] (trace1) at (-.5,-6.5) {};
+        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=8pt] (trace2) at (2.2,-4.4) {};
+
+\begin{pgfonlayer}{background}
+         \path[line width=1mm]
+    (a1) edge[draw=black] (a0)
+    (a2) edge[draw=black] (a1)
+    (a2) edge[draw=black, bend right=20] (a0)
+    (a3) edge[draw=black] (a2)
+    (a3) edge[draw=black, bend right=20] (a1)
+    (a3) edge[draw=black, bend right=40] (a0);
+\end{pgfonlayer}
+     \path[line width=0.5mm, dotted]
+    (a0) edge [bend right=50] node [left,draw=none] {CQ12a} (a1)
+    (a1) edge [bend right=50] node [left,draw=none] {CQ12a} (a2)
+    (a2) edge [bend right=50] node [left,draw=none] {CQ12a} (a3);
+    
+    \path[draw, densely dotted,-,line width=0.5mm] (trace1) edge[draw=green] (trace2);
+\end{tikzpicture}
+\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of the clarification of a task.}
+\label{fig:examples:clarification}
+\end{figure}
+
+The formalized argument schemes and critical questions are shown in figure~\ref{fig:examples:clarification}. The discussion starts with the first instantiation of argument scheme AS2: \emph{Actor student has task create road}. This argument is then challenged with critical question CQ12a: \emph{Is the task create road clear?}. Answering this question results in a new instantiation of argument scheme AS2: \emph{Actor student has task choose a pattern}. This process is repeated three times, resulting in the final argument scheme \emph{Actor student has task choose a road pattern}. This final argument is unattacked and has a corresponding intentional element (right image). 
+
+What is clearly shown in this example is that a clarification step does not only attacks the previous argument, but it also attacks all arguments previously used to describe the element. For instance, the final argument on the bottom of figure~\ref{fig:examples:clarification} attacks all previous arguments. If this was not the case, then it may occur that a previous argument is \emph{reinstatiated}, meaning that it becomes accepted again because the argument attacking it is itself attacked.
+
+\subsubsection{Example 5: Generic counterargument (ATTACK)}
+
+\todo{Marc}{Marc}{Add the additional counterargument and add to critical questions}
+
+The transcript excerpt of the first example is shown in table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. It consists of participant P1 putting forth the suggestion to include actor \emph{Development team} into the model. This is then questioned by person P2, who argues that the professor will develop the software, so there won't be any development team. 
+
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}[->]
+        \node (a0) [shape=rectangle, draw=black!60, text=black!40] at (-2,0) {
+            \begin{tabularx}{0.2\textwidth}{X}
+                \textbf{(AS0)} Development team is relevant 
+            \end{tabularx}
+        } ;
+        \node (a1) [shape=rectangle,draw] at (-2,-2.5){
+            \begin{tabularx}{0.2\textwidth}{X}
+                Development team is not relevant (\emph{The professor makes the software})
+            \end{tabularx}
+        };
+        \node[draw=none] (actor) at (2.3,-1) { \includegraphics[scale=0.8]{img/actor_disabled} };
+        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt] (trace1) at (-.5,-.3) {};
+        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt] (trace2) at (2.2,-0.1) {};
+
+         \path[line width=1mm]
+    (a1) edge[draw=black] (a0);
+    \path[line width=0.5mm, dotted]
+    (a0) edge [bend right=50] node [left,draw=none] {CQ0} (a1);
+    \path[draw, densely dotted,-,line width=0.5mm] (trace1) edge[draw=red] (trace2);
+\end{tikzpicture}
+\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of a discussion about the relevance of actor Development team.}
+\label{fig:examples:relevant-actor}
+\end{figure}
+
+We formalized the first statement as an instantiation of argument scheme AS0: \emph{Actor development team is relevant}. This argument is then attacked by answering critical question CQ0: \emph{Is actor development team relevant?} with \emph{No}. This results in two arguments, AS0 and CQ0, where CQ0 attacks AS0. This is shown in figure~\ref{fig:examples:relevant-actor}, left image.
+
+Argument scheme AS0 is an argument to include actor \emph{Development team} into the GRL model. Therefore, by attacking it the argument is no longer accepted, and as a result the actor is disabled in the resulting GRL model (figure~\ref{fig:examples:relevant-actor}, right image). Note we added a red traceability link from the rejected argument to the disabled GRL element.
+
+We see from this example that answering critical question CQ0 affirmatively has the effect of disabling the corresponding actor \emph{Development team}. Therefore, critical question CQ0 has the associated effect DISABLE in table~\ref{table:argument-schemes}.
