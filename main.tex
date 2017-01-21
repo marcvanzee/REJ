@@ -6,6 +6,7 @@
 \usepackage{amssymb, amsmath}
 \usepackage{array,url}
 \usepackage{authblk}
+\usepackage{caption}
 \usepackage{courier}
 \usepackage{enumitem}
 \usepackage{graphicx}
@@ -13,6 +14,8 @@
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{sectsty}
+\usepackage{subcaption}\captionsetup{compatibility=false}
+\usepackage{tabularx}
 \usepackage{tikz}\usetikzlibrary{arrows}
 \usepackage{times}
 \usepackage{url}
@@ -69,9 +72,7 @@
  \end{tabular}\\[3em] % some more space after the title part
 }]
 
-\begin{abstract}
-Goal modeling languages capture the relations between an information system and its environment using high-level goals and their relationships with lower level goals and tasks. The process of constructing a goal model usually involves discussions between a requirements engineer and a group of stakeholders. While it is possible to capture part of this discussion process in the goal model, for instance by specifying alternative solutions for a goal, not all of the arguments can be found back in the resulting model. For instance, reasons for accepting or rejecting an element or a relation between two elements are not captured. In this paper, we investigate to what extent argumentation techniques from artificial intelligence can be applied to goal modeling. We apply the argument scheme for practical reasoning (PRAS), which is used in AI to reason about goals to the Goal-oriented Requirements Language (GRL). We develop a formal metamodel for the new language, link it to the GRL metamodel, and we implement our extension into jUCMNav, the Eclipse-based open source tool for GRL.
-\end{abstract}
+\input{abstract}
 
 \newpage
 
