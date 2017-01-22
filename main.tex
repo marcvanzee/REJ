@@ -23,7 +23,31 @@
 
 % change the appearance of the tikz arrow for the argumentation networks
 % and some other settings to make all the graphs look similar
-\tikzset{>=latex,every node/.style={circle, minimum size=0.5cm, draw=black}} 
+\tikzset{>=latex,every node/.style={circle, minimum size=0.5cm, draw=black}}
+
+% Tikz stuff for arguments with GRL
+\tikzset{
+  argNodeIN/.style={shape=rectangle,draw,fill=white,align=center},
+  argNodeOUT/.style={shape=rectangle, draw=black!60, text=black!40,fill=white},
+  traceNodeRED/.style={circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt},
+  traceNodeGREEN/.style={circle,draw=black, fill=green, inner sep=0pt,minimum size=8pt},
+  attackLink/.style={draw=black,->,line width=1mm},
+  traceLinkRED/.style={draw, densely dotted,-,line width=0.5mm, draw=red},
+  traceLinkGREEN/.style={draw, densely dotted,-,line width=0.5mm, draw=green},
+  CQLink/.style={line width=0.5mm, dotted,->},
+  ldots/.style={draw=none,rotate=90,font=\fontsize{20}{22.4}\selectfont},
+  grl/.style={draw=none},
+  disabled/.style={opacity=0.5}
+}
+\newcommand{\argtext}[2]{
+\begin{tabularx}{0.2\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
 
 \addtolength{\oddsidemargin}{-0.85in}
 \addtolength{\evensidemargin}{-0.85in}

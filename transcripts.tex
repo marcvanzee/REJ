@@ -5,16 +5,24 @@
 \centering
 \begin{tabular}{|p{20mm}|p{70mm}|p{60mm}|}
 \hline
-Respondent & Text & Annotation\\
+\textbf{Respondent} & \textbf{Text} & \textbf{Annotation}\\
 \hline
-0:10:55.2 (P1) & Maybe developers &\textbf{[4 actor (AS0)]} Development team\\
+0:15:11.2 (P1) & And then, we have a set of actions. Save map, open map, add and remove intersection, roads & \multirow{2}{60mm}{\textbf{[20 task (AS2)]} Student has tasks ``save map'', ``open map", ``add intersection", ``remove intersection", ``add road", ``add traffic light"}\\
+\cline{1-2}
+0:15:34.7 (P2) & Yeah, road. Intersection, add traffic lights &\\
 \hline
-0:11:00.8 (P2) & Development team, I don't know. Because that's- in this context it looks like she's gonna make the software & \textbf{[5 critical question CQ0 for 4]} Is actor "development team" relevant?\newline
-\textbf{[6 answer to 5]} No, it looks like the professor will develop the software.\\
+0:15:42.3 (P1) & Well, all intersection should have traffic lights so it's & \multirow{4}{60mm}{\textbf{[21 critical question CQ12 for 20]} Is the task ``Add traffic light" useful/relevant?\newline
+\textbf{[22 answer to 22]} Not useful, because according to the specification all intersections have traffic lights.}\\
+\cline{1-2}
+0:15:44.9 (P2) & Yeah &\\
+\cline{1-2}
+0:15:45.2 (P1) & It's, you don't have to specifically add a traffic light because if you have &\\
+\cline{1-2}
+0:15:51.4 (P2)	& They need-&\\
 \hline
 \end{tabular}
-\caption{Discussion about the relevance of an actor (transcript $t_3$)}
-\label{table:transcript:irrelevant-actor}
+\caption{Adding tasks, disabling useless task ``Add traffic light'' (transcript $t_1$)}
+\label{table:transcripts:traffic-light}
 
 \begin{tabular}{|p{20mm}|p{70mm}|p{60mm}|}
 \hline
@@ -49,8 +57,57 @@ Respondent & Text & Annotation\\
 \end{tabular}
 \caption{Clarifying the name of a task (transcript $t_3$)}
 \label{table:transcript:task-clarification}
+
+\begin{tabular}{|p{20mm}|p{50mm}|p{80mm}|}
+\hline
+Respondent & Text & Annotation\\
+\hline
+0:18:55.7 (P1) &Yeah. And then two processes, static, dynamic and they belong to the goal simulate. & \textbf{[17 goal (AS3)]} Actor ``System'' has goal ``Simulate"\newline
+\textbf{[18 task (AS2)]} Actor ``System" has task ``Static simulation"\newline
+\textbf{[19 task (AS2)]} Actor ``System has task ``Dynamic simulation"\newline
+\textbf{[20 decomposition (AS?)]} Goal ``Simulation" AND-decomposes into "Static simulation" and ``Dynamic simulation"\\
+\hline
+0:30:10.3 (P1) & 	Yeah. But this is- is this an OR or an AND? & \multirow{5}{80mm}{\textbf{[26 critical question CQ10b for 20]} Is the decomposition type of ``simulate'' correct?\newline
+\textbf{[27 answer to 26]} No, it should be an OR decomposition.}\\
+\cline{1-2}
+0:30:12.6 (P2) & That's and OR &\\
+\cline{1-2}
+0:30:14.3 (P3) & I think it's an OR &\\
+\cline{1-2}
+0:30:15.4 (P1) & It's for the data, it's an OR &\\
+\cline{1-2}
+0:30:18.1 (P3) & Yep &\\
+\hline	
+\end{tabular}
+\caption{Incorrect decomposition type for goal \emph{Simulate} (transcript $t_3$)}
+\label{table:transcript:decomposition}
 \end{table}
 
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|p{20mm}|p{70mm}|p{60mm}|}
+\hline
+Respondent & Text & Annotation\\
+\hline
+0:10:55.2 (P1) & Maybe developers &\textbf{[4 actor (AS0)]} Development team\\
+\hline
+0:11:00.8 (P2) & Development team, I don't know. Because that's- in this context it looks like she's gonna make the software & \textbf{[5 critical question CQ0 for 4]} Is actor "development team" relevant?\newline
+\textbf{[6 answer to 5]} No, it looks like the professor will develop the software.\\
+\hline
+0:18:13.4 (P2) & I think we can still do developers here. To the system & \multirow{4}{60mm}{\textbf{[16 counter argument for 6]} According to the specification the professor doesn't actually develop the software.}\\
+\cline{1-2}
+0:18:18.2 (P1)  & Yeah?&\\
+\cline{1-2}
+0:18:19.8 (P2) & Yeah, it isn't mentioned but, the professor does-&\\
+\cline{1-2}
+0:18:22.9 (P1) & Yeah, when the system gets stuck they also have to be [inaudible] ok. So development team&\\	
+\hline
+\end{tabular}
+\caption{Discussion about the relevance of an actor (transcript $t_3$)}
+\label{table:transcript:irrelevant-actor}
+\end{table}
+
+\iffalse
 \begin{table}[!htbp]
 \begin{tabular}{|p{20mm}|p{70mm}|p{60mm}|}
 \hline
@@ -138,21 +195,6 @@ Respondent & Text & Annotation\\
 \caption{AS2: Task, AS10: Task decomposition (transcript $t_2$)}
 \label{table:transcript:as2-as10}
 
-\begin{tabular}{|p{20mm}|p{70mm}|p{60mm}|}
-\hline
-Respondent & Text & Annotation\\
-\hline
-0:30:10.3 (P1) & 	Yeah. But this is- is this an OR or an AND? & \multirow{3}{60mm}{\textbf{[26 critical question CQ*0 for 20]} Is the OR-decomposition of ``simulate'' correct?\newline
-\textbf{[27 answer to 26]} No, it should be an AND because the system can do both.}\\
-\cline{1-2}
-0:30:14.3 (P3) &I think it's an OR&\\
-\cline{1-2}
-0:30:15.4 (P1) & for the data, it's an OR (...) And for the system it's an AND. (...) Static manner or dynamic. But the system can do both&\\
-\hline	
-\end{tabular}
-\caption{CQ11b: Incorrect decomposition (transcript $t_3$)}
-\label{table:transcript:cq11b}
-
 \begin{tabular}{|p{20mm}|p{100mm}|p{30mm}|}
 \hline
 Respondent & Text & Annotation\\
@@ -199,5 +241,5 @@ Respondent & Text & Annotation\\
 \end{tabular}
 \caption{AS0: Task, CQ0: Relevant task? CQ: Generic counterargument (transcript $t_2$)}
 \label{table:transcript:as0-cq0-cq_counterarg}
-
 \end{table}
+\fi
