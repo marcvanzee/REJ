@@ -1,47 +1,176 @@
-\section{The Formal Framework}
+\section{The Logical Framework}
 \label{sect:formalframework}
 
-We briefly summarize our results so far and our tasks for the current section. In the previous two sections we developed argument schemes and critical questions for goal modeling in two iterations. In section~\ref{sect:gmas} we proposed an initial list, which we derived from PRAS and the elements and relationships used in GRL (table~\ref{table:argument-schemes}). We then validated this set using transcripts in section~\ref{sect:gmas:2}. This resulted in new argument schemes and critical questions, and also in four new types of arguments that we distinguished from argument schemes and critical questions, namely Topic Introduction (TI), Removing redundant elements (REM), Clarifying an element (CLAR), and Generic counterargument (GEN) (table~\ref{table:transcripts:results:new}). We distinguished four types of operations that can be applied when putting forward an argument, namely Introducing a new element (INTRO), Disabling an element (DISABLE), Replacing an element (REPLACE), and adding a Generic Counterargument (GENERIC). In table~\ref{table:operation-mappings} we provided a mapping from our final list of arguments to these operations.
+In the previous section we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of an information system. The resulting list is shown in table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of table~\ref{table:argument-schemes}): INTRO, DISABLE, REPLACE, and ATTACK.
 
-In this section we develop a formal framework for the arguments and operations on them. In the first subsection we develop a formal language for a GRL model, consisting of actors, intentional elements (softgoals, goals, tasks, and resources), and links (decomposition, positive contribution, negative contribution, and dependency) between intentional elements. In the second subsection we then provide formal definitions of all argument schemes, which are simply statements about a goal model. In the third subsection we formalize the critical questions.
+The examples and corresponding visualizations of the previous section provided some insight into how to formalize argument schemes, critical questions, and their relationship with goal models. However, if we are to implement our framework into a tool, we require a more precise formalisation of these concepts. We choose to use formal logic to specify this, because argumentation has been studied in formal logic extensively for the past decades.
 
-\subsection{Formal Language for a GRL Model}
+In the first subsection we develop a formal language to specify a GRL model. This language consists of propositions only, and a GRL model specified in this language can be specified as a logic program directly. In the second subsection we then provide formal definitions of all argument schemes. An instantiation of an argument scheme consists of a set of statement about a GRL model. In the third subsection we formalize the critical questions as algorithms.
 
-In order to formalize the arguments used when discussing a goal model, we first provide a formal language for a goal model. The arguments are simply statements in using this language.
+\subsection{Formal Language for RationalGRL}
 
-In our language, each element of a goal model is denoted by a non-negative integer. We distinguish the actors, intentional elements (softgoals, goals, tasks, and resources), the links (decomposition, positive contribution, negative contribution, and dependency) between intentional elements in three separate sets.
+Basic concepts set theory are adequate to define the entities in a GRL model and the relations between them. We begin with the representation for the elements.
 
-\begin{definition}[Elements]
-Let $\{i_1,\ldots,i_n\}\subset \mathbb{N}$ denote the set of elements of a goal model.
-The actors are denoted by $Actors=\{i_1,\ldots,i_k\}$, the intentional elements are denoted by $IEs=\{i_{k+1},\ldots,i_m\}$, and the relationships are denoted by $Links=\{i_{m+1},\ldots,i_n\}$.
+\begin{definition}[RationalGRL elements]
+Each element of a goal model is identified with a non-negative integer. Formally: let $Actors\cup IEs \cup Links \subseteq \mathbb{N}$ denote the set of elements of a goal model, where 
+\begin{itemize}
+\item $Actors$ is the set of actors, 
+\item $IEs$ is the set of intentional elements (softgoals, goals, tasks, and resources),
+\item $Links$ is the set of links (decomposition, contribution, and dependency). 
+\end{itemize}
+
+The three sets are pairwise disjoint, i.e. $Actors \cap IEs = Actors \cap Links = IEs \cap Links = \emptyset$. 
 \end{definition}
 
-We formalize the description of an actor or an intentional element with a proposition $name(i,p)$. Note that links do not have a description.
+\rationale{} We identify GRL element with an identifier and not with a name, because it is possible that the name of the element changes, for instance by applying critical question CQ12a (clarification), see the example ``Clarify task \emph{Road pattern}'' above. The GRL model of figure~\ref{fig:examples:decomposition} can be formalized as follows: 
+\begin{align*}
+&Actors = \{1\},\\
+&IEs = \{2, 3, 4\},\\ 
+&Links = \{5\}.
+\end{align*}
+
+\begin{definition}[GRL intentional element type]
+For an intentional element $i\in IEs$, if $i$ is a softgoal, goal, task, or resource, then this is respectively denoted by $softgoal(i), goal(i), task(i)$, and $resource(i)$.
+\end{definition}
+
+\rationale{} All intentional elements are collected in the set $IEs$. In order to distinguish softgoals, goals, tasks, and resources, we use the corresponding propositions. In our example this looks as follows:
+\begin{align*}
+&goal(2),\\
+&task(3),\\
+&task(4).
+\end{align*}
+
+Note we do not require such propositions for actors, since there is only one type of actor, and all actors are contained in the set $Actors$.
+
+\begin{definition}[Links]
+Given a link $i\in Links$, we denote the links types as follows:
+\begin{itemize}
+\item $contrib(i,src,dest,type)$ is a contribution from $src\in IEs$ to $dest\in IEs$, where $type\in\{+,-\}$ means a positive resp. negative contribution. 
+\item $decomp(i,src,\{dest_1,\ldots,dest_n\},type)$ is a decomposition of $src\in IEs$ into $\{dest_1,\dots,dest_n\}\subseteq IEs$, where $type\in\{AND,OR,XOR\}$ means respective an AND, OR, and XOR decomposition. 
+\item $dep(i,src,dest)$ is a dependency from $dest\in IEs$ to $dest\in IEs$.
+\end{itemize}
+\end{definition}
+
+\rationale{} Similarly to the intentional elements, we distinguish between the different types of links between IEs using the corresponding propositions. The formalisation of the link in figure~\ref{fig:examples:decomposition} looks as follows:
+\begin{align*}
+&decomp(5, 2, \{3,4\}, OR)
+\end{align*}
 
 \begin{definition}[Name of IE or Actor]
 The name $p$ of a element $i\in IEs\cup Actors$ is denoted by $name(i,p)$.
 \end{definition}
 
-All intentional elements are collected in the set $IEs$. In order to distinguish softgoals, goals, tasks, and resources, we use the following definition.
-
-\begin{definition}[Intentional Element]
-Given an intentional element $i\in IEs$, if $i$ is a softgoal, goal, task, or resource, then this is respectively denoted by $softgoal(i), goal(i), task(i)$, and $resource(i)$.
-\end{definition}
-
-In the same way, we distinguish between the different types of links between IEs using the following definition.
-
-\begin{definition}[Links]
-Given a link $i\in Links$, we denote with $contrib(i,src,dest,type)$ a contribution from $src\in IEs$ to $dest\in IEs$, where $type\in\{pos,neg\}$ means a positive resp. negative contribution. We denote with $decomp(i,src,\{dest_1,\ldots,dest_n\},type)$ a decomposition of $src\in IEs$ into $\{dest_1,\dots,dest_n\}\subseteq IEs$, where $type\in\{AND,OR,XOR\}$ means respective an AND, OR, and XOR decomposition. We denote with $dep(i,d_1,d_2,d_3)$ a dependency from $d_1\in IEs$ via $d_2\in IEs$ to $d_3\in IEs$.
-\end{definition}
-
-In order to denote that an intentional element or a link belongs to an actor, we use $has$ statements.
+\rationale{} We formalize the description of an actor or an intentional element with a proposition $name(i,p)$. Continuing our example of formalizing figure~\ref{fig:examples:decomposition}, we have 
+\begin{align*}
+&name(1,\text{system}),&\\
+&name(2,\text{simulate}),&\\
+&name(3,\text{static\ simulation}),&\\
+&name(4, \text{dynamic simulation}).&
+\end{align*}
+Note the decomposition link with identifier 5 does not have a name, since decompositions are already distinguished by their type (OR, XOR, AND).
 
 \begin{definition}[Elements of an actor]
 Given an actor $i\in Actors$ and a element $j\in IEs\cup Links$, we use $has(i,j)$ to denote that element $j$ belongs to actor $j$.
 \end{definition}
 
-\todo{Marc}{Marc}{Provide example here}
+\rationale{} In order to denote that an intentional element or a link belongs to an actor, we use $has$ statements. This looks as follows in our example:
+\begin{align*}
+&has(1, 2),\\
+&has(1, 3),\\
+&has(1, 4),\\
+&has(1, 5).
+\end{align*}
+
+\begin{definition}[Disabled GRL element]
+A disabled element $i\in Actors\cup IEs$ is denoted by $disabled(i)$.
+\end{definition}
+
+\rationale{} If a GRL element corresponds to an argument that is rejected, then this argument should be disabled. For instance, the GRL model in figure~\ref{fig:examples:relevant-actor} can be formalized as follows:
+\begin{align*}
+&Actors = \{1\},\\
+&name(1, \text{development team}),\\
+&disabled(1)
+\end{align*}
+
+This concludes our definitions to formalize a GRL model. An advantage of our approach is that we can formalize a GRL model using a set of facts, which can be directly be formalized as a logic program. We will come back to this in the last part of this section.
 
 \subsection{Formalizing the argument schemes}
 
-In order to formalize the argument schemes we first note that an 
+We formalize an argument as a set of statements about a GRL model in the language we introduced in the previous section. For instance, $A= \{actor(0), name(0,student)\}$ is an argument stating that identifier 0 represent an actor, and that the name of this actor is \emph{Student}. An argument scheme then corresponds to adding one or more arguments to the set of arguments.
+
+\begin{table*}[h]
+\centering
+\begin{tabularx}{\textwidth}{|l|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Argument scheme}} & \textbf{Formal arguments}\\
+\hline
+$AS0(a_{id},a)$ & Actor $a$ is relevant & $\{actor(id), name(id, a)\}$\\
+\hline
+$AS1(a_{id},r_{id},R$ & Actor $a_{id}$ has resource $R$ & $\{resource(r_{id}), name(r_{id},R), has(a_{id},r_{id})\}$\\
+\hline
+$AS2(a_{id},t_{id},T)$ & Actor $a_{id}$ can perform task &$T$ $\{task(t_{id}), name(t_{id},T), has(a_{id},t_{id})\}$\\
+\hline
+$AS3(a_{id},g_{id},G)$ & Actor $a_{id}$ has goal $G$ &$\{goal(g_{id}), name(g_{id},G), has(a_{id},g_{id})\}$\\
+\hline
+$AS4(a_{id},s_{id},S)$ & Actor $a$ has softgoal $S$ & $\{softgoal(s_{id}), name(s_{id},S), has(a_{id}, s_{id}\}$\\
+\hline
+\hline
+$AS5(g_{id},(t_{id_1},\ldots,t_{id_n}),(T_1,\ldots,T_n),d_{id})$ & Goal $G$ decomposes into tasks $T_1,\ldots,T_n$ & $\{decomp(d_{id},g_{id},\{t_{id_1},\ldots,t_{id_n}\})\}$\\
+&&$\{task(t_{id_1}),name(t_{id_1},T_1)\}$\\
+&&...\\
+&&$\{task(t_{id_n}),name(t_{id_n},T_n)\}$\\
+\hline
+$AS6(t_{id},s_{id},$ & Task $T$ contributes to softgoal $S$& \\
+\hline
+AS7 & Goal $G$ contributes to softgoal $S$ & \\
+\hline
+AS8 & Resource $R$ contributes to task $T$ & \\
+\hline
+AS9 & Actor $a$ depends on actor $b$ & \\
+\hline
+AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & \\
+\hline
+AS11 & Task $T$ contributes negatively to softgoal $S$&\\
+\hline
+\end{tabularx}
+\caption{List of argument schemes (AS0-AS13, left column), critical questions (CQ0-CQ12, middle column), and the effect of answering them (right column).}
+\label{table:argument-schemes}
+\end{table*}
+
+We start by formalizing an argumentation framework.
+
+\begin{definition}[Argumentation framework]
+An argumentation framework $(Args,Att)$ consists of a set of arguments $Args$ and an attack relationship $Att:Args\times Args$, where $(A_1,A_2)\in Att$ means that argument $A_1\in Args$ attacks arguments $A_2\in Args$.
+\end{definition}
+
+\begin{definition}[AS0] Argument scheme $AS0$ (Actor $a$ is relevant) is: $$AS_0(i,n) = \{actor(i), name(i,n)\},$$ where $i$ is an element identifier and $n$ is a name.
+\end{definition}
+
+\rationale{} The argument scheme takes two arguments, the id $i$ and the name $n$ of an actor. In figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS(0,\text{Development team})$, results in the argument $\{actor(0), name(0, \text{Development team})\}$.
+
+\begin{definition}[AS1] Argument scheme $AS1$ (Actor $a$ has resource $R$) is: $$AS_1(a,r,R) = \{resource(r), name(r,R), has(a,r)\}.$$ where $a$ is an actor identifier, $r$ is an element identifier, and $R$ is a resource name. 
+\end{definition}
+
+\rationale{} This argument scheme takes three arguments, the actor id $a$, the resource id $r$, and the resource name $R$. 
+
+The formalisations of argument scheme AS2 to AS4 are exactly the same as AS1 but then for respectively tasks, goals, and softgoals. Therefore, we have omitted them here. We continue with argument scheme AS5.
+
+\begin{definition}[AS5] Argument scheme $AS5$ (Goal $G$ decomposes into tasks $T_1,\ldots,T_n$) is formalized as follows: $$AS_5(d, g_id,T_{id},T) = \{decomp(d, g_{id}, T_{id}, type)\},$$
+where $d$ is the decomposition link identifier, $g$ is a goal identifier, $T_{id}=(t_1,\ldots,t_n)$ is a list of task identifiers, $T=(T_1,\ldots,T_n)$ is a list of task names, and $type\in\{and,or,xor\}$ denotes the decomposition type.
+\end{definition}
+
+\rationale{} Note $AS_5$ requires the list of task names $T$ as an argument as well, while it does not show up in the argument. This is because when applying the argument scheme, it may be the case that the tasks does not exist yet. We return to this in the next subsection when we provide algorithms for applying the argument schemes and critical questions. Consider as an example figure~\ref{fig:examples:decomposition}. Suppose the goal is formalized with $AS_3(0, 1, simulate)=\{goal(1), name(1, simulate), has(0,1)\}$. The OR-decomposition can be formalized as an instantiation of $AS_5$ as follows: $AS_5(2, 1, (3,4), (\text{static simulation, dynamic simulation}))$.
+
+The remaining argument schemes AS6-AS11 are all very similar to AS5, so we have omitted them here. 
+
+\subsection{Algorithms for applying argument schemes}
+
+In the previous subsection we formalized a static representation of argument schemes. In this subsection we provide algorithms for applying them. We keep track of an identifier $ID$, representing the currently highest identifier number. This number is increased with each application of an argument scheme.
+
+\begin{definition}[Application of AS0-AS4] Applying argument schemes $AS_0$ to $AS_4$ adds the new argument to the set of arguments: 
+\begin{align*}
+&ID\text{++}\\
+&Args := Args \cup AS_i(ID,\ldots)
+\end{align*}
+for $i\in[0,4]$.
+\end{definition}
