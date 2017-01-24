@@ -3,7 +3,8 @@
 \setcounter{tocdepth}{3}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{amssymb, amsmath}
+\usepackage[fleqn]{amsmath} % flush equations left
+\usepackage{amssymb}
 \usepackage{array,url}
 \usepackage{authblk}
 \usepackage{caption}
@@ -20,6 +21,11 @@
 \usepackage{times}
 \usepackage{url}
 \usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{multicol}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\newcommand{\var}[1]{{\ttfamily#1}}% variable
 
 % change the appearance of the tikz arrow for the argumentation networks
 % and some other settings to make all the graphs look similar
@@ -48,6 +54,10 @@
 #2
 \end{tabularx}
 }
+
+% rationale
+\newcommand{\rationale}{\emph{Rationale and example:}}
+
 
 \addtolength{\oddsidemargin}{-0.85in}
 \addtolength{\evensidemargin}{-0.85in}
@@ -124,5 +134,6 @@ Marc van Zee is funded by the National Research Fund (FNR), Luxembourg, by the R
 \appendix
 
 \input{transcripts}
+\input{grl_specification}
 
 \end{document}

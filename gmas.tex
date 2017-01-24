@@ -23,7 +23,7 @@ AS4 & Actor $a$ has softgoal $S$ & CQ4 & Is the softgoal a legitimate softgoal?&
 \hline
 \hline
 AS5 & Goal $G$ decomposes into tasks $T_1,\ldots,T_n$ & CQ5a & Does the goal decompose into the tasks?& DISABLE\\
-& & CQ5b & Does the goal decompose into any other tasks?& INTRO\\
+& & CQ5b & Does the goal decompose into any other tasks?& REPLACE\\
 \hline
 AS6 & Task $T$ contributes to softgoal $S$& CQ6a & Does the task contribute to the softgoal?& DISABLE\\
 && CQ6b & Are there alternative ways of contributing to the same softgoal?& INTRO \\
@@ -37,7 +37,7 @@ AS8 & Resource $R$ contributes to task $T$ & CQ8 & Is the resource required in o
 \hline
 AS9 & Actor $a$ depends on actor $b$ & CQ9 & Does the actor depend on any actors?& INTRO\\
 \hline
-AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & CQ10a & Does the task decompose into other tasks?& INTRO\\
+AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & CQ10a & Does the task decompose into other tasks?& REPLACE\\
  &  & CQ10b & Is the decomposition type correct? (AND/OR/XOR)& REPLACE\\
 \hline
 AS11 & Task $T$ contributes negatively to softgoal $S$& CQ11 & Does the task contribute negatively to the softgoal?& DISABLE\\
@@ -89,7 +89,7 @@ It is generally known in the argumentation literature that it can be very diffic
 
 \begin{figure*}[h]
 \includegraphics[width=\textwidth]{img/transcript_grl}
-\caption{The GRL model manually constructed from transcript 1. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.}
+\caption{The GRL model manually constructed from transcript $t_1$. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.}
 \label{fig:transcripts:grl}
 \end{figure*}
 
@@ -210,7 +210,7 @@ We now discuss various instantiations of argument schemes and the result of answ
 \end{figure}
 
 
-\subsubsection{Example 1: Disable task ``Traffic light''}
+\subsubsection{Example 1: Disable task \emph{Traffic light}}
 
 The transcript excerpt of this example is shown in table~\ref{table:transcripts:traffic-light} in the appendix and comes from transcript $t_1$. In this example, participants are summing up functionality of the traffic simulator, which are tasks that the student can perform in the simulator. All these tasks can be formalized are instantiations of argument scheme AS2: ``Actor \emph{Student} has task $T$'', where $T\in\{$Save map, Open map, Add intersection, Remove intersection, Add road, Add traffic light$\}$''. 
 
@@ -254,7 +254,7 @@ We visualized the some of the argument schemes, critical questions, and traceabi
 \end{figure}
 
 
-\subsubsection{Example 2: Clarify task ``Road pattern''}
+\subsubsection{Example 2: Clarify task \emph{Road pattern}}
 
 The transcript excerpt of the second example is shown in table~\ref{table:transcript:task-clarification} in the appendix and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \emph{Choose a road pattern}. 
 
@@ -303,7 +303,7 @@ The formalized argument schemes and critical questions are shown in figure~\ref{
 
 What is clearly shown in this example is that a clarifying argument attacks all arguments previously used to describe the element. For instance, the final argument on the bottom of figure~\ref{fig:examples:clarification} attacks all previous arguments. If this was not the case, then it may occur that a previous argument is \emph{reinstatiated}, meaning that it becomes accepted again because the argument attacking it is itself attacked.
 
-\subsubsection{Example 3: Decompose goal ``Simulate''}
+\subsubsection{Example 3: Decompose goal \emph{Simulate}}
 
 The transcript excerpt of this example is shown in table~\ref{table:transcript:decomposition} in the appendix and comes from transcript $t_3$. It consists of a discussion about the type of decomposition relationship for the goal \emph{Simulate}.
 
@@ -355,7 +355,7 @@ The transcript excerpt of this example is shown in table~\ref{table:transcript:d
 
 The visualization of this discussion is shown in figure~\ref{fig:examples:decomposition}. Each GRL element on the right has a corresponding argument on the left. Moreover, the original argument for an AND-decomposition is attacked by the argument for the OR decomposition, and the new argument is linked to the decomposition relation in the GRL model.
 
-\subsubsection{Example 4: Reinstate actor ``Development team''}
+\subsubsection{Example 4: Reinstate actor \emph{Development team}}
 
 The transcript excerpt of this example is shown in table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. It consists of two parts: first participant P1 puts forth the suggestion to include actor \emph{Development team} into the model. This is then questioned by person P2, who argues that the professor will develop the software, so there won't be any development team. However, in the second part, participant P2 argue that the development team should be considered, since the professor doesn't develop the software.
 

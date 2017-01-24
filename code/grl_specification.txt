@@ -1,0 +1,116 @@
+// GRL Elements
+Actor = {1,2,3} (3 actors)
+IEs = {4, ..., 32} (29 intentional elements)
+Links = {33, 44} (15 links)
+
+///////////////////
+// Actor student //
+///////////////////
+
+name(1, Student)
+
+// IE types of actor student
+softgoal(2)
+goal(3)
+task(4), ..., task(17)
+
+// Containments of actor student
+has(1, [2...17])
+
+// IE names of actor student
+name(2, Learn queuing theory from practice)
+name(3, Use simulator)
+name(4, Map design)
+name(5, Open Map)
+name(6, Add road)
+name(7, Add sensor to traffic light)
+name(8, Control grid size)
+name(9, Add intersection)
+name(10, Run simulation)
+name(11, Save map)
+name(12, Control simulation)
+name(13, Control car influx per road)
+name(14, Adjust car spawing rate)
+name(15, Adjust timing schemes of sensorless intersections)
+name(16, Remove intersection)
+name(17, Add traffic light)
+
+// Links of actor student
+contr(18, 3, 2, +)
+contr(19, 4, 3, +)
+contr(20, 11, 3, +)
+decomp(21, 4, [5...11], AND)
+decomp(22, 4, [5...11, 13], AND)
+decomp(23, 12, [13,14,15], AND)
+
+// Disabled elements of actor student
+disabled([16, 17, 22])
+
+//////////////////////////
+// Actor Traffic Tycoon //
+//////////////////////////
+
+name(24, Traffic Tycoon)
+
+// IE types of actor Traffic Tycoon
+softgoal(25), softgoal(26)
+goal(27), goal(28)
+task(29), task(30), task(31), task(32)
+resource(33), resource(34)
+
+// Containments of actor Traffic Tycoon
+has(24, [25...34])
+
+// IE names of actor Traffic Tycoon
+name(25, Dynamic simulation)
+name(26, Realistic simulation)
+name(27, Show simulation)
+name(28, Generate cars)
+name(29, Keep same cars)
+name(30, Create new cars)
+name(31, Show map editor)
+name(32, Store/load map)
+name(33, External library)
+name(34, Storage)
+
+// Links of actor Traffic Tycoon
+contr(35, 29, 25, -)
+contr(36, 29, 26, +)
+contr(37, 30, 25, +)
+contr(38, 30, 26, -)
+decomp(39, 28, [29, 30], XOR)
+decomp(40, 27, [28, 33], AND)
+decomp(41, 31, [32], AND)
+decomp(42, 32, [34], AND)
+
+////////////////////
+// Actor Teacher  //
+////////////////////
+
+name(43, Teacher)
+
+// IE types of actor Teacher
+softgoal(44)
+task(45)
+
+// Containments of actor Teacher
+has(43, [44,45])
+
+// IE names of actor Teacher
+name(44, Students learn from practice)
+name(45, Pass students if simulation is correct)
+
+// Disabled elements of actor Teacher
+disabled(45)
+
+///////////////////
+// Dependencies  //
+///////////////////
+
+// Elements outside of actors
+goal(46)
+name(46, Value has changed)
+
+dep(47, 32, 46)
+dep(48, 46, 14)
+dep(32, 11)
