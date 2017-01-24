@@ -94,83 +94,212 @@ A disabled element $i\in Actors\cup IEs$ is denoted by $disabled(i)$.
 
 This concludes our definitions to formalize a GRL model. An advantage of our approach is that we can formalize a GRL model using a set of facts, which can be directly be formalized as a logic program. We will come back to this in the last part of this section.
 
-\subsection{Formalizing the argument schemes}
+\subsection{Formal argumentation}
+
+In the next section, we formalize an argument as a set of statements about a GRL model in the language we introduced in the previous section. First, we formalize an argumentation framework and its semantics, which is used to determine sets of acceptable arguments.
+
+\begin{definition}[Argumentation framework]
+An argumentation framework $AF=(Args,Att)$ consists of a set of arguments $Args$ and an attack relationship $Att:Args\times Args$, where $(A_1,A_2)\in Att$ means that argument $A_1\in Args$ attacks arguments $A_2\in Args$.
+\end{definition}
+
+\rationale{} This is the standard definition used by Dung~\cite{Dung1995}. For instance, the argumentation framework from figure~\ref{fig:pras:example} can be formalized as:
+\begin{align*}
+&Args=\{A_1,A_2,A_3\}\\
+&Att = \{(A_2,A_1),(A_1,A_3),(A_3,A_1)\}
+\end{align*}
+
+\todo{Marc}{Marc}{explain semantics}
+
+\subsection{Algorithms for instantiating the argument schemes}
 
 We formalize an argument as a set of statements about a GRL model in the language we introduced in the previous section. For instance, $A= \{actor(0), name(0,student)\}$ is an argument stating that identifier 0 represent an actor, and that the name of this actor is \emph{Student}. An argument scheme then corresponds to adding one or more arguments to the set of arguments.
 
-\begin{table*}[h]
-\centering
-\begin{tabularx}{\textwidth}{|l|l|l|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Argument scheme}} & \textbf{Formal arguments}\\
-\hline
-$AS0(a_{id},a)$ & Actor $a$ is relevant & $\{actor(id), name(id, a)\}$\\
-\hline
-$AS1(a_{id},r_{id},R$ & Actor $a_{id}$ has resource $R$ & $\{resource(r_{id}), name(r_{id},R), has(a_{id},r_{id})\}$\\
-\hline
-$AS2(a_{id},t_{id},T)$ & Actor $a_{id}$ can perform task &$T$ $\{task(t_{id}), name(t_{id},T), has(a_{id},t_{id})\}$\\
-\hline
-$AS3(a_{id},g_{id},G)$ & Actor $a_{id}$ has goal $G$ &$\{goal(g_{id}), name(g_{id},G), has(a_{id},g_{id})\}$\\
-\hline
-$AS4(a_{id},s_{id},S)$ & Actor $a$ has softgoal $S$ & $\{softgoal(s_{id}), name(s_{id},S), has(a_{id}, s_{id}\}$\\
-\hline
-\hline
-$AS5(g_{id},(t_{id_1},\ldots,t_{id_n}),(T_1,\ldots,T_n),d_{id})$ & Goal $G$ decomposes into tasks $T_1,\ldots,T_n$ & $\{decomp(d_{id},g_{id},\{t_{id_1},\ldots,t_{id_n}\})\}$\\
-&&$\{task(t_{id_1}),name(t_{id_1},T_1)\}$\\
-&&...\\
-&&$\{task(t_{id_n}),name(t_{id_n},T_n)\}$\\
-\hline
-$AS6(t_{id},s_{id},$ & Task $T$ contributes to softgoal $S$& \\
-\hline
-AS7 & Goal $G$ contributes to softgoal $S$ & \\
-\hline
-AS8 & Resource $R$ contributes to task $T$ & \\
-\hline
-AS9 & Actor $a$ depends on actor $b$ & \\
-\hline
-AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & \\
-\hline
-AS11 & Task $T$ contributes negatively to softgoal $S$&\\
-\hline
-\end{tabularx}
-\caption{List of argument schemes (AS0-AS13, left column), critical questions (CQ0-CQ12, middle column), and the effect of answering them (right column).}
-\label{table:argument-schemes}
-\end{table*}
+In the following algorithms, we assume the following global variables:
+\begin{itemize}
+\item $id$ the current highest identifier of the elements. This variable is increased for each new element that is added.
+\item $Args$ contains the set of all arguments.
+\item $Att$ contains the set of all attack relations.
+\end{itemize}
 
-We start by formalizing an argumentation framework.
+\begin{algorithm}[h]
+  \caption{Applying AS0: Actor $a$ is relevant}\label{alg:as0}
+  \begin{algorithmic}[1]
+    \Procedure{$AS_0$}{$a$}
+    \State $id\gets id+1$
+    \State $A \gets \{actor(id), name(id,a)\}$
+    \State $Args \gets Args \cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-\begin{definition}[Argumentation framework]
-An argumentation framework $(Args,Att)$ consists of a set of arguments $Args$ and an attack relationship $Att:Args\times Args$, where $(A_1,A_2)\in Att$ means that argument $A_1\in Args$ attacks arguments $A_2\in Args$.
-\end{definition}
+\rationale{} Algorithm~\ref{alg:as0} takes one argument, namely the name of the actor $a$. In figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS_(\text{Development team})$, results in one argument: $Args = \{\{actor(0), name(0, \text{Development team})\}\}$.
 
-\begin{definition}[AS0] Argument scheme $AS0$ (Actor $a$ is relevant) is: $$AS_0(i,n) = \{actor(i), name(i,n)\},$$ where $i$ is an element identifier and $n$ is a name.
-\end{definition}
+\begin{algorithm}[h]
+  \caption{Applying AS1: Actor $a_{id}$ has resource $n$}\label{alg:as1}
+  \begin{algorithmic}[1]
+    \Procedure{$AS_1$}{$a_{id}, n$}
+    \State $id\gets id+1$
+    \State $A\gets \{resource(id), name(id,n), has(a_{id},id)\}$
+    \State $Args \gets Args\cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-\rationale{} The argument scheme takes two arguments, the id $i$ and the name $n$ of an actor. In figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS(0,\text{Development team})$, results in the argument $\{actor(0), name(0, \text{Development team})\}$.
-
-\begin{definition}[AS1] Argument scheme $AS1$ (Actor $a$ has resource $R$) is: $$AS_1(a,r,R) = \{resource(r), name(r,R), has(a,r)\}.$$ where $a$ is an actor identifier, $r$ is an element identifier, and $R$ is a resource name. 
-\end{definition}
-
-\rationale{} This argument scheme takes three arguments, the actor id $a$, the resource id $r$, and the resource name $R$. 
+\rationale{}  This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. 
 
 The formalisations of argument scheme AS2 to AS4 are exactly the same as AS1 but then for respectively tasks, goals, and softgoals. Therefore, we have omitted them here. We continue with argument scheme AS5.
 
-\begin{definition}[AS5] Argument scheme $AS5$ (Goal $G$ decomposes into tasks $T_1,\ldots,T_n$) is formalized as follows: $$AS_5(d, g_id,T_{id},T) = \{decomp(d, g_{id}, T_{id}, type)\},$$
-where $d$ is the decomposition link identifier, $g$ is a goal identifier, $T_{id}=(t_1,\ldots,t_n)$ is a list of task identifiers, $T=(T_1,\ldots,T_n)$ is a list of task names, and $type\in\{and,or,xor\}$ denotes the decomposition type.
-\end{definition}
+\begin{algorithm}[h]
+  \caption{Applying AS5: Goal $g_{id}$ decomposes into tasks $T_1,\ldots,T_n$}\label{alg:as5}
+  \begin{algorithmic}[1]
+    \Procedure{$AS_5$}{$g_{id}, \{T_1,\ldots,T_n\}, type$}
+    \State $T_{id} = \emptyset$
+    \For{$T_i$ in $\{T_1,\ldots,T_n\}$}
+      \If{$\exists_{A\in Args} \{task(t_{id}),name(t_{id},T_i)\}\subseteq A$}
+        \State $T_{id} \gets T_{id} \cup \{t_{id}\}$
+      \Else
+        \State $id\gets id+1$
+        \State $A \gets \{task(id),name(id,T_i)\}$
+        \State $Args \gets Args\cup A$
+        \State $T_{id} \gets T_{id} \cup \{id\}$
+      \EndIf
+    \EndFor
+    \State $id\gets id+1$
+    \State $A\gets \{decomp(id, g_{id}, T_{id}, type)\}$
+    \State $Args \gets Args\cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-\rationale{} Note $AS_5$ requires the list of task names $T$ as an argument as well, while it does not show up in the argument. This is because when applying the argument scheme, it may be the case that the tasks does not exist yet. We return to this in the next subsection when we provide algorithms for applying the argument schemes and critical questions. Consider as an example figure~\ref{fig:examples:decomposition}. Suppose the goal is formalized with $AS_3(0, 1, simulate)=\{goal(1), name(1, simulate), has(0,1)\}$. The OR-decomposition can be formalized as an instantiation of $AS_5$ as follows: $AS_5(2, 1, (3,4), (\text{static simulation, dynamic simulation}))$.
+\rationale{} The procedure in algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The for loop in the algorithm iterates over all tasks in list $T$, and if a task does not exist yet, an argument is added for it. This ensures that all tasks have corresponding arguments. Note that the algorithm assumes the goal already exists.
 
-The remaining argument schemes AS6-AS11 are all very similar to AS5, so we have omitted them here. 
+\begin{algorithm}[h]
+  \caption{Applying AS6: Task $t_{id}$ contributes to softgoal $s$}\label{alg:as6}
+  \begin{algorithmic}[1]
+    \Procedure{$AS_6$}{$t_{id}, s$}
+    \If{$\exists_{A\in Args} \{softgoal(i),name(i,s)\}\subseteq A$}
+        \State $s_{id} \gets i$
+    \Else
+      \State $id\gets id+1$
+      \State $A \gets \{softgoal(id),name(id,t)\}$
+      \State $Args \gets Args\cup A$
+      \State $s_{id} \gets id$
+    \EndIf
+    \State $id\gets id+1$
+    \State $A\gets \{contr(id, t_{id}, s_{id}, pos)\}$
+    \State $Args \gets Args\cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-\subsection{Algorithms for applying argument schemes}
+\rationale{} The procedure in algorithm~\ref{alg:as6} takes two arguments: $t_{id}$ is the identifier of task $T$, and $s$ is the softgoal name that is contributed to. The if statements check if the softgoal exists already, and if not, an argument is added for it. This ensures that all softgoals have corresponding arguments. Note that the algorithm assumes the task already exists.
 
-In the previous subsection we formalized a static representation of argument schemes. In this subsection we provide algorithms for applying them. We keep track of an identifier $ID$, representing the currently highest identifier number. This number is increased with each application of an argument scheme.
+The algorithms for $AS7$ to $AS11$ all have a very similar structure as algorithm~\ref{alg:as6} and have therefore been omitted from this article.
 
-\begin{definition}[Application of AS0-AS4] Applying argument schemes $AS_0$ to $AS_4$ adds the new argument to the set of arguments: 
-\begin{align*}
-&ID\text{++}\\
-&Args := Args \cup AS_i(ID,\ldots)
-\end{align*}
-for $i\in[0,4]$.
-\end{definition}
+\subsection{Algorithms for answering the critical questions}
+
+We now develop algorithms for our critical questions. We start with the critical questions that have as effect DISABLE. All critical questions CQ0-CQ5a, CQ6a, CQ7a, CQ8, CQ11, and CQ12 fall into this category. The algorithm below applies when the critical question is answered affirmatively.
+
+\begin{algorithm}[h]
+  \caption{Applying DISABLE: Element $i$ is disabled}\label{alg:disable}
+  \begin{algorithmic}[1]
+    \Procedure{DISABLE}{$i$}
+    \State $id\gets id+1$
+    \State $A\gets \{disabled(i))\}$
+    \State $Args \gets Args\cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\rationale{} We the see disable operation is quite straightforward. It simply consists of adding an argument stating argument $i$ is disabled.
+
+Next we consider the REPLACE operation. This operation is less straightforward and cannot be captured by a single algorithm, since the operation depends on the type of argument scheme.
+
+\begin{algorithm}[h]
+  \caption{Answering CQ5b: ``Does goal $G$ decompose into any other tasks?'' With: ``Yes, namey into tasks $t_{n+1},\ldots,t_k$''}\label{alg:cq5b}
+  \begin{algorithmic}[1]
+    \Procedure{CQ5b}{$g_{id},\{i_1,\ldots,i_n\}, type, \{t_1,\ldots,t_k\}$}
+    \State $T_{id} = \{i_1,\ldots,i_n\}$
+    \For{$t_i$ in $\{t_1,\ldots,t_k\}$}\label{alg:cq5b:for1}
+      \If{$\exists_{A\in Args} \{task(t_{id}),name(t_{id},t_i)\}\subseteq A$}
+        \State $T_{id} \gets T_{id} \cup \{t_{id}\}$
+      \Else
+        \State $id\gets id+1$
+        \State $A \gets \{task(id),name(id,t_i)\}$
+        \State $Args \gets Args\cup A$
+        \State $T_{id} \gets T_{id} \cup \{id\}$
+      \EndIf
+    \EndFor
+    \State $id\gets id+1$
+    \State $A_{new} = \{decomp(id, g_{id}, T_{id}, type)\}$\label{alg:cq5b:newarg}
+    \For{$A$ in $\{decomp(d,g_{id},x,y)\}\subseteq A\mid A\in Args\}$}\label{alg:cq5b:for2}
+      \State $Att\gets Att \cup \{(A_{new},A)\}$
+    \EndFor
+    \State $Args \gets Args \cup \{A_{new}\}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\rationale{} Algorithm~\ref{alg:cq5b} is executed when critical question CQ5b is answered, which is a critical question for argument scheme AS5. Therefore, it assumes an argument for a goal decomposition of the form $decomp(d, g_{id}, \{i_1,\ldots,i_n\},type)$ as already been generated (see algorithm~\ref{alg:as5}). The goal of the algorithm is to generate a new argument of the form $decomp(d, g_{id}, \{i_1,\ldots,i_5\}\cup \{j_1,\ldots,j_k\}, type)$, where $\{j_1,\ldots,j_k\}$ are the identifiers of the additional decomposing tasks $\{t_1,\ldots,t_k\}$. The first for loop in line~\ref{alg:cq5b:for1} check whether any of these tasks already exist, and if not, adds corresponding arguments for them. The list of all decomposing tasks is stored in $T_{id}$. The new argument for the decomposition link is then created in line~\ref{alg:cq5b:newarg}. Finally, the last for loop on line~\ref{alg:cq5b:for2} ensures that all previous arguments for decomposition links are attacked by the new argument. This ensures that only the new decomposition link will be accepted.
+
+The REPLACE operations of CQ10a and CQ10b have a very similar structure as algorithm~\ref{alg:cq5b} and have therefore been omitted. We continue with the last REPLACE operation left, namely CQ13.
+
+\begin{algorithm}[h]
+  \caption{Answering CQ13: ``Is the name of element $i$ clear?'' With: ``No, it should be $n$''}\label{alg:cq13}
+  \begin{algorithmic}[1]
+    \Procedure{CQ13}{$i, n$}
+    \State $id\gets id+1$
+    \State $ArgsN \gets\{A\backslash\{name(i,x)\}\mid$\par\label{alg:cq13:line3}
+    \hskip\algorithmicindent$A\in Args, name(i,x)\in A\}$
+    \State $A \gets B \cup \{name(i,n)\}$ with $B\in ArgsN$
+    \State $Args \gets Args \cup \{A\}$
+    \For{$B$ in $ArgsN$}
+      \State $Att\gets Att \cup \{(A,B)\}$
+    \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\rationale{} Algorithm~\ref{alg:cq13} first collects all arguments contain a statement of the form $name(i,x)$ into the set $ArgsN$, where $x$ can by any name. These are all the arguments that the new argument will attack, to ensure this is the only argument for a name of this element type. Since all such arguments are the same, except for the name proposition, we can take any such argument to construct a new one. The argument is added to the set of arguments, and the for loop ensures that all previous arguments are attacked.
+
+We next turn to the INTRO operations, which are very similar to the algorithms for argument schemes. The main difference is that when answering a critical question, we can already assume an argument has been created, so we do not have to create it again.
+
+\begin{algorithm}[h]
+  \caption{Answering CQ6b: ``Are there alternative ways of contributing to the same softgoal $s_{id}$?'' With: ``Yes, namely by doing task $t$''}\label{alg:cq6b}
+  \begin{algorithmic}[1]
+    \Procedure{CQ6b}{$s_{id}, t$}
+    \If{$\exists_{A\in Args} \{task(i),name(i,t)\}\subseteq A$}
+        \State $t_{id} \gets i$
+    \Else
+      \State $id\gets id+1$
+      \State $A \gets \{task(id),name(id,t)\}$
+      \State $Args \gets Args\cup A$
+      \State $t_{id} \gets id$
+    \EndIf
+    \State $id\gets id+1$
+    \State $A\gets \{contr(id, t_{id}, s_{id}, pos)\}$
+    \State $Args \gets Args\cup A$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\rationale{} Comparing algorithm~\ref{alg:cq6b} with algorithm~\ref{alg:as6} shows that the two algorithms are indeed very similar. 
+
+The other critical questions with effect INTRO, namely CQ6c, CQ6d, CQ7b, and CQ9 all have a very similar structure to algorithm~\ref{alg:cq6b} and have therefore been omitted.
+
+Our final critical question is the generic counterargument, which is very simple.
+
+\begin{algorithm}[h]
+  \caption{Generic counterargument to argument $A$}\label{alg:cq6b}
+  \begin{algorithmic}[1]
+    \Procedure{Attack}{$A$}
+    \State $A_{new} = \{\}$
+    \State $Args \gets Args \cup \{A_{new}\}$
+    \State $Att \gets Att \cup \{(A_{new},A)\}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Some examples}
+
+\todo{Marc}{Marc}{Revisit the examples}
