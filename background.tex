@@ -9,7 +9,7 @@ GRL is a visual modeling language for specifying intentions, business goals, and
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[scale=0.35]{img/Example}
+\includegraphics[]{img/Example}
 \caption{GRL Model for the traffic simulator}
 \label{fig:trafficsim}
 \end{figure*}
@@ -44,20 +44,19 @@ These are the type of the questions that we cannot answer just by looking at the
 Reasoning about which goals to pursue and actions to take is often referred to as \emph{practical reasoning}, and has been studied extensively in philosophy (e.g. \cite{Raz1978-RAZPR,walton1990}) and Artificial Intelligence \cite{Bratman1987,atkinson2007}. One approach is to capture practical reasoning in terms of arguments schemes and critical questions~\cite{walton1990}. The idea is that an instantiation of such a scheme gives a presumptive argument in favor of, for example, taking an action. This argument can then be tested by posing critical questions about, for instance, whether the action is possible given the situation, and a negative answer to such a question leads to a counterargument to the original presumptive argument for the action. 
 
 A formal approach to persuasive and deliberative reasoning about goals and actions has been presented by Atkinson et al.~\cite{atkinson2007}, who define the Practical Reasoning Argument Scheme (PRAS). PRAS follows the following basic argument structure. 
-\begin{equation}
-\label{eq:eq1}
-  \begin{aligned}
- \qquad&\text{I have goal } G&\\
-&\text{Doing action }A \text{ will realize goal }G&\\
-&\text{Which will promote value }V&\\
-&\text{\emph{Therefore} I should do action }A.&
-  \end{aligned}
-\end{equation}
+
+\begin{itemize}
+\item[] We have goal $G$,
+\item[] Doing action $A$ will realize goal $G$,
+\item[] Which will promote the value $V$
+\item[] \textit{Therefore} 
+\item[] We should perform action $A$
+\end{itemize}
 
 So, for example, we can say that 
 \begin{itemize}
-\item[] \textbf{Generate traffic} is a goal,
-\item[] \textbf{Keep same cars} will realize the goal \textbf{Generate traffic},
+\item[] We have goal \textbf{Generate traffic},
+\item[] \textbf{Keep same cars} will realize goal \textbf{Generate traffic},
 \item[] Which will promote the value \textbf{Simple design}
 \item[] \textit{Therefore} 
 \item[] We should perform action \textbf{Keep same cars}
@@ -104,24 +103,17 @@ In some cases, it is more difficult to determine whether or not an argument is d
 \subsubsection{Practical Argumentation and Goal Modeling}
 \label{sect:background:pras:motivation}
 
-Practical reasoning in the PRAS framework as described above provides a formally sound framework for defeasible reasoning about goals and actions that adheres to the acceptability semantics of Dung~\cite{Dung1995} and its various extensions \cite{amgoud2002reasoning,modgil2009}. The usefulness of PRAS for the analysis of practical reasoning situations has been shown in different areas such as e-democracy~\cite{cartwright2009IS}, law~\cite{atkinson2005legal}, planning \cite{medellin2013planning} and choosing between safety critical actions \cite{tolchinsky2012deliberation}. The question in this paper is how PRAS can be adopted for use in goal modeling, so that we can capture the discussions between stakeholders that build a goal model as formal argumentation, thus adding a new evaluation technique for goal models that allows us to assess the \emph{acceptability} of elements of a goal model (as opposed to the \emph{satisfiability} \todo{Marc}{Floris}{Which article do you want to cite here?}\cite{}).
+Practical reasoning in the PRAS framework as described above provides a formally sound framework for defeasible reasoning about goals and actions that adheres to the acceptability semantics of Dung~\cite{Dung1995} and its various extensions \cite{amgoud2002reasoning,modgil2009}. The usefulness of PRAS for the analysis of practical reasoning situations has been shown in different areas such as e-democracy~\cite{cartwright2009IS}, law~\cite{atkinson2005legal}, planning \cite{medellin2013planning} and choosing between safety critical actions \cite{tolchinsky2012deliberation}. The question in this paper is how PRAS can be adopted for use in goal modeling, so that we can capture the discussions between stakeholders that build a goal model as formal argumentation, thus adding a new evaluation technique for goal models that allows us to assess the \emph{acceptability} of elements of a goal model (as opposed to the \emph{satisfiability} \cite{Amyot:2010:EGM:1841349.1841356}).
 
-\todo{Marc}{Floris}{From here on you seem to be discussing related work. This kind of distracts us from the main point of this article, and the section becomes quite long. Perhaps it is better to make the main arguments about why our approach is useful here, and move the discussion of our previous work and Jureta to related work?}
-
-PRAS (actions, goals, values) and GRL (tasks, goals, softgoals) have some obvious similarities, and in previous work \cite{vanzee-etal:renext2015,vanZee-etal:er2016,vanZee-etal:comma2016} we presented arguments based on PRAS of the form ``G is a goal, Action A realizes G \emph{Therefore} perform action A'' (see Figure~\ref{fig:pras:example3}, left, where the arrow denotes an inference step). Such arguments, which can be constructed using the online OVA tool\footnote{\url{http://ova.arg-tech.org/}}, can be combined with further arguments providing, for example, expert opinions about the practical reasoning elements (Figure~\ref{fig:pras:example3}, left).
+As can be seen in the above examples, PRAS (actions, goals, values) and GRL (tasks, goals, softgoals) have some obvious similarities. One way to connect goal modelling and argumentation is to build practical reasoning arguments based on PRAS and then translate these to goal models, or vice versa (Figure~\ref{fig:pras:example3}). This is essentially what happens in much of the existing work on argumentation and goal modelling \cite{Jureta:RE2008,vanzee-etal:renext2015,vanZee-etal:er2016} 
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/Fig3}
-\caption{Structured argument based on PRAS (left) and the corresponding GRL diagram (right)}
+\caption{Translating between practical reasoning argument (left) and GRL diagram (right)}
 \label{fig:pras:example3}
 \end{figure}  
 
+One question is what the added value is of the direct translations as shown in Figure~\ref{fig:pras:example3}. The idea is that arguments show the rationales behind goal models and the alternative or possibly conflicting views that were lost in the goal-modeling process. However, GRL already contains a \emph{belief} element that allow one to provide beliefs underlying a goal model, an \emph{XOR decomposition} link that allows for modeling of alternative ways to realize goals, and \emph{negative contribution} links for capturing conflicting goals. So argumentation models are not needed to precisely render goals, tasks, beliefs and the relations between them, as GRL is already perfectly suited for this. Rather, argumentation should guide the goal modelling \emph{process}. 
 
-Arguments built in OVA can automatically be translated to GRL diagrams using further online tooling\footnote{\url{https://github.com/RationalArchitecture/RationalGRL}} \cite{vanZee-etal:comma2016}. This translation takes the elements of the arguments and directly translates this to GRL elements. Tasks/actions, goals and softgoals/values can be directly translated from the arguments to the GRL diagrams, as can realization statements. Elements of arguments that have nothing to do with goal modelling (e.g. the expert opinion premise in Figure~\ref{fig:pras:example3}) can be included in the GRL diagram as \emph{beliefs}. Finally, attacks between arguments are captured as negative contribution links. Take, for example, \todo{example}. A very similar approach to argumentation and goal models had already been taken by Jureta et al.~\cite{Jureta:RE2008} who proposed a formal argumentation model that can be used to justify goal-modelling decisions. This argumentation model, while not explicitly based on a practical reasoning scheme, is essentially the same as our previous argumentation model based on PRAS: a formal model of structured arguments with goals as premises and tasks as conclusions, and a translation function of these arguments to goal diagrams. 
-
-The core problem of the use of argumentation in the above-mentioned work \cite{Jureta:RE2008,vanzee-etal:renext2015,vanZee-etal:er2016}, is that it focuses mainly on structured arguments, which are then directly translated to goal models as in Figure~\ref{fig:pras:example3}. The question is what the added value of this exercise is. Firstly, the arguments and goal models contain many of the same elements. The idea is that arguments show the rationales behind goal models and the alternative or possibly conflicting views that were lost in the goal-modeling process. But GRL already contains a \emph{belief} element that allow one to provide beliefs underlying a goal model, an \emph{XOR decomposition} link that allows for modeling of alternative ways to realize goals, and \emph{negative contribution} links for capturing conflicting goals. 
-
-The point is that argumentation models are not needed to precisely render goals, tasks, beliefs and the relations between them, as GRL is already perfectly suited for this. Rather, argumentation should guide the goal modelling \emph{process}. Instead of static, formal argument trees, we need a dynamic argumentation process in which goals and tasks are critically analysed and which captures the dialectical nature of justification. Jureta et al.~\cite{Jureta:RE2008} take a step towards such a process by defining a high-level decision process that organizes argumentation and clarification techniques in relation to goal modelling. However, the argumentation techniques in this process are focused on building precisely the type of arguments that we argue are redundant next to GRL diagrams, namely structured arguments like in Figure~\ref{fig:pras:example3} which can be translated more or less directly to goal models. The decision process itself is never formally defined, and how to go from a discussion on goals and tasks to a goal model remains largely implicit. 
-
-What is needed is a formal framework that captures the discussions about goal models, and allows for (semi-)automated construction of goal models given this discussion. In section XX, we argue that a combination of Atkinson et al.'s~\cite{atkinson2007} critical questions and the dialectical semantics as formally captured by Dung's work \cite{Dung1995} are ideally suited to provide such a formal, dynamic framework.  
+In order for an argumentation-based framework to captures discussions about goal models, it should capture the dynamic, question-answer interplay between argument and counterargument. Argumentation schemes and their associated critical questions are ideally suited for this: as Murukannaiah et al.~\cite{murukannaiah2015} have shown, argumentation schemes and critical questions can guide users in systematically deriving conclusions and making their assumptions explicit. Furthermore, if we want to allow for the (semi-)automated construction of goal models given arguments and counterarguments, the argumentation framework needs to have a proper dialectical semantics \cite{Dung1995}. This means that the basic ideas of Atkinson et al.'s~\cite{atkinson2007} practical reasoning -- goal-based arguments and critical questions combined with the acceptability semantics of Dung -- can be used in our RationalGRL framework, as will be discussed in section \ref{sect:gmas}.
