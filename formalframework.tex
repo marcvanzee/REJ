@@ -217,6 +217,7 @@ Next we consider the REPLACE operation. This operation is less straightforward a
 
 \begin{algorithm}[h]
   \caption{Answering CQ5b: ``Does goal $G$ decompose into any other tasks?'' With: ``Yes, namey into tasks $t_{n+1},\ldots,t_k$''}\label{alg:cq5b}
+  \caption{Answering CQ5b: ``Does goal $G$ decompose into any other tasks?'' With: ``Yes, namey into tasks $t_1,\ldots,t_k$''}\label{alg:cq5b}
   \begin{algorithmic}[1]
     \Procedure{CQ5b}{$g_{id},\{i_1,\ldots,i_n\}, type, \{t_1,\ldots,t_k\}$}
     \State $T_{id} = \{i_1,\ldots,i_n\}$
@@ -232,7 +233,7 @@ Next we consider the REPLACE operation. This operation is less straightforward a
     \EndFor
     \State $id\gets id+1$
     \State $A_{new} = \{decomp(id, g_{id}, T_{id}, type)\}$\label{alg:cq5b:newarg}
-    \For{$A$ in $\{decomp(d,g_{id},x,y)\}\subseteq A\mid A\in Args\}$}\label{alg:cq5b:for2}
+    \For{$A$ in $\{decomp(\_,g_{id},\_,\_)\}\subseteq A\mid A\in Args\}$}\label{alg:cq5b:for2}
       \State $Att\gets Att \cup \{(A_{new},A)\}$
     \EndFor
     \State $Args \gets Args \cup \{A_{new}\}$
@@ -303,3 +304,5 @@ Our final critical question is the generic counterargument, which is very simple
 \subsection{Some examples}
 
 \todo{Marc}{Marc}{Revisit the examples}
+
+\todo{Marc}{Marc}{Do links need identifiers??}
