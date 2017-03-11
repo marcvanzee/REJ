@@ -36,7 +36,7 @@
   argNodeOUT/.style={shape=rectangle, draw=black!60, text=black!40,fill=white},
   traceNodeRED/.style={circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt},
   traceNodeGREEN/.style={circle,draw=black, fill=green, inner sep=0pt,minimum size=8pt},
-  attackLink/.style={draw=black,->,line width=1mm},
+  attackLink/.style={draw=black,->,line width=0.5mm},
   traceLinkRED/.style={draw, densely dotted,-,line width=0.5mm, draw=red},
   traceLinkGREEN/.style={draw, densely dotted,-,line width=0.5mm, draw=green},
   CQLink/.style={line width=0.5mm, dotted,->},
@@ -46,6 +46,24 @@
 }
 \newcommand{\argtext}[2]{
 \begin{tabularx}{0.2\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
+\newcommand{\smallargtext}[2]{
+\begin{tabularx}{0.25\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
+\newcommand{\longargtext}[2]{
+\begin{tabularx}{0.5\textwidth}{X}
 \ifx&#1&%
 \else
 \textbf{(#1)}
@@ -113,13 +131,11 @@
 
 \input{introduction}
 \input{background}
-\input{preview}
+\input{overview}
 \input{gmas}
 \input{formalframework}
 \input{tool}
-\input{methodology}
-\input{relatedwork}
-\input{conclusion}
+\input{discussion}
 
 \section*{Acknowledgments}
 Marc van Zee is funded by the National Research Fund (FNR), Luxembourg, by the Rational Architecture project.
