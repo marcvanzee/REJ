@@ -1,140 +1,179 @@
-\section{Formalization of RationalGRL Framework}
+\section{RationalGRL: the logical framework}
 \label{sect:formalframework}
 
-%SG: make sure the first paragraph is aligned with the previous section
-In Section~\ref{sect:gmas}, we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of an information system. The resulting list is shown in table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of Table~\ref{table:argument-schemes}): INTRO, DISABLE, REPLACE, and ATTACK.
+In the previous section we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of Table~\ref{table:argument-schemes}): \textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}, and \textsf{ATTACK}.
 
-The examples and corresponding visualizations of the previous section provided some insight on how to formalize argument schemes, critical questions, and their relationship with goal models. However, if we are to implement our framework in a tool, we require a more precise formalization of these concepts. We choose to use formal logic to specify this, since argumentation has been studied in formal logic extensively for the past decades. %SG: any citation?
+The examples and corresponding visualizations of the previous section provide some insight on how to formalize argument schemes, critical questions, and their relationship with goal models. However, if we are to implement our framework in a tool, we require a more precise formalization of these concepts.  We choose to use formal logic to specify this. This is also a good fit with formal argumentation, which has flourished in the past decades, leading to a large number of different semantics that we can choose from.
 
-The rest of this section is as follows: In the first subsection, we develop a formal language to specify a GRL model. This language consists of propositions only, and a GRL model can be specified as a logic program directly. In the second subsection, we provide formal definitions of all argument schemes. An instantiation of an argument scheme consists of a set of statements about a GRL model. Finally, in the third subsection, we formalize the critical questions as several algorithms.
+The rest of this section is as follows: In the first subsection, we develop a formal language to specify a GRL model. This language consists of atomic sentences. In the second subsection, we develop our notion of an argument: an argument is simply a set of atoms from our language. In the third subsection, we develop algorithms for all the argument schemes and critical questions.
 
-\subsection{Formal Language for RationalGRL}
+\subsection{Logical Language for RationalGRL}
+\label{sect:goalmodeling:logicallanguage}
 
-Basic concepts of propositional logic are adequate to define the entities in a GRL model and the relations between them. We begin with the representation for the elements.
+We define our language as a set of atoms, that is, grounded formulas (without variables) with no logical connectives or negation.
 
-\begin{definition}[RationalGRL elements]
-Each element of a goal model is identified with a non-negative integer. Formally: let $Actors\cup IEs \cup Links \subseteq \mathbb{N}$ denote the set of elements of a goal model, where 
-\begin{itemize}
-\item $Actors$ is the set of actors, 
-\item $IEs$ is the set of intentional elements (softgoals, goals, tasks, and resources),
-\item $Links$ is the set of links (decomposition, contribution, and dependency). %what about correlation link?
-\end{itemize}
-
-The three sets are pairwise disjoint, i.e. $Actors \cap IEs = Actors \cap Links = IEs \cap Links = \emptyset$. 
-\end{definition}
-
-\rationale{} We identify a GRL element with an identifier and not with a name, since it is possible that the name of the element changes, for instance by applying critical question CQ12a (clarification), see the example ``Clarify task \texttt{Road pattern}'' above. The GRL model of Figure~\ref{fig:examples:decomposition} can be formalized as follows: 
+\begin{definition}[GRL Atoms]
+Let $P$ be a set of sentences representing names for GRL elements. The \emph{set of GRL atoms} $At$ is defined as follows: 
 \begin{align*}
-&Actors = \{1\},\\
-&IEs = \{2, 3, 4\},\\ 
-&Links = \{5\}.
+At = \{&actor(i), softgoal(i), goal(i), task(i),\\
+&resource(i), decomp(k,i,J,dtype),\\
+&dep(k,i,j),contr(k,i,j,ctype),\\
+&has(i,j),disabled(i),name(i,p)\},
 \end{align*}
-
-\begin{definition}[GRL intentional element type]
-For an intentional element $i\in IEs$, if $i$ is a softgoal, goal, task, or resource, then this is respectively denoted by $softgoal(i), goal(i), task(i)$, and $resource(i)$.
-\end{definition}
-
-\rationale{} All intentional elements are collected in the set $IEs$. In order to distinguish softgoals, goals, tasks, and resources, we use the corresponding propositions. In our example this looks as follows:
-\begin{align*}
-&goal(2),\\
-&task(3),\\
-&task(4).
-\end{align*}
-
-Note that we do not require such propositions for actors, since there is only one type of actor, and all actors are contained in the set $Actors$.
-
-\begin{definition}[Links]
-Given a link $i\in Links$, we denote the links types as follows:
+where
 \begin{itemize}
-\item $contrib(i,src,dest,type)$ is a contribution from $src\in IEs$ to $dest\in IEs$, where $type\in\{+,-\}$ means a positive resp. negative contribution. 
-\item $decomp(i,src,\{dest_1,\ldots,dest_n\},type)$ is a decomposition of $src\in IEs$ into $\{dest_1,\dots,dest_n\}\subseteq IEs$, where $type\in\{AND,OR,XOR\}$ means respective an AND, OR, and XOR decomposition. 
-\item $dep(i,src,dest)$ is a dependency from $dest\in IEs$ to $dest\in IEs$.
+\item $\{i,j,k\}\cup J \subseteq\mathbb{N}$
+\item $p\in P$
+\item $dtype\in\{and,or,xor\}$
+\item $ctype\in\{+,-\}$
 \end{itemize}
 \end{definition}
 
-\rationale{} Similarly to the intentional elements, we distinguish between the different types of links between IEs using the corresponding propositions. The formalization of the link in Figure~\ref{fig:examples:decomposition} looks as follows:
-\begin{align*}
-&decomp(5, 2, \{3,4\}, OR)
-\end{align*}
+The non-negative integers associates with each element and relation are identifiers. We thus choose to identify each element and relationship in a GRL model with an identifier. This allows us to change the name of an element while still being able to make different statements about this element, for instance by applying critical question CQ12a (clarification, see the example ``Clarify task \texttt{Road pattern}'' above). 
 
-\begin{definition}[Name of IE or Actor]
-The name $p$ of an element $i\in IEs\cup Actors$ is denoted by $name(i,p)$.
+We now briefly explain each atom in more detail.
+\begin{itemize}
+\item $actor(i)$: Identifier $i$ is an actor.
+\item $softgoal(i)$: Identifier $i$ is a softgoal.
+\item $goal(i)$: Identifier $i$ is a goal.
+\item $task(i)$: Identifier $i$ is a task.
+\item $resource(i)$: Identifier $i$ is a resource.
+\item $decomp(k,i,J,dtype)$: Identifier $k$ is a $dtype$-decomposition (and/or/xor) from the element corresponding to identifier $i$ to the set of elements corresponding to identifiers $J$.
+\item $dep(k,i,j)$: Identifier $k$ is a dependency link from the element corresponding to identifier $i$ to the element corresponding to identifier $j$.
+\item $contr(k,i,j,ctype)$: Identifier $k$ is a $ctype$-contribution (+/-) from the element corresponding to identifier $i$ to the element corresponding to identifier $j$.
+\item $has(i,j)$: Identifier $i$ (which is an actor) has the element corresponding to identifier $j$.
+\item $disabled(i)$: The element or relationships corresponding to identifier $i$ is disabled.
+\item $name(i,p)$: The name of the element corresponding to identifier $i$ is $p$.
+\end{itemize}
+
+\begin{remark}
+From these descriptions one can observe that many of the atoms come with a number of assumptions and dependencies. For instance, if $has(i,j)$ is true, then $i$ is an actor and $j$ is an element. We could formalize this as follows: $$has(i,j)\rightarrow (actor(i) \wedge (softgoal(j)\vee goal(j)\vee task(i) \vee resource(j))).$$ It would be possible to enumerate all such properties in order to correctly specify a GRL model. One could then formally verify whether a set of atoms violates these constraints. If not, it is a ``valid'' representation of a GRL model. Since the focus of this article is not on a logical analysis, but rather on developing a framework for empirical data, we leave such a formal analysis for future work (see Section~\ref{sect:goalmodeling:openissues}).
+\end{remark}
+
+Using this formalization, it is rather straightforward to specify a GRL model. An example of the specification of the GRL model in Figure~\ref{fig:examples:decomposition} is shown in Table~\ref{table:grl_atom_spec}. The specification has been written in logic programming style. In this article we do not make use of any logic programming techniques but this would be interesting future work (see Section~\ref{sect:goalmodeling:openissues}). A more elaborate example of a specification is shown in Appendix~\ref{ch:grlspec}, showing a complete specification of the traffic simulator GRL model in Figure~\ref{fig:trafficsim}.
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{0.4\textwidth}{|X|}
+\hline
+\texttt{goal(0).}\\
+\texttt{task(1).}\\
+\texttt{task(2).}\\
+\texttt{name(0,simulate).}\\
+\texttt{name(1,static\_simulation).}\\
+\texttt{name(2,dynamic\_simulation).}\\
+\texttt{decomp(3,0,[1,2],or).}\\
+\hline
+\end{tabularx}
+\caption{Specification of the GRL model in Figure~\ref{fig:examples:decomposition}}
+\label{table:grl_atom_spec}
+\end{table}
+
+\subsection{Formal argumentation semantics}
+\label{sect:goalmodeling:argumentationsemantics}
+
+In the previous subsection we introduced an atomic language to specify a GRL model. In this subsection we give a formal definition of an argument, which is simply a set of atoms from our language. We introduce Dung's acceptability semantics as well, which allows us to determine sets of acceptable arguments.
+
+\begin{definition}[Argument]
+An \emph{argument} $A\subseteq Att$ is a set of atoms from $Att$.
 \end{definition}
 
-\rationale{} We formalize the description of an actor or an intentional element with a proposition $name(i,p)$. Continuing our example of formalizing Figure~\ref{fig:examples:decomposition}, we have 
-\begin{align*}
-&name(1,\text{system}),&\\
-&name(2,\text{simulate}),&\\
-&name(3,\text{static\ simulation}),&\\
-&name(4, \text{dynamic simulation}).&
-\end{align*}
-Note the decomposition link with identifier 5 does not have a name, since decomposition links are already distinguished by their type (OR, XOR, AND).
+This simple definition allows us to form arguments about (parts of) a GRL model. For instance, $$\{goal(0),name(0,development\_team)\},$$ is an argument. We next introduce an argumentation framework, which is a set of arguments an attack relations between arguments.
 
-\begin{definition}[Elements of an actor]
-Given an actor $i\in Actors$ and an element $j\in IEs\cup Links$, we use $has(i,j)$ to denote that element $j$ belongs to actor $j$.
-\end{definition}
-
-\rationale{} In order to denote that an intentional element or a link belongs to an actor, we use $has$ statements. This looks as follows in our example:
-\begin{align*}
-&has(1, 2),\\
-&has(1, 3),\\
-&has(1, 4),\\
-&has(1, 5).
-\end{align*}
-
-\begin{definition}[Disabled GRL element]
-A disabled element $i\in Actors\cup IEs$ is denoted by $disabled(i)$.
-\end{definition}
-
-\rationale{} If a GRL element corresponds to an argument that is rejected, then this argument should be disabled. For instance, the GRL model in Figure~\ref{fig:examples:relevant-actor} can be formalized as follows:
-\begin{align*}
-&Actors = \{1\},\\
-&name(1, \text{development team}),\\
-&disabled(1)
-\end{align*}
-
-This concludes our definitions to formalize a GRL model. An advantage of our approach is that we can formalize a GRL model using a set of facts, which can be directly be formalized as a logic program. We will come back to this in the last part of this section.
-
-\subsection{Formal argumentation}
-
-In this subsection, we formalize an argument as a set of statements about a GRL model in the language we introduced in the previous section. First, we formalize an argumentation framework and its semantics, which is used to determine sets of acceptable arguments.
-
-\begin{definition}[Argumentation framework]
+\begin{definition}[Argumentation framework~\cite{Dung1995}]
 An argumentation framework $AF=(Args,Att)$ consists of a set of arguments $Args$ and an attack relationship $Att:Args\times Args$, where $(A_1,A_2)\in Att$ means that argument $A_1\in Args$ attacks arguments $A_2\in Args$.
 \end{definition}
 
-\rationale{} This is the standard definition used by Dung~\cite{Dung1995}. For instance, the argumentation framework from figure~\ref{fig:pras:example} can be formalized as:
-\begin{align*}
-&Args=\{A_1,A_2,A_3\}\\
-&Att = \{(A_2,A_1),(A_1,A_3),(A_3,A_1)\}
-\end{align*}
+Now that we have defined arguments and their attacks, we are going to define a semantics to determine which arguments are acceptable. The following notions are preliminary to this.
 
-\todo{Marc}{Marc}{explain semantics}
+\begin{definition}[Attack, conflict-freeness, defense, and admissibility~\cite{Dung1995}] Suppose an argumentation framework $AF=(Arg,Att)$, two sets of arguments $S\cup S'\subseteq Arg$, and some argument $A\in Arg$. We say that
+\begin{itemize}
+\item $S$ \emph{attacks} $A$ if some argument in $S$ attacks $A$,
+\item $S$ \emph{attacks} $S'$ if some argument in $S$ attacks some argument in $S'$,
+\item $S$ is \emph{conflict-free} if it does not attack itself,
+\item $S$ \emph{defends} $A$ if $S$ attacks each attack against $A$.
+\item $S$ is \emph{admissible} if $S$ is conflict-free and defends each argument in it.
+\end{itemize}
+\end{definition}
 
-\subsection{Algorithms for instantiating the argument schemes}
 
-%SG: a set of statements mean argument schemes? I think it is better to also mention the argument scheme in the text and then show the algo... so the reader doesn't need to always move between the table and the algo 
-We formalize an argument as a set of statements about a GRL model in the language we introduced in the previous section. For instance, $A= \{actor(0), name(0,student)\}$ is an argument stating that identifier 0 represent an actor, and that the name of this actor is \emph{Student}. An argument scheme then corresponds to adding one or more arguments to the set of arguments.
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}
+        \node[minimum size=1cm] (a) [argNodeIN] at (-2,-2) {$A_1$};
+        \node[minimum size=1cm] (b) [argNodeIN] at (-2,0) {$A_2$};
+        \node[minimum size=1cm] (c) [argNodeIN] at (0,0) {$A_3$};
+        \node[minimum size=1cm] (d) [argNodeIN] at (2,0) {$A_4$};
+        \node[minimum size=1cm] (e) [argNodeIN] at (2,-2) {$A_5$};
+        
+         \path
+    (a) edge [attackLink] (b)
+    (c) edge [attackLink] (b)
+    (c) edge [attackLink] (d)
+    (d) edge [attackLink] (c)
+    (d) edge [attackLink] (e)
+    (e) edge [attackLink, loop right] (e);
+\end{tikzpicture}
+\caption{Example argumentation framework.}
+\label{fig:goalmodeling:arg2}
+\end{figure}
+
+Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}. We say that the set $\{A_1,A_4,A_5\}$ \emph{attacks} argument $A_2$, because $A_1$ attacks $A_2$. However, $\{A_1,A_4,A_5\}$ is not \emph{conflict-free}, because $A_4$ attacks $A_5$, so this set of arguments attacks itself. If we remove $A_5$ from this set, then it is conflict-free. In total, all the following sets are conflict-free in Figure~\ref{fig:goalmodeling:arg2}: $$\{A_1,A_3\},\{A_1,A_4\},\{A_2,A_4\},\{A_1\},\{A_2\},\{A_3\},\{A_4\},\emptyset.$$
+
+However, not all of these sets are \emph{admissible}. For instance, the set $\{A_2,A_4\}$ is not admissible, because $A_1$ attacks this set, but the set does not defend itself against this attack. The set $\{A_1,A_3\}$ is admissible, because its only attacker, $A_4$ is attacked by $A_3$. 
+
+There are a large number of different semantics using these notions to determine which arguments are acceptable, such as the \emph{grounded}, the \emph{preferred}, the \emph{stable}, and the \emph{complete} semantics. However, in this article our argumentation frameworks are very simple, in the sense that they do not introduce cycles. In future work, we aim to extend this by using preferences (see open issues in Section~\ref{sect:goalmodeling:openissues}). An advantage of our current approach is that all semantics coincide when there are no cycles, which simplifies our case. We use the preferred semantics here, but we could equivalently have chosen any other version.
+
+\begin{definition}[Preferred semantics~\cite{Dung1995}] 
+Suppose an argumentation framework $AF=(Arg,Att)$. A set of arguments $S\subseteq Arg$ is a \emph{preferred extension} if and only if 
+\begin{itemize}
+\item $S$ is an admissible set of argument,
+\item For each admissible set of arguments $T\subseteq A$: $S\not\subset T$.
+\end{itemize}
+\end{definition}
+
+In our example in Figure~\ref{fig:goalmodeling:arg2}, the preferred extensions are $\{A_1,A_3\}$ and $\{A_1,A_4\}$.
+
+\subsection{Algorithms for argument schemes and critical questions}
+
+Let us briefly review what we have done so far. Up until now we have achieve the following:
+\begin{itemize}
+\item We (informally) developed a set of argument schemes and critical questions in Section~\ref{sect:gmas}, by annotating transcripts.
+\item We developed a visual notation to illustrate some argument schemes and critical questions in Section~\ref{sect:gmas:examples}.
+\item We proposed a logical language consisting of atomic sentence to describe a GRL model in Section~\ref{sect:goalmodeling:logicallanguage}.
+\item We formalized an ``argument'' as a set of atoms from our language, and we introduced \emph{argumentation semantics} to compute sets of accepted arguments in Section~\ref{sect:goalmodeling:argumentationsemantics}.
+\end{itemize}
+
+We see that we are becoming increasingly more formal in each step of the progress. What we haven't formalized properly yet are the argument schemes and critical questions, which is what we turn to now.
+
+Both the application of an argument schemes and the answering of critical questions are \emph{procedural} or \emph{dialectic} in nature. Therefore, a natural choice of formalizing them seems to develop procedures, or algorithms for them, which is what we do here.
 
 In the following algorithms, we assume the following global variables:
+
+\begin{definition}[Global variables] The following variables are intended to have a \emph{global} scope and have a \emph{static} value, meaning the lifetime of the variable extends across the entire run of the program.
 \begin{itemize}
-\item $id$ the current highest identifier of the elements. This variable is increased for each new element that is added.
-\item $Args$ contains the set of all arguments.
-\item $Att$ contains the set of all attack relations.
+\item $id$: the current highest identifier of the elements. This variable is increased for each new element that is added.
+\item $Args$: contains the set of all arguments.
+\item $Att$: contains the set of all attack relations.
 \end{itemize}
+\end{definition}
+
+
+\subsubsection*{Algorithms for argument schemes}
+The algorithms for the argument schemes are very simple, because they simply consist of forming a new argument and adding it to the set of arguments. No attack relations are introduced.
 
 \begin{algorithm}[h]
   \caption{Applying AS0: Actor $a$ is relevant}\label{alg:as0}
   \begin{algorithmic}[1]
     \Procedure{$AS_0$}{$a$}
-    \State $id\gets id+1$
-    \State $A \gets \{actor(id), name(id,a)\}$
-    \State $Args \gets Args \cup A$
+    \State $id\gets id+1$\label{alg:as0:1}
+    \State $A \gets \{actor(id), name(id,a)\}$\label{alg:as0:2}
+    \State $Args \gets Args \cup A$\label{alg:as0:3}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} Algorithm~\ref{alg:as0} takes one argument, namely the name of the actor $a$. In Figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS_(\text{Development team})$, results in one argument: $Args = \{\{actor(0), name(0, \text{Development team})\}\}$.
+\emph{Algortihm~\ref{alg:as0} for argument scheme AS0}: The algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, the global variable $id$ is increased by one. This ensures that each new argument has a unique identifier. On line~\ref{alg:as0:2}, the argument for the actor is formed, consisting of two statements, stating respectively that $id$ is an actor, and that the name of this actor is $a$. Finally, on line~\ref{alg:as0:3} this argument is added to the global set of arguments $Args$. In Figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS_0(\text{Development team})$, results in one argument: $$Args = \{\{actor(0), name(0, \text{Development team})\}\}.$$
 
 \begin{algorithm}[h]
   \caption{Applying AS1: Actor $a_{id}$ has resource $n$}\label{alg:as1}
@@ -147,33 +186,40 @@ In the following algorithms, we assume the following global variables:
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{}  This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. 
+\emph{Algorithm~\ref{alg:as1} for argument scheme AS1:} This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. The algorithm is similar to the previous one, with the difference that the newly added argument contains the statement $has(a_{id},id)$ as well, meaning that the actor with id $a_{id}$ has element $id$ (which is a resource). As an example, let us formalize the argument corresponding to resource \emph{External library} of actor \emph{Traffic tycoon} in Figure~\ref{fig:transcripts:grl}. First, we assume some id is associated with the actor: $$\{actor(0),name(0,traffic\_tycoon)\}.$$ Then we can formalize the argument for the resource as follows: $$\{resource(1),name(1,external\_library),has(0,1)\}.$$
 
-The formalization of argument scheme AS2 to AS4 are exactly the same as AS1 but it needs to replace the actor with tasks, goals, and softgoals, respectively. Therefore, we have omitted them here. We continue with argument scheme AS5.
+Argument scheme AS1 to AS4 are all very similar, in the sense that they all assert that some element belongs to an actor. Therefore, we only provide the algorithm for AS1 and we assume the reader can easily construct the remaining algorithms AS2-AS4.
 
 \begin{algorithm}[h]
   \caption{Applying AS5: Goal $g_{id}$ decomposes into tasks $T_1,\ldots,T_n$}\label{alg:as5}
   \begin{algorithmic}[1]
     \Procedure{$AS_5$}{$g_{id}, \{T_1,\ldots,T_n\}, type$}
-    \State $T_{id} = \emptyset$
+    \State $T_{id} = \emptyset$\label{alg:as5:1}
     \For{$T_i$ in $\{T_1,\ldots,T_n\}$}
-      \If{$\exists_{A\in Args} \{task(t_{id}),name(t_{id},T_i)\}\subseteq A$}
+      \If{$\exists_{A\in Args}\label{alg:as5:2} \{task(t_{id}),name(t_{id},T_i)\}\subseteq A$}
         \State $T_{id} \gets T_{id} \cup \{t_{id}\}$
-      \Else
+      \Else\label{alg:as5:3}
         \State $id\gets id+1$
         \State $A \gets \{task(id),name(id,T_i)\}$
         \State $Args \gets Args\cup A$
         \State $T_{id} \gets T_{id} \cup \{id\}$
       \EndIf
     \EndFor
-    \State $id\gets id+1$
+    \State $id\gets id+1$\label{alg:as5:4}
     \State $A\gets \{decomp(id, g_{id}, T_{id}, type)\}$
     \State $Args \gets Args\cup A$
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} The procedure in Algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The for loop in the algorithm iterates over all tasks in list $T$, and if a task does not exist yet, an argument is added for it. This ensures that all tasks have corresponding arguments. Note that the algorithm assumes the goal already exists.
+\emph{Algorithm~\ref{alg:as5} for argument scheme AS5:} The procedure in Algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The difficulty of this algorithm is that each of the tasks are stated in natural language, and it is not directly clear whether these tasks are already in the GRL model or not. Therefore, we have to check for each tasks whether it already exists, and if not, we have to create a new task. On line~\ref{alg:as5:1}, the set $T_{id}$ is initialized, which will contain the ids of the tasks $T_1,\ldots,T_n$ to decompose into. In the for loop, the if statement on line~\ref{alg:as5:2} checks whether some argument already exists for the current task $T_i$, and if so, it simply adds the identifier of the task ($t_{id}$) to the set of task identifiers $T_{id}$. Otherwise (line~\ref{alg:as5:3}), a new task is created and the new identifier $id$ is added to the set of task identifiers. After the for loop on line~\ref{alg:as5:4}, an argument for the decomposition link itself is constructed, and it is added to the set of arguments $Args$.
+
+Let us explain this algorithm with the XOR-decomposition of goal \texttt{Generate cars} of Figure~\ref{fig:transcripts:grl}. Suppose the following arguments are constructed already:
+\begin{itemize}
+\item $\{goal(0),name(0,generate\_cars)\},$
+\item $\{taks(1),name(1,keep\_same\_cars\}.$
+\end{itemize}
+Suppose furthermore that someone wants to put forward the argument that goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create news cars}. Formally: $AS_5(0,\{generate\_cars,keep\_same\_cars\},xor)$. The algorithm will first set $T_{id}=\emptyset$, and then iterate over the two task names. For the first task $generate\_cars$, there does not exist an argument $\{task(t_{id}),name(t_{id},generate\_cars)\}$ yet, so a  new argument is created. Suppose the following argument is created: $\{task(2),name(2,generate\_cars)\}.$ After this, 2 is added to $T_{id}$. For the second task an argument exists already, namely $\{task(1),name(1,keep\_same\_cars)\}$, so 1 is simply added to $T_{id}$. After the for loop, we have $T_{id}=\{1,2\}$. Next, the decomposition argument is created, which is $\{decomp(3,0,\{1,2\},xor)\}$. This argument is added to $Args$ and the algorithm terminates.
 
 \begin{algorithm}[h]
   \caption{Applying AS6: Task $t_{id}$ contributes to softgoal $s$}\label{alg:as6}
@@ -194,14 +240,15 @@ The formalization of argument scheme AS2 to AS4 are exactly the same as AS1 but 
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} The procedure in Algorithm~\ref{alg:as6} takes two arguments: $t_{id}$ is the identifier of task $T$, and $s$ is the softgoal name that is contributed to. The if statements check if the softgoal exists already, and if not, an argument is added for it. This ensures that all softgoals have corresponding arguments. Note that the algorithm assumes the task already exists.
+\emph{Algorithm~\ref{alg:as6} for argument scheme AS6:} The procedure in Algorithm~\ref{alg:as6} takes two arguments: $t_{id}$ is the identifier of task $T$, and $s$ is the softgoal name that is contributed to. The idea behind this algorithm is very similar to the previous one. First, the if statements check whether the softgoal exists already, and if not, an argument is added for it. This ensures that all softgoals have corresponding arguments. After the if statement, the argument for the contribution link is created and it is added to the set of arguments $Args$. 
 
-The algorithms for $AS7$ to $AS11$ all have a very similar structure as Algorithm~\ref{alg:as6} and have therefore been omitted from this article.
+Let us again illustrate this with a simple example from Figure~\ref{fig:transcripts:grl}. Suppose the following argument exists already: $\{task(0),name(0,keep\_same\_cars\}$, and suppose someone would like to add an argument that the task \texttt{Keep same cars} contributes positively to softgoal \texttt{Dynamic simulation}, i.e. $AS_6(0,dynamic\_simulation)$. The algorithm first checks whether an argument already exists for the softgoal, and when it finds out it does not exist, creates the argument $\{softgoal(1),name(1,dynamic\_simulation)\}$ and adds it to $Args$. Then, the argument for the contribution is added to $Args$ as well, which is $\{contr(2,0,1,pos)\}$.
 
-%SG: up to here.
-\subsection{Algorithms for answering the critical questions}
+\emph{Algorithms for argument schemes AS7-AS11:} The algorithms for $AS7$ to $AS11$ all have a very similar structure as Algorithm~\ref{alg:as6} and have therefore been omitted. Again, we assume the reader can reconstruct them straightforwardly.
 
-We now develop algorithms for our critical questions. We start with the critical questions that have an effect DISABLE. All critical questions CQ0-CQ5a, CQ6a, CQ7a, CQ8, CQ11, and CQ12 fall into this category. The algorithm below applies when the critical question is answered affirmatively.
+\subsubsection*{Algorithms for critical questions}
+
+We now develop algorithms for our critical questions. Recall that answering a critical question can have four effects, and we discuss each of these effects separately.
 
 \begin{algorithm}[h]
   \caption{Applying DISABLE: Element $i$ is disabled}\label{alg:disable}
@@ -214,9 +261,23 @@ We now develop algorithms for our critical questions. We start with the critical
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} We the see disable operation is quite straightforward. It simply consists of adding an argument stating argument $i$ is disabled.
+\emph{Algorithm~\ref{alg:disable} (\textsf{DISABLE}) for critical questions CQ0-CQ5a, CQ6a, CQ7a, CQ8, CQ11, and CQ12:} The disable operation is very straightforward: It simply consists of adding an argument stating the GRL element with identifier $i$ is disabled. Let us reconsider the example of Figure~\ref{fig:examples:relevant-actor}. This example consists of an instantiation of argument scheme AS0, which is attacked by an argument that resulted from answering critical question. The formalization of this scenario is shown in Figure~\ref{fig:examples:relevant-actor:formal}. Interestingly, we see that the \textsf{DISABLE} operation no longer leads to an attack between the two arguments. Instead, the only thing that this operation does is adding another argument stating the element is disabled.
 
-Next we consider the REPLACE operation. This operation is less straightforward and cannot be captured by a single algorithm, since the operation depends on the type of argument scheme.
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeIN] at (-3.7,-0.2) {
+        	\smallargtext{AS0}{$\{actor(0),name(0,dev\_team\}$}
+        } ;
+        \node (a1) [argNodeIN] at (-3.7,-2.5){
+        	\argtext{DISABLE}{$\{disabled(0)\}$}
+        };
+         \path
+    (a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ0} (a1);
+\end{tikzpicture}
+\caption{Formalization of the arguments in Figure~\ref{fig:examples:relevant-actor}.}
+\label{fig:examples:relevant-actor:formal}
+\end{figure}
 
 \begin{algorithm}[h]
   \caption{Answering CQ5b: ``Does goal $G$ decompose into any other tasks?'' With: ``Yes, namey into tasks $t_1,\ldots,t_k$''}\label{alg:cq5b}
@@ -243,18 +304,58 @@ Next we consider the REPLACE operation. This operation is less straightforward a
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} Algorithm~\ref{alg:cq5b} is executed when critical question CQ5b is answered, which is a critical question for argument scheme AS5. Therefore, it assumes an argument for a goal decomposition of the form $decomp(d, g_{id}, \{i_1,\ldots,i_n\},type)$ as already been generated (see algorithm~\ref{alg:as5}). The goal of the algorithm is to generate a new argument of the form $decomp(d, g_{id}, \{i_1,\ldots,i_5\}\cup \{j_1,\ldots,j_k\}, type)$, where $\{j_1,\ldots,j_k\}$ are the identifiers of the additional decomposing tasks $\{t_1,\ldots,t_k\}$. The first for loop in line~\ref{alg:cq5b:for1} check whether any of these tasks already exist, and if not, adds corresponding arguments for them. The list of all decomposing tasks is stored in $T_{id}$. The new argument for the decomposition link is then created in line~\ref{alg:cq5b:newarg}. Finally, the last for loop on line~\ref{alg:cq5b:for2} ensures that all previous arguments for decomposition links are attacked by the new argument. This ensures that only the new decomposition link will be accepted.
+\emph{Algorithm~\ref{alg:cq5b} (\textsf{REPLACE}) for critical questions CQ5b:} This algorithm is executed when critical question CQ5b is answered, which is a critical question for argument scheme AS5. Therefore, it assumes an argument for a goal decomposition already exists of the following form (see Algorithm~\ref{alg:as5}): $$\{decomp(d, g_{id}, \{i_1,\ldots,i_n\},type).$$  The goal of the algorithm is to generate a new argument of the form $decomp(d, g_{id}, \{i_1,\ldots,i_5\}\cup \{j_1,\ldots,j_k\}, type)$, where $\{j_1,\ldots,j_k\}$ are the identifiers of the additional decomposing tasks $\{t_1,\ldots,t_k\}$.
 
-The REPLACE operations of CQ10a and CQ10b have a very similar structure as algorithm~\ref{alg:cq5b} and have therefore been omitted. We continue with the last REPLACE operation left, namely CQ13.
+The algorithm task as input the goal identifier $g_{id}$, the set of existing decomposing task identifiers $i_1,\ldots,i_n$, the decomposition type, and the names of the new tasks $t_1,\ldots,t_k$ that should be added to the decomposition. The first part  of the algorithm is already familiar: For each task name we check whether it already exists as an argument (line 4), and if it doesn't (line 6) we add a new argument for it. After the for loop (line 13), a new argument is created for the new decomposition relation (14). After this, the for loop on line 15 ensures that the new argument attacks all previous arguments for this decomposition (note that the variable ``$\_$'' means ``do not care''). Only at the very end the new argument is added (line 18), to ensure it does not attack itself after the for loop of line 15-17. 
+
+An example of this algorithm is shown in Figure~\ref{fig:examples:cq5b}.\footnote{Note that part of the arguments (the statements about actors) have been omitted from the figure for readability.} Before the critical question is applied, the following arguments have been put forward:
+\begin{itemize}
+\item $\{goal(0),name(0,show\_simulation)\}$
+\item $\{task(1),name(1,generate\_traffic)\}$
+\item $\{task(2),name(2,compute\_lights)\}$
+\item $\{decomp(3,0,\{1,2\},and)\}$.
+\end{itemize}
+
+Next, Algorithm~\ref{alg:cq5b} is called as follows: $CQ5b(0,\{1,2\},and,\{show\_controls\})$. That is, the existing decomposition is challenged by stating that goal $show\_simulation$ not only decomposes into $generate\_traffic$ and $compute\_lights$, but it also decomposes into $show\_controls$. Since this task does not exist yet, it is created by the algorithm, which also ensures the new argument for the decomposition link attacks the previous argument for the decomposition link.
+
+\begin{figure*}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeIN,minimum width=1.5cm] at (-5,0) {
+        	\smallargtext{AS3}{$\{goal(0),$\\$name(0,show\_sim\}$}
+        };
+        \node (a1) [argNodeIN] at (0,0) {
+        \smallargtext{AS2}{$\{task(1),$\\$name(1,gen\_traffic\}$}
+        };
+        \node (a2) [argNodeIN] at (5,0) {
+        \smallargtext{AS2}{$\{task(3),$\\$name(2,show\_ctrls\}$}
+        };
+        \node (a2a) [argNodeIN] at (-2.5,-2) {
+        \smallargtext{AS2}{$\{task(2),$\\$name(2,comp\_lights\}$}
+        };
+        \node (a3) [argNodeOUT] at (-3,-4) {$\{decomp(3,0,\{1,2\},and\}$
+        };
+        \node (a4) [argNodeIN] at (3,-4) {$\{decomp(3,0,\{1,2,3\},and\}$
+        };
+         
+         \path
+    (a4) edge [attackLink] (a3)
+    (a3) edge [CQLink, bend right=50] node [below,draw=none] {CQ5b} (a4)
+    (a4) edge [CQLink] node [left,draw=none] {CQ5b} (a2);
+\end{tikzpicture}
+\caption{Example of applying critical question CQ5b (Algorithm~\ref{alg:cq5b})}
+\label{fig:examples:cq5b}
+\end{figure*}
+
+\emph{Algorithms for critical questions CQ10a and CQ10b (REPLACE)}: These algorithms have a very similar structure as Algorithm~\ref{alg:cq5b} and have therefore been omitted.
 
 \begin{algorithm}[h]
   \caption{Answering CQ13: ``Is the name of element $i$ clear?'' With: ``No, it should be $n$''}\label{alg:cq13}
   \begin{algorithmic}[1]
     \Procedure{CQ13}{$i, n$}
-    \State $id\gets id+1$
-    \State $ArgsN \gets\{A\backslash\{name(i,x)\}\mid$\par\label{alg:cq13:line3}
-    \hskip\algorithmicindent$A\in Args, name(i,x)\in A\}$
-    \State $A \gets B \cup \{name(i,n)\}$ with $B\in ArgsN$
+    \State $ArgsN \gets\{ A\in Args \mid name(i,x)\in A\}$
+    \State $B\gets B'\backslash \{name(i,\_)\}$ with $B'\in ArgsN$
+    \State $A \gets B \cup \{name(i,n)\}$
     \State $Args \gets Args \cup \{A\}$
     \For{$B$ in $ArgsN$}
       \State $Att\gets Att \cup \{(A,B)\}$
@@ -263,34 +364,55 @@ The REPLACE operations of CQ10a and CQ10b have a very similar structure as algor
   \end{algorithmic}
 \end{algorithm}
 
-\rationale{} Algorithm~\ref{alg:cq13} first collects all arguments contain a statement of the form $name(i,x)$ into the set $ArgsN$, where $x$ can by any name. These are all the arguments that the new argument will attack, to ensure this is the only argument for a name of this element type. Since all such arguments are the same, except for the name proposition, we can take any such argument to construct a new one. The argument is added to the set of arguments, and the for loop ensures that all previous arguments are attacked.
+\emph{Algorithms for critical question CQ13 (REPLACE):} This algorithm is used to clarify/change the name of an element. It takes two parameters: the element identifier $i$ and the new name $n$. The idea behind the algorithm is that we construct a new argument for $n$ from the previous arguments, and we only replace the $name$ atom. We also have to ensure that we attack all previous arguments for a name. On line 2, all arguments that have been put forward for this element and contain $name(i,x)$ are collected into the set $ArgsN$. On line 3, some arguments $B'\in ArgsN$ minus the $name$ statement is assigned to $B$, and on line 4 $B$ is joined with the new $name$ statement and stored in $A$, which is then added to the set of arguments $Args$. The for loop on lines 6-8 ensures all previous arguments for names of the element are attacked by the new argument.
 
-We next turn to the INTRO operations, which are very similar to the algorithms for argument schemes. The main difference is that when answering a critical question, we can already assume an argument has been created, so we do not have to create it again.
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}[->]
+        \node (a0a) [argNodeIN] at (-2,2) {
+        	\longargtext{AS0}{$\{actor(0),name(0,student)\}$}
+        };
+        \node (a0) [argNodeOUT] at (-2,0) {
+        	\longargtext{AS2}{$\{task(1),name(1,create\_road),has(0,1)\}$}
+        };
+        \node (a1) [argNodeOUT] at (-2,-2) {
+        	\longargtext{AS2}{$\{task(1),name(1,choose\_pattern),has(0,1)\}$}
+        };
+        \node (a2) [argNodeOUT] at (-2,-4) {
+        	\longargtext{AS2}{$\{task(1),name(1,pattern\_pref),has(0,1)\}$}
+        };
+        \node (a3) [argNodeIN] at (-2,-6) {
+        	\longargtext{AS2}{$\{task(1),name(1,road\_pattern),has(0,1)\}$}
+        };
+\begin{pgfonlayer}{background}
+         \path
+    (a1) edge[attackLink] (a0)
+    (a2) edge[attackLink] (a1)
+    (a2) edge[attackLink, bend right=20] (a0)
+    (a3) edge[attackLink] (a2)
+    (a3) edge[attackLink, bend right=20] (a1)
+    (a3) edge[attackLink, bend right=40] (a0);
+\end{pgfonlayer}
 
-\begin{algorithm}[h]
-  \caption{Answering CQ6b: ``Are there alternative ways of contributing to the same softgoal $s_{id}$?'' With: ``Yes, namely by doing task $t$''}\label{alg:cq6b}
-  \begin{algorithmic}[1]
-    \Procedure{CQ6b}{$s_{id}, t$}
-    \If{$\exists_{A\in Args} \{task(i),name(i,t)\}\subseteq A$}
-        \State $t_{id} \gets i$
-    \Else
-      \State $id\gets id+1$
-      \State $A \gets \{task(id),name(id,t)\}$
-      \State $Args \gets Args\cup A$
-      \State $t_{id} \gets id$
-    \EndIf
-    \State $id\gets id+1$
-    \State $A\gets \{contr(id, t_{id}, s_{id}, pos)\}$
-    \State $Args \gets Args\cup A$
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
+	\path
+	(a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ13} (a1)
+    (a1) edge [CQLink, bend right=50] node [left,draw=none] {CQ13} (a2)
+    (a2) edge [CQLink, bend right=50] node [left,draw=none] {CQ13} (a3);
+\end{tikzpicture}
+\caption{Applying critical question CQ13 (Algorithm~\ref{alg:cq13}) to the example in Figure~\ref{fig:examples:clarification}.}
+\label{fig:examples:clarification:formal}
+\end{figure} 
 
-\rationale{} Comparing algorithm~\ref{alg:cq6b} with algorithm~\ref{alg:as6} shows that the two algorithms are indeed very similar. 
+An example of the working of Algorithm~\ref{alg:cq13} is shown in Figure~\ref{fig:examples:clarification:formal}. Let us consider the last application of CQ13 (bottom argument). Before this application, the following arguments have been put forward:
+\begin{itemize}
+\item $A_1$: $\{actor(0),name(0,student)\}$
+\item $A_2$:$\{task(1),name(1,create\_road),has(0,1)\}$
+\item $A_3$ $\{task(1),name(1,choose\_pattern),has(0,1)\}$
+\item $A_4$:$\{task(1),name(1,pattern\_pref),has(0,1)\}$
+\end{itemize}
+The algorithm is now called as follows: $CQ13(1,road\_pattern)$, i.e., the new name of the element should be $road\_pattern$. Let us briefly run through the algorithm. After executing line 2 we obtain $ArgsN=\{A_2,A_3,A_4\}$, since only those arguments contain $name(1,\_)$. Next, on line 3, $B=\{task(1),has(0,1)\}$, i.e., $B$ is the general argument for the task without the $name$ statement. After line 4 we have $$A=\{task(1),has(0,1),name(1,road\_pattern),$$ which is added to $Args$ and attacks arguments $A_2,A_3$, and $A_4$. 
 
-The other critical questions with effect INTRO, namely CQ6c, CQ6d, CQ7b, and CQ9 all have a very similar structure to algorithm~\ref{alg:cq6b} and have therefore been omitted.
-
-Our final critical question is the generic counterargument, which is very simple.
+\emph{Algorithms for critical questions CQ6b, CQ6c, CQ6d, CQ7b, and CQ9 (INTRO):} The introduction algorithms for the critical questions are all very similar to the INTRO algorithms for argument schemes (Algorithm~\ref{alg:as1}). They have therefore been omitted.
 
 \begin{algorithm}[h]
   \caption{Generic counterargument to argument $A$}\label{alg:cq6b}
@@ -303,8 +425,69 @@ Our final critical question is the generic counterargument, which is very simple
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{Some examples}
+\emph{Algorithm for $Att$ (Generic counter argument:} Applying a generic counter argument is very simple, and simply results on an attack on the original argument. We illustrate this by continuing our example from Figure~\ref{fig:examples:relevant-actor2:formal} (Algorithm~\ref{alg:as0}). The example is shown in Figure~\ref{fig:examples:relevant-actor2:formal}, where we see that a generic counter argument simply attacks the argument to disable the actor.
 
-\todo{Marc}{Marc}{Revisit the examples}
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeIN] at (-3.7,0) {
+        	\smallargtext{AS0}{$\{actor(0),name(0,dev\_team\}$}
+        } ;
+        \node (a1) [argNodeOUT] at (-3.7,-2){
+        	\argtext{DISABLE}{$\{disabled(0)\}$}
+        };
+        \node (a2) [argNodeIN] at (-3.7,-4){
+        	\argtext{Att}{$\{\}$}
+        };
+         \path
+    (a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ0} (a1)
+    (a1) edge [CQLink, bend right=50] node [left,draw=none] {Att} (a2)
+    (a2) edge [attackLink] (a1);
+\end{tikzpicture}
+\caption{Formalization of the arguments in Figure~\ref{fig:examples:relevant-actor2}.}
+\label{fig:examples:relevant-actor2:formal}
+\end{figure}
 
-\todo{Marc}{Marc}{Do links need identifiers??}
+\subsection{Constructing GRL models}
+
+Constructing GRL models from the arguments is extremely simple: We simply compute the extensions of the argumentation frameworks, and collect all atomic sentences in the accepted arguments. This forms out GRL model. Let us briefly do so for the examples of the previous subsection:
+\begin{itemize}
+\item
+Figure~\ref{fig:examples:relevant-actor:formal}: Since there are no attacks between the arguments, all atomic sentences are accepted. This results in the following specification: 
+\begin{quote}
+\begin{verbatim}
+actor(0).
+name(0,dev_team).
+disabled(0).
+\end{verbatim}
+\end{quote}
+This again corresponds to the GRL model on the right-hand side of Figure~\ref{fig:examples:relevant-actor}.
+\item
+Figure~\ref{fig:examples:cq5b}: There is one rejected argument and five accepted ones. The resulting specification is:
+\begin{quote}
+\begin{verbatim}
+goal(0). name(0,show_simulation).
+task(1). name(1,generate_traffic).
+task(2). name(2,compute_lights).
+task(3). name(3,show_controls).
+decomp(3,0,{1,2,3},and).
+\end{verbatim}
+\end{quote}
+\item Figure~\ref{fig:examples:clarification:formal}: There are only two accepted arguments. The resulting specification is:
+\begin{quote}
+\begin{verbatim}
+actor(0). name(0, student).
+task(1).  name(1,road_pattern).
+has(0,1).
+\end{verbatim}
+\end{quote}
+This corresponds to the right-hand GRL model of Figure~\ref{fig:examples:clarification}.
+\item Figure~\ref{fig:examples:relevant-actor2:formal}. There are two accepted arguments, but the \emph{generic counterargument} does not contain any formulas. Therefore the resulting specification is:
+\begin{quote}
+\begin{verbatim}
+actor(0).
+name(0,dev_team).
+\end{verbatim}
+\end{quote}
+This corresponds to the right-hand GRL model of Figure~\ref{fig:examples:relevant-actor2}.
+\end{itemize}
