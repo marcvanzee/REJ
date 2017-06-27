@@ -1,5 +1,5 @@
 \section{Discussion}
-\label{sect:goalmodeling:discussion}
+\label{sect:discussion}
 
 \subsection{Related work}
 \label{sect:goalmodeling:relatedwork}
@@ -86,6 +86,16 @@ Interestingly, such constraints are very comparable to \emph{logic programming} 
 
 \subsection{Conclusion}
 
-In this article, we develop the RationalGRL framework to trace back elements of GRL models to arguments using in discussions between stakeholders. The contributions of this article have become increasingly more formal. First, we analyze transcripts of meetings about the development of an information system. We count occurrences of argument schemes and critical questions, and categorize them by the effect of instantiating them. Then, we create a visual notation to link arguments and questions to elements of a goal model. If an argument for an element of a goal model is rejected, then the corresponding element is disabled. Similarly, if the argument is accepted, then the corresponding element is enabled. Finally, we formalize the argument schemes and critical questions in a logical framework. We propose a formal language to describe a GRL model, and we develop various algorithms for applying our argument schemes and critical questions. 
+The introduction of this article contains five requirements we identified for our framework. We use the conclusion to discuss how RationalGRL meets our initial requirements.
 
-Our framework is one of the first attempts that try to combine the formal theory of argumentation with the practical frameworks of goal modeling. History has shown that it is remarkably difficult to combine formal results with practice. By taking argument schemes as a starting point, we believe we have chosen the right level of formality, but as the open issues section shows, much work is left to be done. 
+\paragraph{1. The argumentation techniques should be close to actual discussions stakeholders or designers have.}
+
+We analyze a set of transcripts containing discussions about the architecture of an information system. 
+
+\paragraph{2. The framework must have the means to formally model parts of the discussion process.}
+In order to generate goal models based on formalized discussions (requirement 2), we, first, formalize the list of arguments from requirement 1 in an argumentation framework. We formalize the critical questions as algorithms modifying the argumentation framework. We use argumentation techniques from AI in order to determine which arguments are accepted and which are rejected. We propose an algorithm to generate a GRL model based on the accepted arguments. This helps providing traceability links from GRL elements to the underlying arguments (requirement 3).
+
+We implement our framework in an online tool called RationalGRL (requirement 4). The tool is implemented using Javascript. It contains  two parts, goal modeling and argumentation. The goal modeling part is a simplified version of GRL, leaving out features such as evaluation algorithms and key performance indicators. The argumentation part is new, and we develop a modeling language for the arguments and critical questions. The created GRL models in RationalGRL can be exported to jUCMNav~\cite{} %TODO SG: add citation 
+ the Eclipse-based tool for GRL modeling, for further evaluation and analysis. 
+
+Our final contribution is a methodology on how to develop goal models that are linked to underlying discussions. The methodology consists of two parts, namely argumentation and goal modeling. In the argumentation part, one puts forward arguments and counter-arguments by applying critical questions. When switching to the goal modeling part, the accepted arguments are used to create a goal model. In the goal modeling part, one simply modifies goal models, which may have an effect on the underlying arguments. This might mean that the underlying arguments are no longer consistent with the goal models.

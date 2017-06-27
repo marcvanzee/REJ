@@ -1,4 +1,4 @@
-\section{RationalGRL: the logical framework}
+\section{RationalGRL: Logical Framework}
 \label{sect:formalframework}
 
 In the previous section we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of Table~\ref{table:argument-schemes}): \textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}, and \textsf{ATTACK}.
@@ -136,19 +136,15 @@ In our example in Figure~\ref{fig:goalmodeling:arg2}, the preferred extensions a
 
 \subsection{Algorithms for argument schemes and critical questions}
 
-Let us briefly review what we have done so far. Up until now we have achieve the following:
+Let us briefly take stock:
 \begin{itemize}
-\item We (informally) developed a set of argument schemes and critical questions in Section~\ref{sect:gmas}, by annotating transcripts.
-\item We developed a visual notation to illustrate some argument schemes and critical questions in Section~\ref{sect:gmas:examples}.
+\item We developed an initial set of argument schemes and critical questions in Section~\ref{sect:gmas}, by annotating transcripts.
+\item We developed a visual notation to illustrate some argument schemes and critical questions in Section~\ref{sect:examples}.
 \item We proposed a logical language consisting of atomic sentence to describe a GRL model in Section~\ref{sect:goalmodeling:logicallanguage}.
 \item We formalized an ``argument'' as a set of atoms from our language, and we introduced \emph{argumentation semantics} to compute sets of accepted arguments in Section~\ref{sect:goalmodeling:argumentationsemantics}.
 \end{itemize}
 
-We see that we are becoming increasingly more formal in each step of the progress. What we haven't formalized properly yet are the argument schemes and critical questions, which is what we turn to now.
-
-Both the application of an argument schemes and the answering of critical questions are \emph{procedural} or \emph{dialectic} in nature. Therefore, a natural choice of formalizing them seems to develop procedures, or algorithms for them, which is what we do here.
-
-In the following algorithms, we assume the following global variables:
+In this subsection we develop algorithms for applying argument schemes and critical questions. In the following algorithms, we assume the following global variables:
 
 \begin{definition}[Global variables] The following variables are intended to have a \emph{global} scope and have a \emph{static} value, meaning the lifetime of the variable extends across the entire run of the program.
 \begin{itemize}
