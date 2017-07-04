@@ -3,11 +3,11 @@
 
 In this section we present a high-level overview of the RationalGRL framework. In the first subsection we present a methodology, specifying how practitioners can use RationalGRL to create goal models with traceability links to underlying arguments. In the second subsection we link the new argumentation elements and relations to the existing elements and relations of GRL in a metamodel. This metamodel serves as the specification for an implementation. In Section~\ref{sect:tool} we briefly discuss our prototype implementation based on this metamodel.
 
-\subsection{RationalGRL Methodology}
+\subsection{RationalGRL Methodology} \todo{Sepideh}{Marc}{Review this section and make sure it is correct}
 
-As mentioned earlier, the RationalGRL framework aims at integrating GRL models with the underlying discussions and arguments of the stakeholders during the analysis phase by combining PRAS with GRL. Our argumentation framework is developed based on the analysis of the CQs, practical reasoning and discussions of the stakeholders of the system. Initial GRL models are first created based on the analysis of non-functional requirements in the requirements specification documents, discussions with stakeholders and by refining the high-level goals into operationalized tasks. 
+As mentioned in Section~\ref{sect:introduction}, the RationalGRL framework has been extended with concepts from practical reasoning argument scheme (PRAS) to help integrating goal models with the detailed discussions and arguments the stakeholders pose during the analysis phase. That is, the RationalGRL framework includes two main parts: Argumentation model and GRL model. 
 
-In RationalGRL, both GRL and argumentation models are done iteratively. Argumentation models impact GRL models and result in refinement and changes in GRL. For example, an answer to the CQ \emph{Is the task possible?} can lead to rejection or acceptance of the task in GRL. The analysis of GRL models may result in changes in the underlying argumentation framework as well. For example, adding a new IE to the GRL model can result in posing new CQs with respect to the IE and its relationships. Figure~\ref{fig:rationalgrl-framework} shows RationalGRL and the relationships between the different parts. On the right-hand side of the framework, we have GRL models and on the left-hand side we have argumentation framework. The links between the two sides illustrates the impacts each side has on the other side and the changes that occur due to the impacts and the refinements. 
+To develop the argumentation model, we need to analyze critical questions, argument schemes and the stakeholder's discussions. For the GRL part of the framework, we first need to create the "initial" GRL models by analyzing the non-functional requirements in the requirements specification document and by refining the high-level goals into operationalized tasks. These two parts, GRL and argumentation models are developed iteratively and each side can impact the other side so that the models can be refined or new critical questions and argument schemes can be instantiated. For example, answering a critical question \emph{Is the task \texttt{A} possible?}, instantiated from the argumentation model, can result in removing or adding a task in the GRL model. Similarly,  if, for example, we add a new intentional element to the GRL model, it can lead to a new critical question relevant to this intentional element and its relationships with other intentional elements. Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL framework with its components and their relationships.  The GRL models  are shown  on the right-hand side of the framework while the argumentation models is on the left-hand side. The links between the two sides illustrates the impacts and relationships between two sides. 
 
 \begin{figure}[ht]
 \centering
@@ -16,7 +16,7 @@ In RationalGRL, both GRL and argumentation models are done iteratively. Argument
 \label{fig:rationalgrl-framework}
 \end{figure}
 
-To develop a RationalGRL model, we follow the methodology shown  in Figure~\ref{fig:rationalgrl-methodology}. We already have an initial GRL model. The steps of the methodology are as follows:
+We propose the following methodology (shown in Figure~\ref{fig:rationalgrl-methodology}) to develop an instance of the RationalGRL framework. Note that, here we assume that the initial GRL models have been created based on the requirements specification documents and the discussions of the stakeholders. The rest of the steps are as follows:
 
 \begin{figure*}[ht]
 \centering
@@ -25,7 +25,9 @@ To develop a RationalGRL model, we follow the methodology shown  in Figure~\ref{
 \label{fig:rationalgrl-methodology}
 \end{figure*}
 
-\textbf{Instantiate Argument Schemes (AS)} -- In this step, we instantiate one of the AS from the argumentation framework. In the section we develop 13 arguments schemes which we use in our analysis. An example of an argument scheme is "Goal \emph{G} contributes to softgoal \emph{S}". An instantiation of an argument scheme thus corresponds to an argument for or against part of a goal model.
+%TODO I need to reword up to the example.
+
+\textbf{Instantiate Argument Schemes (AS)} -- After creating the initial GRL models, we In the first step, we instantiate one of the AS from the argumentation framework. In the section we develop 13 arguments schemes which we use in our analysis. An example of an argument scheme is "Goal \emph{G} contributes to softgoal \emph{S}". An instantiation of an argument scheme thus corresponds to an argument for or against part of a goal model.
 
 \textbf{Answer Critical Questions (CQs)} -- Instantiated arguments can be attacked by counter-arguments. CQs are ways in which AS can be attacked. Each argument scheme includes one or more CQs. For example, for the argument scheme mentioned above, we have two CQs as: \emph{Does the goal contributes to the softgoal?} and \emph{Does the goal contributes to some other softgoals?}. Note that, the answer to CQ can also result into ``conflict'' situation which we do not consider here. Answering a CQ may result in an instantiation of a new AS. Thus, it is possible to go back and forth between this step and the previous one.
 
@@ -35,7 +37,7 @@ To develop a RationalGRL model, we follow the methodology shown  in Figure~\ref{
 
 In the next section, we provide a short example to illustrate the relationship between argumentation framework and goal models. 
 
-\subsubsection*{Example}
+\subsubsection*{Example} \todo{Sepideh}{Marc}{Do we need an example here? I think no...this is from istar also, if we want it, we need to modify it}
 \label{sect:methodology-example}
 
 Our examples comes from a transcript containing discussions about the development of an information system, and they are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}. We provide several more examples in Section~\ref{sect:examples}.
