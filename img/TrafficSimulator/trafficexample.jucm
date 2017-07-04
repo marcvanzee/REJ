@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:grl="http:///grl.ecore" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="URNspec" author="sepideh" created="July 4, 2017 11:19:42 AM CDT" modified="July 4, 2017 11:32:17 AM CDT" specVersion="4" urnVersion="1.27" nextGlobalID="57">
+<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:grl="http:///grl.ecore" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="URNspec" author="sepideh" created="July 4, 2017 11:19:42 AM CDT" modified="July 4, 2017 2:21:47 PM CDT" specVersion="5" urnVersion="1.27" nextGlobalID="63">
   <ucmspec>
     <scenarioGroups name="ScenarioGroup6" id="6">
       <scenarios name="ScenarioDef7" id="7"/>
     </scenarioGroups>
   </ucmspec>
   <grlspec>
-    <intElements name="Simulate Traffic" id="16" linksDest="26 27" type="Goal" refs="17"/>
-    <intElements name="Static Simulation" id="20" linksDest="56" linksSrc="26 53" type="Task" refs="21"/>
-    <intElements name="Dynamic Simulation" id="22" linksDest="55" linksSrc="27 52" type="Task" refs="23"/>
-    <intElements name="High Performance" id="29" linksDest="52 53" refs="30"/>
+    <intElements name="Simulate Traffic" id="16" linksDest="26 27" linksSrc="62" type="Goal" refs="17"/>
+    <intElements name="Static Simulation" id="20" linksDest="56" linksSrc="26" type="Task" refs="21"/>
+    <intElements name="Dynamic Simulation" id="22" linksDest="55" linksSrc="27" type="Task" refs="23"/>
+    <intElements name="High Performance" id="29" refs="30"/>
     <intElements name="Generate Cars" id="33" linksDest="41 49 50" type="Goal" decompositionType="Xor" refs="34"/>
     <intElements name="Car Objects" id="37" linksSrc="41" type="Ressource" refs="38"/>
     <intElements name="Keep Same Cars" id="43" linksSrc="50" type="Task" refs="44"/>
     <intElements name="Create New Cars" id="45" linksSrc="49 55 56" type="Task" refs="46"/>
+    <intElements name="Improve Simulation" id="58" linksDest="62" refs="59"/>
     <actors name="Traffic Simulator" id="12" contRefs="13"/>
     <links xsi:type="grl:Decomposition" name="Decomposition26" id="26" refs="//@urndef/@specDiagrams.0/@connections.0" dest="16" src="20"/>
     <links xsi:type="grl:Decomposition" name="Decomposition27" id="27" refs="//@urndef/@specDiagrams.0/@connections.1" dest="16" src="22"/>
     <links xsi:type="grl:Dependency" name="Dependency41" id="41" refs="//@urndef/@specDiagrams.0/@connections.2" dest="33" src="37"/>
     <links xsi:type="grl:Decomposition" name="Decomposition49" id="49" refs="//@urndef/@specDiagrams.0/@connections.3" dest="33" src="45"/>
     <links xsi:type="grl:Decomposition" name="Decomposition50" id="50" refs="//@urndef/@specDiagrams.0/@connections.4" dest="33" src="43"/>
-    <links xsi:type="grl:Contribution" name="Contribution52" id="52" refs="//@urndef/@specDiagrams.0/@connections.5" dest="29" src="22" contribution="SomePositive" quantitativeContribution="75"/>
-    <links xsi:type="grl:Contribution" name="Contribution53" id="53" refs="//@urndef/@specDiagrams.0/@connections.6" dest="29" src="20" contribution="SomeNegative" quantitativeContribution="-75"/>
-    <links xsi:type="grl:Contribution" name="Contribution55" id="55" refs="//@urndef/@specDiagrams.0/@connections.7" dest="22" src="45"/>
-    <links xsi:type="grl:Contribution" name="Contribution56" id="56" refs="//@urndef/@specDiagrams.0/@connections.8" dest="20" src="45" contribution="Hurt" quantitativeContribution="-25"/>
+    <links xsi:type="grl:Contribution" name="Contribution55" id="55" refs="//@urndef/@specDiagrams.0/@connections.5" dest="22" src="45"/>
+    <links xsi:type="grl:Contribution" name="Contribution56" id="56" refs="//@urndef/@specDiagrams.0/@connections.6" dest="20" src="45" contribution="Hurt" quantitativeContribution="-25"/>
+    <links xsi:type="grl:Contribution" name="Contribution62" id="62" refs="//@urndef/@specDiagrams.0/@connections.7" dest="58" src="16" contribution="Make" quantitativeContribution="100"/>
     <groups name="StrategiesGroup4" id="4" strategies="5"/>
     <strategies name="EvaluationStrategy5" id="5" author="sepideh" group="4"/>
     <impactModel/>
@@ -35,19 +35,19 @@
   </grlspec>
   <urndef>
     <specDiagrams xsi:type="grl:GRLGraph" name="Example1" id="2">
-      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef17" id="17" x="175" y="150" contRef="13" pred="//@urndef/@specDiagrams.0/@connections.0 //@urndef/@specDiagrams.0/@connections.1" def="16">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef17" id="17" x="173" y="156" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.7" pred="//@urndef/@specDiagrams.0/@connections.0 //@urndef/@specDiagrams.0/@connections.1" def="16">
         <metadata name="_height" value="40"/>
         <metadata name="_width" value="79"/>
       </nodes>
-      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef21" id="21" x="154" y="254" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.0 //@urndef/@specDiagrams.0/@connections.6" pred="//@urndef/@specDiagrams.0/@connections.8" def="20">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef21" id="21" x="154" y="254" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.0" pred="//@urndef/@specDiagrams.0/@connections.6" def="20">
         <metadata name="_height" value="41"/>
         <metadata name="_width" value="69"/>
       </nodes>
-      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef23" id="23" x="240" y="254" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.1 //@urndef/@specDiagrams.0/@connections.5" pred="//@urndef/@specDiagrams.0/@connections.7" def="22">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef23" id="23" x="240" y="254" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.1" pred="//@urndef/@specDiagrams.0/@connections.5" def="22">
         <metadata name="_height" value="41"/>
         <metadata name="_width" value="70"/>
       </nodes>
-      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef30" id="30" x="299" y="80" contRef="13" pred="//@urndef/@specDiagrams.0/@connections.5 //@urndef/@specDiagrams.0/@connections.6" def="29">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef30" id="30" x="344" y="88" contRef="13" def="29">
         <metadata name="_height" value="39"/>
         <metadata name="_width" value="81"/>
       </nodes>
@@ -63,11 +63,15 @@
         <metadata name="_height" value="37"/>
         <metadata name="_width" value="76"/>
       </nodes>
-      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef46" id="46" x="334" y="316" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.3 //@urndef/@specDiagrams.0/@connections.7 //@urndef/@specDiagrams.0/@connections.8" def="45">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef46" id="46" x="334" y="316" contRef="13" succ="//@urndef/@specDiagrams.0/@connections.3 //@urndef/@specDiagrams.0/@connections.5 //@urndef/@specDiagrams.0/@connections.6" def="45">
         <metadata name="_height" value="38"/>
         <metadata name="_width" value="77"/>
       </nodes>
-      <contRefs xsi:type="grl:ActorRef" name="ActorRef13" id="13" x="138" y="70" width="412" height="342" contDef="12" nodes="17 21 23 30 34 38 44 46">
+      <nodes xsi:type="grl:IntentionalElementRef" name="IntentionalElementRef59" id="59" x="245" y="95" contRef="13" pred="//@urndef/@specDiagrams.0/@connections.7" def="58">
+        <metadata name="_height" value="40"/>
+        <metadata name="_width" value="92"/>
+      </nodes>
+      <contRefs xsi:type="grl:ActorRef" name="ActorRef13" id="13" x="138" y="70" width="412" height="342" contDef="12" nodes="17 21 23 30 34 38 44 46 59">
         <label deltaX="-139" deltaY="11"/>
       </contRefs>
       <connections xsi:type="grl:LinkRef" source="21" target="17" link="26"/>
@@ -75,12 +79,6 @@
       <connections xsi:type="grl:LinkRef" source="34" target="38" link="41"/>
       <connections xsi:type="grl:LinkRef" source="46" target="34" link="49"/>
       <connections xsi:type="grl:LinkRef" source="44" target="34" link="50"/>
-      <connections xsi:type="grl:LinkRef" source="23" target="30" link="52">
-        <label deltaX="-25" deltaY="-5"/>
-      </connections>
-      <connections xsi:type="grl:LinkRef" source="21" target="30" link="53">
-        <label deltaX="23" deltaY="-26"/>
-      </connections>
       <connections xsi:type="grl:LinkRef" source="46" target="23" link="55">
         <label deltaX="-23" deltaY="-13"/>
         <bendpoints x="343" y="286"/>
@@ -88,6 +86,9 @@
       <connections xsi:type="grl:LinkRef" source="46" target="21" link="56">
         <label deltaX="22" deltaY="-9"/>
         <bendpoints x="257" y="339"/>
+      </connections>
+      <connections xsi:type="grl:LinkRef" source="17" target="59" link="62">
+        <label deltaX="30" deltaY="-30"/>
       </connections>
     </specDiagrams>
     <specDiagrams xsi:type="ucm.map:UCMmap" name="UCMmap3" id="3"/>
