@@ -3,11 +3,13 @@
 
 In this section we present a high-level overview of the RationalGRL framework. In the first subsection, we present a methodology, specifying how practitioners can use RationalGRL to create goal models with traceability links to underlying arguments. In the second subsection, we link the new argumentation elements and relations to the existing elements and relations of GRL in a metamodel. This metamodel serves as the specification for an implementation. In Section~\ref{sect:tool} we briefly discuss our prototype implementation based on this metamodel.
 
-\subsection{RationalGRL Methodology} \todo{Sepideh}{Marc}{Review this section and make sure it is correct}
+\subsection{RationalGRL Methodology} 
+%\todo{Sepideh}{Marc}{Review this section and make sure it is correct}
 
-As mentioned in Section~\ref{sect:introduction}, the RationalGRL framework has been extended with concepts from practical reasoning argument scheme (PRAS) to help integrating goal models with the detailed discussions and arguments the stakeholders pose during the analysis phase. That is, the RationalGRL framework includes two main parts: Argumentation model and GRL model. 
+As mentioned in Section~\ref{sect:introduction}, the RationalGRL framework uses concepts from practical reasoning argument scheme (PRAS) to help integrating goal models with the detailed discussions and arguments the stakeholders pose during the analysis phase. That is, the RationalGRL framework includes two main parts: Argumentation modeling and GRL modeling. 
 
-To develop the argumentation model, we need to analyze critical questions, argument schemes and the stakeholder's discussions. For the GRL part, we first need to create the "initial" GRL models by analyzing the non-functional requirements in the requirements specification document and by refining the high-level goals into operationalized tasks. These two parts, GRL and argumentation models are developed iteratively and each side can impact the other side so that the models can be refined or new critical questions and argument schemes can be instantiated. For example, answering a critical question \emph{Is the task \texttt{A} possible?}, instantiated from the argumentation model, can result in removing or adding a task in the GRL model. Similarly,  if, for example, we add a new intentional element to the GRL model, it can lead to a new critical question relevant to this intentional element and its relationships.  Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL framework with its components and their relationships.  The GRL models  are shown  on the right-hand side of the framework while the argumentation models is on the left-hand side. The links between the two sides illustrates the impacts and relationships between two sides. Note that, any of the critical question, their answer and the argument schemes that are instantiated during the analysis phase of the GRL model are documented with the GRL model and can be referred to in the future. 
+For the GRL part, we first need to create the ``initial'' GRL model by analyzing the non-functional requirements in the requirements specification document and by refining the high-level goals into operationalized tasks. For the argumentation part, arguments and counterarguments are put forward about various parts of the goal model.
+These two parts, GRL and argumentation, are developed iteratively and each side can impact the other side so that the models can be refined or new critical questions and argument schemes can be instantiated. For example, answering a critical question \emph{Is the task \texttt{A} possible?}, instantiated from the argumentation model, can result in removing or adding a task in the GRL model. Similarly,  if, for example, we add a new intentional element to the GRL model, it can lead to a new critical question relevant to this intentional element and its relationships.  Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL framework with its components and their relationships.  The GRL model is shown  on the right-hand side of the framework while the argumentation model is on the left-hand side. The links between the two sides illustrate the impacts and relationships between two sides. Note that answer to critical questions and argument schemes that are instantiated during the analysis phase of the GRL model are documented with the GRL model and can be referred to in the future. 
 
 \begin{figure}[ht]
 \centering
@@ -28,44 +30,17 @@ We propose the following methodology (shown in Figure~\ref{fig:rationalgrl-metho
 
 \textbf{(1) Instantiate Argument Schemes (AS)} -- In this step, we start from the list of arguments schemes of the argumentation framework. We select an intentional element from the initial GRL model that we want to analyze and we instantiate a relevant argument scheme from the already existing list of argument schemes or by adding a new one. For example, an argument scheme can be "Goal \emph{G} contributes to softgoal \emph{S}". When an argument scheme is instantiated, it corresponds to  an argument for or against part of a goal model.
 
-\textbf{(2) Answer Critical Questions (CQs)} -- After instantiating an argument scheme, we invoke related critical questions o attack the argument by counter-arguments.  Each argument scheme includes one or more critical question. For example, for the argument scheme, "Goal \emph{G} contributes to softgoal \emph{S}", there are two critical questions as follows:  \emph{Does the goal contributes to the softgoal?} and \emph{Does the goal contributes to some other softgoals?}. It is worth mentioning that, answering a critical question may result in a "conflict" situation. This is out of the scope of our work here.  When the analyst answers  a critical question, a new argument scheme may be instantiated.  Thus, it is possible to go back and forth between this step and the step (1).
+\textbf{(2) Answer Critical Questions (CQs)} -- After instantiating an argument scheme, we invoke related critical questions to attack the argument by counter-arguments.  Each argument scheme includes one or more critical questions. For example, for the argument scheme, "Goal \emph{G} contributes to softgoal \emph{S}", there are two critical questions as follows:  \emph{Does the goal contributes to the softgoal?} and \emph{Does the goal contributes to some other softgoals?}. 
+%It is worth mentioning that, answering a critical question may result in a "conflict" situation. This is out of the scope of our work here.  
+%MvZ: removed this sentence because I don't know what you mean with "conflict". I think We should explain it better or leave it out.
+When the analyst answers  a critical question, a new argument scheme may be instantiated.  Thus, it is possible to go back and forth between this step and the step (1).
 
 \textbf{(3) Decide on Intentional Elements and their Relationships} -- By answering a critical question, one of the four following cases can occur: \textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE} or \textsf{ATTACK}.  Any of these cases can  impact the arguments and corresponding GRL intentional elements.  \textsf{INTRO} means that 
-a new argument scheme is created. That means, the current argument scheme related to the critical question does not get attacked.  In the case of \textsf{DISABLE}, the intentional element or its related links are disabled or removed from the models. \textsf{REPLACE} introduces a new argument and attacks the original argument at the same time. This means that the original element of the argument scheme is replaced with a new one.   \textsf{ATTACK} is a generic counterargument which attacks any argument with another argument when a new evidence occur.  
+a new argument scheme is created. That means, the current argument scheme related to the critical question does not get attacked.  In the case of \textsf{DISABLE}, the intentional element or its related links are disabled or removed from the models. \textsf{REPLACE} introduces a new argument and attacks the original argument at the same time. This means that the original element of the argument scheme is replaced with a new one.   \textsf{ATTACK} is a generic counterargument which attacks any argument with another argument when new evidence occurs.  
 
 \textbf{(4) Modify GRL Models} -- In this step, we modify the GRL models based on the situation of step (3). That is, one of the following situation can happen with respect to the initial GRL model: 1) a new intentional element or a new link is introduced; 2) an existing intentional element or an existing link gets disabled (removed) from the model; or 3) an existing intentional element or link is replaced by a new one. This results in a new modified GRL. The new GRL model can then impact the argument schemes and instantiate another argument scheme (Step (1)).   
 
 We can continue these four steps until there is no more intentional element or link to analyze or we reach a satisfactory model. 
-
-In the next section, we provide a short example to illustrate the relationship between argumentation framework and goal models.  
-
-
-\subsubsection*{Example} \todo{Sepideh}{Marc}{Is this part ok? I am not sure if we should have this section at all here. It may make things more complicated. Better to have it all in the example section}
-\label{sect:methodology-example}
-
-In this section, we present a small example for the RationalGRL methodology. This example, which is based on the traffic simulator example described in Section~\ref{sect:goals:runningexample}. We base the argument schemes and the critical questions of this example on a transcript containing discussions about the development of this traffic simulator system. These transcripts are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}. We provide several more examples in Section~\ref{sect:examples}.
-
-As mentioned in Section~\ref{sect:goals:runningexample}, a group of stakeholders is developing a goal model for a traffic simulator example and they are modeling the goal \texttt{Simulate Traffic} using the RationalGRL methodology. This proceeds in the following way:
-\begin{itemize}
-\item
-First they start %at step \emph{Modify GRL models} (Figure~\ref{fig:rationalgrl-methodology}), 
-with the initial GRL model (Figure~\ref{fig:example-small})  and they invoke the intentional element \texttt{Simulate Traffic}. %SG: We say above that we have an initial GRL model, so how do we match it with this sentence? I tried to reword it but it doesn't make so much sense... 
-\item Next, they switch to the argumentation part (step \emph{Instantiate arguments schemes}). They answer critical question \emph{Does Simulate Traffic AND-decompose into any tasks?} with \emph{Yes: namely tasks ``Dynamic Simulation'' and ``Static Simulation}.
-\item As a result, two argument schemes are created, namely:
-\begin{itemize}
-\item Actor \texttt{Traffic Simulator} has task \texttt{Dynamic Simulation}
-\item Actor \texttt{Traffic Simulator} has task \texttt{Static Simulation}
-\end{itemize}
-\item In the GRL model, this corresponds to the addition of two tasks, and an AND-decomposition from the goal \emph{Simulate Traffic} to these two tasks.
-\item Next, the stakeholders test the validity of their goal model by answering more critical question. They answer two critical questions:
-\begin{itemize}
-\item
-CQ \emph{Is task ``Dynamic Simulation'' relevant} is answered with ``No, it is not relevant since the problem specification explicitly states dynamic simulations are not required''. Thus, the corresponding GRL intentional element is disabled.
-\item The decomposition is changed from AND to OR, since it turned out not both tasks can be implemented together.
-\end{itemize}
-\end{itemize}
-
-The resulting RationalGRL model is shown in Figure~\ref{fig:examples:decomposition}, which can be found in Section~\ref{sect:examples}, where we will also explain the visualization of the examples in more detail.
 
 \subsection{Metamodel}
 
@@ -77,8 +52,8 @@ The part above the horizontal dashed line depicts the concepts we introduced in 
 
 Finally, the red arrows depict how the two metamodels are integrated. The left arrow connects a GRL \textsf{IntentionalElement} with an argumentation \textsf{Modality}, where the mapping is denoted with red text. Thus, an intention element traces to an argument, which is always a modal formula. The right arrow connects the GRL \textsf{ElementLink} with the argumentation \textsf{Connective} (i.e. a \emph{contributes\_to} connective). Thus, an arrow between elements of a GRL model corresponds to \emph{contributes\_to} connectives in the argumentation framework.
 
-\begin{figure}[h!]
-\includegraphics[scale=0.61]{img/metamodelimg}
-\caption{The Metamodel \todo{Marc}{all}{This has to be revised.}}
+\begin{figure*}[h!]
+\includegraphics[scale=0.61]{metamodel/metamodel}
+\caption{The RationalGRL metamodel}
 \label{fig:metamodel}
-\end{figure}
+\end{figure*}
