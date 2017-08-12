@@ -1,7 +1,7 @@
 \section{Examples}
 \label{sect:examples}
 
-We now discuss various instantiations of argument schemes and the result of answering critical questions in more detail. For each example we provide transcript excerpts, a visualization of the arguments, and the corresponding goal model elements. We provide a legend for our visualization notation in Figure~\ref{fig:legend}.
+We now discuss various instantiations of argument schemes and the result of answering critical questions in more detail. For each example, we provide transcript excerpts, a visualization of arguments, and the corresponding goal model elements. We provide a legend for our visualization notation in Figure~\ref{fig:legend}.
 
 \begin{figure}[ht!]
 \centering
@@ -24,20 +24,21 @@ We now discuss various instantiations of argument schemes and the result of answ
     (trace1a) edge[traceLinkGREEN] (trace1b)
     (trace2a) edge[traceLinkRED] (trace2b);
 \end{tikzpicture}
-\caption{Legend of the various elements and relationships we use for the examples in this article.}
+\caption{Legends of Various Elements and Relationships}
 \label{fig:legend}
 \end{figure}
 
 \subsubsection{Example 1: Methodology example}
 
-In this section, we present a small example for the RationalGRL methodology. This example, which is based on the traffic simulator example described in Section~\ref{sect:goals:runningexample}. We base the argument schemes and the critical questions of this example on a transcript containing discussions about the development of this traffic simulator system. These transcripts are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}. We provide several more examples in Section~\ref{sect:examples}.
+In this section, we present a small example for the RationalGRL methodology. This example is based on the traffic simulator example described in Section~\ref{sect:goals:runningexample}. We base argument schemes and critical questions of this example on a transcript containing discussions about the development of this traffic simulator system. %These transcripts are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}. %TODO again?
+%We provide several more examples in Section~\ref{sect:examples}.
 
-As mentioned in Section~\ref{sect:goals:runningexample}, a group of stakeholders is developing a goal model for a traffic simulator example and they are modeling the goal \texttt{Simulate Traffic} using the RationalGRL methodology. This proceeds in the following way:
+As mentioned in Section~\ref{sect:goals:runningexample}, a group of stakeholders are developing a goal model for a traffic simulator example and they are modeling the goal \texttt{Simulate Traffic} using the RationalGRL methodology. This proceeds in the following way:
 \begin{itemize}
 \item
 First they start %at step \emph{Modify GRL models} (Figure~\ref{fig:rationalgrl-methodology}), 
-with the initial GRL model (Figure~\ref{fig:example-small})  and they invoke the intentional element \texttt{Simulate Traffic}. %SG: We say above that we have an initial GRL model, so how do we match it with this sentence? I tried to reword it but it doesn't make so much sense... 
-\item Next, they switch to the argumentation part (step \emph{Instantiate arguments schemes}). They answer critical question \emph{Does Simulate Traffic AND-decompose into any tasks?} with \emph{Yes: namely tasks ``Dynamic Simulation'' and ``Static Simulation}.
+with the initial GRL model (Figure~\ref{fig:example-small}) and they invoke the intentional element \texttt{Simulate Traffic}. 
+\item Next, they switch to the argumentation part (step \emph{Instantiate arguments schemes}). They answer critical question \emph{Does Simulate Traffic AND-decompose into any tasks?} with \emph{Yes: namely tasks ``Dynamic Simulation'' and ``Static Simulation"}.
 \item As a result, two argument schemes are created, namely:
 \begin{itemize}
 \item Actor \texttt{Traffic Simulator} has task \texttt{Dynamic Simulation}
@@ -52,16 +53,17 @@ CQ \emph{Is task ``Dynamic Simulation'' relevant} is answered with ``No, it is n
 \end{itemize}
 \end{itemize}
 
-The resulting RationalGRL model is shown in Figure~\ref{fig:examples:decomposition}.
+The resulting RationalGRL model is shown in Figure~\ref{fig:examples:decomposition}. %TODO You need to update goal "simulate" in this figure to "Simulate Traffic".  Also, I don't think we should really call it the rational GRL model. it is an excerpts of the model. 
 
 
 \subsubsection{Example 2: Disable task \texttt{Traffic light}}
 
-The transcript excerpt of this example is shown in Table~\ref{table:transcripts:traffic-light} in the appendix and comes from transcript $t_1$. In this example, participants are summing up functionality of the traffic simulator, which are tasks that the student can perform in the simulator. All these task can be formalized and are instantiations of argument scheme AS2: ``Actor \emph{Student} has tasks $T$'', where $T\in\{$Save map, Open map, Add intersection, Remove intersection, Add road, Add traffic light$\}$''. 
+The transcript excerpt of this example is shown in Table~\ref{table:transcripts:traffic-light} in the appendix and comes from transcript $t_1$. In this example, participants sum up functionality of the traffic simulator, which are tasks that the students can perform in the simulator. All these tasks can be formalized and are instantiated from  argument scheme AS2: ``Actor \emph{Student} has tasks $T$'', where $T\in\{$Save map, Open map, Add intersection, Remove intersection, Add road, Add traffic light$\}$''. 
 
-Once all these tasks are summed up, participant \texttt{P1} notes that the problem description states that all intersections in the traffic simulator have traffic lights, so the task \texttt{Add traffic light} is not useful. We formalized this using the critical question CQ12: ``Is task \texttt{Add traffic light} useful/relevant?''.
+Once all these tasks are summed up, participant \texttt{P1} notes that the problem description states that all intersections in the traffic simulator have traffic lights, so the task \texttt{Add traffic light} is not useful. We formalized this using the critical question CQ12: ``Is task \texttt{Add traffic light} useful/relevant?''. %TODO I think it is better to say "necessary" and "not necessary" --> change figure 8: useless --> not necessary
 
-We visualize some of the argument schemes, critical questions, and traceability links with the GRL model in Figure~\ref{fig:examples:traffic-light}. On the left side of the image, we see three of the instantiated argument schemes AS2. The bottom one, ``Actor \texttt{Student} has task \texttt{Add traffic light}'', is attacked by another argument generated from applying critical question CQ12: ``\texttt{Add traffic light} is useless (\emph{All intersections have traffic lights}). As a result, the corresponding GRL task is disabled. The other two tasks are enabled and have green traceability links.
+We visualize some of the argument schemes, critical questions, and traceability links with GRL model in Figure~\ref{fig:examples:traffic-light}. On the left side of the image, we see three of the instantiated argument schemes AS2. The bottom one, ``Actor \texttt{Student} has task \texttt{Add traffic light}'', is attacked by another argument generated from applying critical question CQ12: ``\texttt{Add traffic light} is %useless 
+not necessary (\emph{All intersections have traffic lights}). As a result, the corresponding GRL task is disabled. The other two tasks are enabled and have green traceability links.
 
 \begin{figure}[ht!]
 \centering
@@ -94,14 +96,14 @@ We visualize some of the argument schemes, critical questions, and traceability 
     (trace2a) edge[traceLinkGREEN] (trace2b)
     (trace3a) edge[traceLinkRED] (trace3b);
 \end{tikzpicture}
-\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted lines) for the traffic light example.}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted lines) for the Traffic Light Example.}
 \label{fig:examples:traffic-light}
 \end{figure}
 
 
 \subsubsection{Example 3: Clarify task \texttt{Road pattern}}
 
-The transcript excerpt of the second example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \texttt{Choose a road pattern}. 
+The transcript excerpt of the second example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \texttt{Choose a road pattern}. %TODO where is this task in the model?
 
 \begin{figure}[ht!]
 \centering
@@ -140,15 +142,17 @@ The transcript excerpt of the second example is shown in Table~\ref{table:transc
     (a2) edge [CQLink, bend right=50] node [left,draw=none] {CQ12a} (a3)
     (trace1) edge[traceLinkGREEN] (trace2);
 \end{tikzpicture}
-\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of the road pattern example.}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) for the Road Pattern Example.}
 \label{fig:examples:clarification}
 \end{figure}
 
-The formalized argument schemes and critical questions are shown in Figure~\ref{fig:examples:clarification}. The discussion starts with the first instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Create road}''. This argument is then challenged with critical question CQ12: ``Is the task \texttt{Create road} clear?''. Answering this question results in a new instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Choose a pattern}''. This process is repeated two more times, resulting in the final argument ``Actor \texttt{Student} has task \texttt{Choose a road pattern}''. This final argument is unattacked and has a corresponding intentional element (right image). 
+The formalized argument schemes and critical questions are shown in Figure~\ref{fig:examples:clarification}. The discussion starts with the first instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Create road}''. %TODO I don't see it in Figure 6.
+This argument is then challenged with critical question CQ12: ``Is the task \texttt{Create road} clear?''. Answering this question results in a new instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Choose a pattern}''. %TODO same
+This process is repeated two more times, resulting in the final argument ``Actor \texttt{Student} has task \texttt{Choose a road pattern}''. This final argument is "un-attacked" and has a corresponding intentional element (right image). 
 
-What is clearly shown in this example is that a clarifying argument attacks all arguments previously used to describe the element. For instance, the final argument on the bottom of Figure~\ref{fig:examples:clarification} attacks all three other arguments for a name of the element. If this was not the case, then it may occur that a previous argument is \emph{reinstatiated}, meaning that it becomes accepted again because the argument attacking it is itself attacked. Suppose for instance the bottom argument ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' did not attack the second argument: ``Action \texttt{Student} has task \texttt{Choose a pattern}''. In that case, this argument would be reinstated, because its only attacker ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' is itself defeated by the bottom argument.
+What is clearly shown in this example is that a clarifying argument attacks all arguments previously used to describe the element. For instance, the final argument on the bottom of Figure~\ref{fig:examples:clarification} attacks all three other arguments for a name of the element. If this is not the case, then it may occur that a previous argument is \emph{re-instantiated}, meaning that it becomes accepted again because the argument attacking it, is itself attacked. Suppose for instance that the bottom argument ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' did not attack the second argument: ``Action \texttt{Student} has task \texttt{Choose a pattern}''. In that case, this argument would be re-instantiated, because its only attacker ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' is itself defeated by the bottom argument. %TODO check these tasks with the GRL model of Figure 6. Also, I recommend to have the changed full  GRL model after we finish the examples to show how the model improves. 
 
-\subsubsection{Example 4: Decompose goal \texttt{Simulate}}
+\subsubsection{Example 4: Decompose goal \texttt{Simulate}} %TODO In fig 1, the goal is called simulate traffic which makes more sense. goal "simulate" is a bit meaningless. I suggest to update fig 6 and all the other ones accordingly. Also, we are refering to this example in example 1. Why can't we merge them?
 
 \todo{Marc}{all}{Check whether the text matches the figure here}
 The transcript excerpt of this example is shown in Table~\ref{table:transcript:decomposition} in the appendix and comes from transcript $t_3$. It consists of a discussion about the type of decomposition relationship for the goal \texttt{Simulate}.
@@ -195,15 +199,15 @@ The transcript excerpt of this example is shown in Table~\ref{table:transcript:d
     (trace4a) edge[traceLinkGREEN, bend right] (trace4b);
 \end{tikzpicture}
 \end{adjustwidth}
-\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of the example.}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) of the example.} %TODO which example? 
 \label{fig:examples:decomposition}
 \end{figure}
 
-The visualization of this discussion is shown in Figure~\ref{fig:examples:decomposition}. Each GRL element on the right has a corresponding argument on the left. Moreover, the original argument for an AND-decomposition is attacked by the argument for the OR-decomposition, and the new argument is linked to the decomposition relation in the GRL model.
+The visualization of this discussion is shown in Figure~\ref{fig:examples:decomposition}. Each GRL element on the right has a corresponding argument on the left. Moreover, the original argument for an AND-decomposition is attacked by the argument for the OR-decomposition, and the new argument is linked to the decomposition relation in the GRL model. %TODO I think we can merge this easily with example 1. 
 
 \subsubsection{Example 5: Reinstate actor \texttt{Development team}}
 
-The transcript excerpt of this example is shown in Table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. It consists of two parts: first participant \texttt{P1} puts forth the suggestion to include actor \texttt{Development team} in the model. This is, then, questioned by participant \texttt{P2}, who argues that the professor will develop the software, so there won't be any development team. However, in the second part, participant \texttt{P2} argue that the development team should be considered, since the professor does not develop the software.
+The transcript excerpt of this example is shown in Table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. It consists of two parts: first participant \texttt{P1} puts forth the suggestion to include actor \texttt{Development team} in the model. This is, then, questioned by participant \texttt{P2}, who argues that the professor will develop the software, so there will not be any development team. However, in the second part, participant \texttt{P2} argue that the development team should be considered, since the professor does not develop the software.
 
 \begin{figure}[ht!]
 \centering
@@ -252,8 +256,8 @@ We formalize this using a \emph{generic counterargument}, attacking the critical
     (a1) edge [CQLink, bend right=50] node [left,draw=none] {Att} (a2)
     (trace1) edge[traceLinkGREEN] (trace2);
 \end{tikzpicture}
-\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of a discussion about the relevance of actor Development team.}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) of a Discussion about the Relevance of Actor Development Team.}
 \label{fig:examples:relevant-actor2}
 \end{figure}
 
-Figure~\ref{fig:examples:relevant-actor2} shows the situation after the counter argument has been put forward. The argument ``Actor \texttt{Professor} doesn't develop the software'' now attacks the argument ``\texttt{Development team} is not relevant (\emph{The professor makes the software})'', which in turn attacks the original argument ``\texttt{Development team} is relevant''. As a result, the first argument is reinstated, which causes the actor in the GRL model to be enabled again.
+Figure~\ref{fig:examples:relevant-actor2} shows the situation after the counter argument has been put forward. The argument ``Actor \texttt{Professor} does not develop the software'' now attacks the argument ``\texttt{Development team} is not relevant (\emph{The professor makes the software})'', which in turn attacks the original argument ``\texttt{Development team} is relevant''. As a result, the first argument is re-instantiated, which causes the actor in the GRL model to be enabled again.
