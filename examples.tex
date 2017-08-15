@@ -1,7 +1,7 @@
 \section{Examples}
 \label{sect:examples}
 
-We now discuss various instantiations of argument schemes and the result of answering critical questions in more detail. For each example, we provide transcript excerpts, a visualization of arguments, and the corresponding goal model elements. We provide a legend for our visualization notation in Figure~\ref{fig:legend}.
+We now discuss various instantiations of argument schemes and the result of answering critical questions in more detail. For each example, we provide transcript excerpts, a visualization of arguments, and the corresponding goal model elements. Figure~\ref{fig:transcripts:grl} in the previous section shows an example of how a RationalGRL may look like when it is developed in our prototype tool. However, the argument schemes that are instantiated are left implicit in this figure (in the tool, they can be seen in the details pane, see Section~\ref{sect:tool}). Since we would like to make these instantiated argument schemes explicit in the examples below, we use a different visual language here. We provide a legend for our visualization notation in Figure~\ref{fig:legend}.
 
 \begin{figure}[ht!]
 \centering
@@ -53,17 +53,17 @@ CQ \emph{Is task ``Dynamic Simulation'' relevant} is answered with ``No, it is n
 \end{itemize}
 \end{itemize}
 
-The resulting RationalGRL model is shown in Figure~\ref{fig:examples:decomposition}. %TODO You need to update goal "simulate" in this figure to "Simulate Traffic".  Also, I don't think we should really call it the rational GRL model. it is an excerpts of the model. 
+An excerpt of the RationalGRL model is shown in Figure~\ref{fig:examples:decomposition}. %TODO You need to update goal "simulate" in this figure to "Simulate Traffic".  Also, I don't think we should really call it the rational GRL model. it is an excerpts of the model. 
 
 
 \subsubsection{Example 2: Disable task \texttt{Traffic light}}
 
 The transcript excerpt of this example is shown in Table~\ref{table:transcripts:traffic-light} in the appendix and comes from transcript $t_1$. In this example, participants sum up functionality of the traffic simulator, which are tasks that the students can perform in the simulator. All these tasks can be formalized and are instantiated from  argument scheme AS2: ``Actor \emph{Student} has tasks $T$'', where $T\in\{$Save map, Open map, Add intersection, Remove intersection, Add road, Add traffic light$\}$''. 
 
-Once all these tasks are summed up, participant \texttt{P1} notes that the problem description states that all intersections in the traffic simulator have traffic lights, so the task \texttt{Add traffic light} is not useful. We formalized this using the critical question CQ12: ``Is task \texttt{Add traffic light} useful/relevant?''. %TODO I think it is better to say "necessary" and "not necessary" --> change figure 8: useless --> not necessary
+Once all these tasks are summed up, participant \texttt{P1} notes that the problem description states that all intersections in the traffic simulator have traffic lights, so the task \texttt{Add traffic light} is not necessary. We formalized this using the critical question CQ12: ``Is task \texttt{Add traffic light} useful/relevant?''. %TODO I think it is better to say "necessary" and "not necessary" --> change figure 8: useless --> not necessary
 
 We visualize some of the argument schemes, critical questions, and traceability links with GRL model in Figure~\ref{fig:examples:traffic-light}. On the left side of the image, we see three of the instantiated argument schemes AS2. The bottom one, ``Actor \texttt{Student} has task \texttt{Add traffic light}'', is attacked by another argument generated from applying critical question CQ12: ``\texttt{Add traffic light} is %useless 
-not necessary (\emph{All intersections have traffic lights}). As a result, the corresponding GRL task is disabled. The other two tasks are enabled and have green traceability links.
+not necessary (\emph{All intersections have traffic lights})''. As a result, the corresponding GRL task is disabled. The other two tasks are enabled and have green traceability links.
 
 \begin{figure}[ht!]
 \centering
@@ -78,7 +78,7 @@ not necessary (\emph{All intersections have traffic lights}). As a result, the c
         	\argtext{AS2}{Actor \emph{Student} has task \emph{Add traffic light}}
         };
         \node (a3) [argNodeIN] at (-2,-6){
-        	\argtext{}{\emph{Add traffic light} is useless (\emph{All intersections have traffic lights})}
+        	\argtext{}{\emph{Add traffic light} is not necessary (\emph{All intersections have traffic lights})}
         };
         \node[grl] (task1) at (2.3,0) { \includegraphics[scale=0.5]{img/task_save_map} };
         \node[grl] (task2) at (2.3,-2) { \includegraphics[scale=0.5]{img/task_add_road} };
@@ -103,7 +103,9 @@ not necessary (\emph{All intersections have traffic lights}). As a result, the c
 
 \subsubsection{Example 3: Clarify task \texttt{Road pattern}}
 
-The transcript excerpt of the second example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \texttt{Choose a road pattern}. %TODO where is this task in the model?
+The transcript excerpt of the second example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_3$. It consists of a number of clarification steps, resulting in the task \texttt{Choose a road pattern}. 
+%TODO where is this task in the model?
+%MvZ: It is in Figure 9, but not in Figure 6. Figure 6 is just a single model from our transcripts, but Figure 9 comes from another transcript. Do you think it is better to take all of the examples from the same transcript? I feel that may look a bit strange since we are completely disregarding the other transcripts then.
 
 \begin{figure}[ht!]
 \centering
@@ -146,8 +148,10 @@ The transcript excerpt of the second example is shown in Table~\ref{table:transc
 \label{fig:examples:clarification}
 \end{figure}
 
-The formalized argument schemes and critical questions are shown in Figure~\ref{fig:examples:clarification}. The discussion starts with the first instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Create road}''. %TODO I don't see it in Figure 6.
-This argument is then challenged with critical question CQ12: ``Is the task \texttt{Create road} clear?''. Answering this question results in a new instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Choose a pattern}''. %TODO same
+The formalized argument schemes and critical questions are shown in Figure~\ref{fig:examples:clarification}. The discussion starts with the first instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Create road}''. 
+%TODO I don't see it in Figure 6.
+%MvZ: see previous comment, Figure 9 is not part of Figure 6
+This argument is then challenged with critical question CQ12: ``Is the task \texttt{Create road} clear?''. Answering this question results in a new instantiation of argument scheme AS2: ``Actor \texttt{Student} has task \texttt{Choose a pattern}''. %TODO same %MvZ same
 This process is repeated two more times, resulting in the final argument ``Actor \texttt{Student} has task \texttt{Choose a road pattern}''. This final argument is "un-attacked" and has a corresponding intentional element (right image). 
 
 What is clearly shown in this example is that a clarifying argument attacks all arguments previously used to describe the element. For instance, the final argument on the bottom of Figure~\ref{fig:examples:clarification} attacks all three other arguments for a name of the element. If this is not the case, then it may occur that a previous argument is \emph{re-instantiated}, meaning that it becomes accepted again because the argument attacking it, is itself attacked. Suppose for instance that the bottom argument ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' did not attack the second argument: ``Action \texttt{Student} has task \texttt{Choose a pattern}''. In that case, this argument would be re-instantiated, because its only attacker ``Actor \texttt{Student} has task \texttt{Choose a pattern preference}'' is itself defeated by the bottom argument. %TODO check these tasks with the GRL model of Figure 6. Also, I recommend to have the changed full  GRL model after we finish the examples to show how the model improves. 
@@ -231,7 +235,7 @@ The transcript excerpt of this example is shown in Table~\ref{table:transcript:i
 \label{fig:examples:relevant-actor}
 \end{figure}
 
-We formalize this using a \emph{generic counterargument}, attacking the critical question. The first part of the discussion is shown in Figure~\ref{fig:examples:relevant-actor}. We formalize the first statement as an instantiation of argument scheme AS0: ``Actor \texttt{development team} is relevant''. This argument is, then, attacked by answering critical question CQ0: ``Is actor \texttt{development team} relevant? with \emph{No}. This results in two arguments, AS0 and CQ0, where CQ0 attacks AS0. This is shown in Figure~\ref{fig:examples:relevant-actor}, left image.
+We formalize this using a \emph{generic counterargument}, attacking the critical question. The first part of the discussion is shown in Figure~\ref{fig:examples:relevant-actor}. We formalize the first statement as an instantiation of argument scheme AS0: ``Actor \texttt{development team} is relevant''. This argument is, then, attacked by answering critical question CQ0: ``Is actor \texttt{development team} relevant? with \emph{No}. This results in two arguments, AS0 and CQ0, where CQ0 attacks AS0.'' This is shown in Figure~\ref{fig:examples:relevant-actor}, left image.
 
 \begin{figure}[ht!]
 \centering

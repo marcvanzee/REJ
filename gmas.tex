@@ -51,14 +51,14 @@ AS13 & Element $IE$ has name $n$ & CQ13 & Is the name clear/unambiguous? & REPLA
 \label{table:argument-schemes}
 \end{table*}
 
-In previous section, we provided an overview of RationalGRL methodology. In this section, we discuss our argument schemes and critical questions in more detail. It is important to note that the list of argument schemes we present in this section is not exhaustive. It is an initial list that we have obtained by annotating transcripts, however, our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
+In the previous section, we provided an overview of RationalGRL methodology. In this section, we discuss our argument schemes and critical questions in more detail. It is important to note that the list of argument schemes we present in this section is not exhaustive. It is an initial list that we have obtained by annotating transcripts, but our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
 
 The list of argument schemes and critical questions that we have obtained from our analysis is shown in Table~\ref{table:argument-schemes}. The first four argument schemes (AS0-AS4) are arguments for an element of a goal model, the next seven (AS5-AS11) are related to relationships, the next two (AS12-AS13) are for intentional elements in general, and the last is (Att) is a generic counterargument for any type of argument that has been put forward.
 
 As we have already discussed in Section~\ref{sect:overview}, answering critical questions can have different impacts on the model. The right column in Table~\ref{table:argument-schemes} shows the impact of answering each critical question affirmatively. %SG: what does affirmatively mean?
 As mentioned earlier, answering a critical question can create an argument disabling the corresponding GRL element of the attacked argument scheme (\textsf{DISABLE}); it can create an argument introducing a new GRL element (\textsf{INTRO}); it can replace the GRL element corresponding to the original argument (\textsf{REPLACE}), or it can simply attack an argument directly (\textsf{ATTACK}).
 
-In the following subsections, we first provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts) and then, we analyze our results.
+In the following subsections, we first provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts) and then we analyze our results.
 
 \subsection{Details experiment}
 
@@ -83,16 +83,20 @@ duration & 1h34m52s & 1h13m39s & 1h17m20s\\
 \label{table:transcripts:info}
 \end{table}
 
-\paragraph{Process of Extracting Argument Schemes and Critical Questions} %TODO I changed the title from annotation method.
+\paragraph{Process of Extracting Argument Schemes and Critical Questions} %TODO I changed the title from annotation method. %MvZ: ok, looks good.
 
 To develop the list of argument schemes and critical questions, we started with an initial list of 8 argument schemes and 18 critical questions that we derived from PRAS (AS1-AS4, AS6-AS9 of Table~\ref{table:argument-schemes}). We, then, annotated transcripts with arguments and critical questions from this initial list. If there were arguments or critical questions that did not appear in the initial list, we added them to the list.
-Existing argument schemes that did not appear were removed from the list, but critical questions were not removed (see discussion in Section~\ref{sect:gmas:transcripts:analysis}). %TODO I don't understand it! why?
+% Existing argument schemes that did not appear were removed from the list, but critical questions were not removed (see discussion in Section~\ref{sect:gmas:transcripts:analysis}). 
+%TODO I don't understand it! why?
+%MvZ: I agree it is confusing. The idea is that critical questions are often implicit, so we kept them in since we believe it may still stimulate discussions. I now simply left it out since it doesn't add much and will only be confusing.
 
 Most of the occurrences were not literally found back, but had to be inferred from the context. This can be seen in the various examples we will discuss.
 
-It is generally known in the argumentation literature that it can be very difficult to identify arguments in natural language texts~\cite{walton-etal2004}. Arguments are often imprecise, lack conclusion, and may be supported by non verbal communication that is not captured in transcripts. However, there is hardly any research on argument extraction in the requirement engineering domain. Thus, despite this potential weakness in our approach, we believe it nevertheless is at least useful as something that others can build further on (see Section~\ref{sect:goalmodeling:openissues}). %TODO I don't understand the last few sentences... what does argument extraction mean? why is it needed? don't use "something that others" it is very informal for a journal paper. 
+%It is generally known in the argumentation literature that it can be very difficult to identify arguments in natural language texts~\cite{walton-etal2004}. Arguments are often imprecise, lack conclusion, and may be supported by nonverbal communication that is not captured in transcripts. However, there is hardly any research on argument extraction in the requirement engineering domain. Thus, despite this potential weakness in our approach, we believe it nevertheless is at least useful as something that others can build further on (see Section~\ref{sect:goalmodeling:openissues}). 
+%TODO I don't understand the last few sentences... what does argument extraction mean? why is it needed? don't use "something that others" it is very informal for a journal paper. 
+%MvZ: I was also sceptical about this paragraph when I wrote it. I think it belongs in the related work section where we can discuss it in more detail. I now removed it here.
 
-\paragraph{Results}
+\subection{Experiment Results}
 
 \begin{figure*}[h]
 \includegraphics[width=\textwidth]{img/transcript_grl}
@@ -168,35 +172,38 @@ CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
 \label{table:transcripts:results:argumentschemes}
 \end{table}
 
-We manually created GRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. %TODO Again the text and the figure don't match.
-Depending on whether the underlying argument for an element is accepted or rejected, we added a green or a red dot to the element. 
-%We added green and red dots to various elements and relationships in the figure. 
-A green dot indicates that there is an underlying argument for the element that is accepted, while a red dot indicates a rejected underlying argument. Note that if the underlying argument is rejected, the corresponding GRL element is disabled. Some elements do not have a corresponding green or red dot. In that case, we have inferred the elements from the discussion, but we could not explicitly find an argument for them.
+We manually created GRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. 
+%TODO Again the text and the figure don't match.
+%MvZ: What doesn't match? We only say here we give an example in Figure 6, so there is not problem, right?
+Depending on whether the underlying argument for an element is accepted or rejected, we added a green or a red dot to the element. A green dot indicates that there is an underlying argument for the element that is accepted, while a red dot indicates a rejected underlying argument. Note that if the underlying argument is rejected, the corresponding GRL element is disabled. Some elements do not have a corresponding green or red dot. In that case, we have inferred the elements from the discussion, but we could not explicitly find an argument for them.
 
+%MvZ: The examples below were not meant to correspond to anything, I just wrote them as ficitious examples. Looking at your remarks I think this is confusing.
 Answering a critical question can have four different effects on the original argument and the corresponding GRL element:
 \begin{itemize} 
-\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. For instance, suppose argument scheme AS5 is instantiated as follows:: ``Goal \texttt{Generate cars} OR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. %TODO In figure it is XOR
-Suppose now the critical question CQ5b: ``Does the goal \texttt{Agreeable meeting dates} decompose into other tasks?'' is answered with ``yes, namely \texttt{Choose randomly}''. %TODO Where can we find this goal and its task?
-This results in a new instantiation of AS5, namely: ``Goal \texttt{Generate cars} OR-decomposes into tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}. As a result, the goal model will contain the corresponding task \texttt{Choose randomly}, as well as an OR-decomposition relation from the goal \texttt{Generate cars} to that task. %TODO ?????
+\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. For instance, suppose argument scheme AS5 is instantiated as follows:: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}'' (see Figure~\ref{fig:transcripts:grl}). 
+%TODO In figure it is XOR %MvZ: Fixed
+Suppose now the critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'' is answered with ``Yes, namely \texttt{Choose randomly}''. This results in a new instantiation of AS5, namely: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.'' As a result, the goal model will contain the corresponding task \texttt{Choose randomly}, as well as an OR-decomposition relation from the goal \texttt{Generate cars} to that task. %TODO ?????
 \item \textsf{DISABLE:} Disable the element or relationship of argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. For instance, suppose argument scheme AS0 is instantiated with: ``Actor \texttt{Teacher} is relevant''. This argument can be attacked with critical question CQ0: ``Actor \texttt{Teacher} is not relevant''. As a result, the argument related to the actor is attacked as well, and actor \texttt{Teacher} is disabled in the goal model.
-\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. This operation both introduces a new argument and attacks the original one. For instance, suppose argument scheme AS2 is instantiated with: ``Actor \texttt{Student}" can perform task \texttt{Choose a pattern preference}. This argument can be attacked with critical question CQ13: ``The task \texttt{Choose a pattern preference} is unclear, it should be \texttt{Choose a road pattern}''. This analysis results in replacing the original argument with the new argument ``Actor \texttt{Student} can perform task \texttt{Choose a road pattern}. In the goal model, the description of the task should change accordingly.
+\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. This operation both introduces a new argument and attacks the original one. For instance, suppose argument scheme AS2 is instantiated with: ``Actor \texttt{Student}" can perform task \texttt{Choose a pattern preference}. This argument can be attacked with critical question CQ13: ``The task \texttt{Choose a pattern preference} is unclear, it should be \texttt{Choose a road pattern}''. This analysis results in replacing the original argument with the new argument ``Actor \texttt{Student} can perform task \texttt{Choose a road pattern}.'' In the goal model, the description of the task should change accordingly.
 \item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. Suppose argument scheme AS0 is instantiated with ``Actor \texttt{Teacher} is relevant'' and it is attacked by critical question CQ0: ``Actor \texttt{Teacher} is not relevant'', since the teacher does not create the system. However,  if a new evidence comes up, this critical question may in return be attacked again. For instance, it may turn out that the teacher will work on developing the application herself.  In this case, the generic counter argument ``Actor \texttt{Teacher} is relevant, because he/she does the development of the application'' attack the argument ``Actor \texttt{Teacher} is not relevant''.Thus, the original argument ``Actor \texttt{Teacher} is relevant'' is accepted again, and it is shown in the goal model.
 \end{itemize}
 
 In Section~\ref{sect:examples} we provide examples for all of these four effects.
 
-\subsection{Analysis}
-\label{sect:gmas:transcripts:analysis}
+%MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?
 
-\paragraph{Analysis of Argument Schemes}
-Recall that our initial list of argument schemes consists of AS1-AS4, AS6-AS9 (Table~\ref{table:argument-schemes}). Therefore, the difference between the initial list of argument schemes and those found in transcripts is quite small. 
+%\subsection{Analysis}
+%\label{sect:gmas:transcripts:analysis}
+
+%\paragraph{Analysis of Argument Schemes}
+%Recall that our initial list of argument schemes consists of AS1-AS4, AS6-AS9 (Table~\ref{table:argument-schemes}). Therefore, the difference between the initial list of argument schemes and those found in transcripts is quite small. 
 %TODO The next few sentences are weird... they make our work very trivial.. rewrite.
-We found it surprising that we were able to find back all the schemes in the transcript at least twice, even more since the topic of discussion was not goal models, but more generally the architecture of an information system. This gives us an indication that it is possible to capture (parts of the) arguments used in those type of discussions using argument schemes.
+%We found it surprising that we were able to find back all the schemes in the transcript at least twice, even more since the topic of discussion was not goal models, but more generally the architecture of an information system. This gives us an indication that it is possible to capture (parts of the) arguments used in those type of discussions using argument schemes.
 
-We observed that our initial list is rather limited, which is a consequence of the fact that it is derived from PRAS. Since PRAS only considers very specific types of relationships, we are not able to capture many other relationships existing in GRL. GRL has four types of intentional elements (softgoal, goal, task, resource) and four types of relationships (positive contribution, negative contribution\footnote{In fact, a contribution can be any integer in the domain [-100,100], but for the sake of simplicity we only consider two kinds of contributions here.}, dependency, decomposition), allowing theoretically $4^3=64$ different types of argument schemes, of which we currently only consider 11. 
+%We observed that our initial list is rather limited, which is a consequence of the fact that it is derived from PRAS. Since PRAS only considers very specific types of relationships, we are not able to capture many other relationships existing in GRL. GRL has four types of intentional elements (softgoal, goal, task, resource) and four types of relationships (positive contribution, negative contribution\footnote{In fact, a contribution can be any integer in the domain [-100,100], but for the sake of simplicity we only consider two kinds of contributions here.}, dependency, decomposition), allowing theoretically $4^3=64$ different types of argument schemes, of which we currently only consider 11. 
 %TODO which analysis? why aren't they used? How did we empirically validate it? How are we confident in the result?
-Our analysis, however, shows that many of these schemes are not often used, and thus, gives us some confidence in the resulting list. However, additional argument schemes and critical questions can be easily added to our framework. Beside, our list is not meant to be exhaustive.
+%Our analysis, however, shows that many of these schemes are not often used, and thus, gives us some confidence in the resulting list. However, additional argument schemes and critical questions can be easily added to our framework. Beside, our list is not meant to be exhaustive.
 
-\paragraph{Analysis of the Critical Questions} The difference between the initial list of critical questions and those we found in transcripts is much larger than for the critical questions. %TODO  I don't get this sentence. Also, the ones below. 
-We found few of the critical questions we initially proposed. %TODO ???
-However, this does not mean that they were not implicitly used in the minds of the participants. If a participant, for instance, forms an argument for a contribution from a task to a softgoal, it may very well be that she/he was asking her/him-self the question ``Does the task contributes to some other softgoals?''. However, many of these critical questions are not mentioned explicitly. If we assume this explanation is at least partially correct, then this would mean that critical questions may still play a role when formalizing the discussions leading up to a goal model, and it would be limiting to leave them out of our framework. In the context of a tool support, we believe that having these critical questions available may stimulate discussions. %TODO what does it mean in the context of a tool support?
+%\paragraph{Analysis of the Critical Questions} The difference between the initial list of critical questions and those we found in transcripts is much larger than for the critical questions. %TODO  I don't get this sentence. Also, the ones below. 
+%We found few of the critical questions we initially proposed. %TODO ???
+%However, this does not mean that they were not implicitly used in the minds of the participants. If a participant, for instance, forms an argument for a contribution from a task to a softgoal, it may very well be that she/he was asking her/him-self the question ``Does the task contributes to some other softgoals?''. However, many of these critical questions are not mentioned explicitly. If we assume this explanation is at least partially correct, then this would mean that critical questions may still play a role when formalizing the discussions leading up to a goal model, and it would be limiting to leave them out of our framework. In the context of a tool support, we believe that having these critical questions available may stimulate discussions. %TODO what does it mean in the context of a tool support?
