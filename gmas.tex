@@ -58,7 +58,26 @@ The list of argument schemes and critical questions that we have obtained from o
 As we have already discussed in Section~\ref{sect:overview}, answering critical questions can have different impacts on the model. The right column in Table~\ref{table:argument-schemes} shows the impact of answering each critical question affirmatively. %SG: what does affirmatively mean?
 As mentioned earlier, answering a critical question can create an argument disabling the corresponding GRL element of the attacked argument scheme (\textsf{DISABLE}); it can create an argument introducing a new GRL element (\textsf{INTRO}); it can replace the GRL element corresponding to the original argument (\textsf{REPLACE}), or it can simply attack an argument directly (\textsf{ATTACK}).
 
-In the following subsections, we first provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts) and then we analyze our results.
+The RationalGRL language is an extension of GRL. The prototype tool we developed therefore also contains various new elements and a new relationship. The legend of the these additions is shown in Figure~\ref{fig:rationalgrllegend}.
+
+In the following subsections, we first explain the new visual language in more detail, after which we provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts).
+
+\subsection{RationalGRL Language}
+
+RationalGRL is an extension of GRL, and adds the following new elements (Figure~\ref{fig:rationalgrllegend}):
+\begin{itemize}
+\item \emph{Argument}: This represents an argument created by answering one of the critical questions which disables a GRL element, or counter-attacks a previous argument.
+\item \emph{Disabled GRL element}: If a GRL element is attacked by an argument, which itself is not attacked, then this GRL element will be disabled, meaning that it does not play a role in the analysis of the GRL model. 
+\item \emph{Refined GRL Element}: Not all critical questions attack a GRL element. It is also possible that a critical question \emph{replaces} an existing element (for instance, by clarifying the name of the element), or that it leads to the \emph{introduction} of a new element. In these cases, the corresponding GRL element is shown with a striped background. If the user clicks on this element, a details pane shows up containing the history of refinements (see Section~\ref{sect:tool}).
+\item \emph{Attack Link}: An attack link can occur between an argument and a GRL element, or between two elements. It means that the source argument attacks the target GRL element or argument.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.35\textwidth]{img/legend}
+\caption{The new elements and link of RationalGRL}
+\label{fig:rationalgrllegend}
+\end{figure}
 
 \subsection{Details experiment}
 
@@ -98,8 +117,8 @@ Most of the occurrences were not literally found back, but had to be inferred fr
 
 \subsection{Experiment Results}
 
-\begin{figure*}[h]
-\includegraphics[width=\textwidth]{img/transcript_grl}
+\begin{figure*}[h!]
+\includegraphics[width=\textwidth]{img/Fig6}
 \caption{The GRL model manually constructed from transcript $t_1$. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.}
 \label{fig:transcripts:grl}
 \end{figure*} %TODO Figure doesn't match the text!
@@ -172,23 +191,16 @@ CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
 \label{table:transcripts:results:argumentschemes}
 \end{table}
 
-We manually created GRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. 
-%TODO Again the text and the figure don't match.
-%MvZ: What doesn't match? We only say here we give an example in Figure 6, so there is not problem, right?
-Depending on whether the underlying argument for an element is accepted or rejected, we added a green or a red dot to the element. A green dot indicates that there is an underlying argument for the element that is accepted, while a red dot indicates a rejected underlying argument. Note that if the underlying argument is rejected, the corresponding GRL element is disabled. Some elements do not have a corresponding green or red dot. In that case, we have inferred the elements from the discussion, but we could not explicitly find an argument for them.
+We manually created RationalGRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. This figure shows a simplified version of the actual model in order to improve the presentation, but the full models can be found back in our repository. \todo{Marc}{all}{Perhaps we should explain a bit about the model here?}
 
-%MvZ: The examples below were not meant to correspond to anything, I just wrote them as ficitious examples. Looking at your remarks I think this is confusing.
 Answering a critical question can have four different effects on the original argument and the corresponding GRL element:
 \begin{itemize} 
-\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. For instance, suppose argument scheme AS5 is instantiated as follows:: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}'' (see Figure~\ref{fig:transcripts:grl}). 
-%TODO In figure it is XOR %MvZ: Fixed
-Suppose now the critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'' is answered with ``Yes, namely \texttt{Choose randomly}''. This results in a new instantiation of AS5, namely: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.'' As a result, the goal model will contain the corresponding task \texttt{Choose randomly}, as well as an OR-decomposition relation from the goal \texttt{Generate cars} to that task. %TODO ?????
-\item \textsf{DISABLE:} Disable the element or relationship of argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. For instance, suppose argument scheme AS0 is instantiated with: ``Actor \texttt{Teacher} is relevant''. This argument can be attacked with critical question CQ0: ``Actor \texttt{Teacher} is not relevant''. As a result, the argument related to the actor is attacked as well, and actor \texttt{Teacher} is disabled in the goal model.
-\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. This operation both introduces a new argument and attacks the original one. For instance, suppose argument scheme AS2 is instantiated with: ``Actor \texttt{Student}" can perform task \texttt{Choose a pattern preference}. This argument can be attacked with critical question CQ13: ``The task \texttt{Choose a pattern preference} is unclear, it should be \texttt{Choose a road pattern}''. This analysis results in replacing the original argument with the new argument ``Actor \texttt{Student} can perform task \texttt{Choose a road pattern}.'' In the goal model, the description of the task should change accordingly.
-\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. Suppose argument scheme AS0 is instantiated with ``Actor \texttt{Teacher} is relevant'' and it is attacked by critical question CQ0: ``Actor \texttt{Teacher} is not relevant'', since the teacher does not create the system. However,  if a new evidence comes up, this critical question may in return be attacked again. For instance, it may turn out that the teacher will work on developing the application herself.  In this case, the generic counter argument ``Actor \texttt{Teacher} is relevant, because he/she does the development of the application'' attack the argument ``Actor \texttt{Teacher} is not relevant''.Thus, the original argument ``Actor \texttt{Teacher} is relevant'' is accepted again, and it is shown in the goal model.
-\end{itemize}
+\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. In Figure~\ref{fig:transcripts:grl}, each GRL element can be seen as the instantiation of an argument scheme. For instance, the XOR-decomposition from ``Generate Cars'' is an instantiation of AS5 as follows: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. Suppose now that the modelers that created Figure~\ref{fig:transcripts:grl} would continue their analysis by discussing critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'', and that they would answer this with ``Yes, namely \texttt{Choose randomly}''. This then results in the introduction of another task with the name ``Choose randomly'', and the XOR-decomposes would go from ``Generate Cars'' into the three tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.''
+\item \textsf{DISABLE:} Disable the element or relationship of argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. In Figure~\ref{fig:transcripts:grl}, there are several examples of disabled GRL elements. The task ``Add traffic light'' (top-left in figure) is attacked by answering critical question CQ2: ``Is task Add traffic light possible?'' negatively, resulting in an argument that disables the GRL element. What we also see from Figure~\ref{fig:transcripts:grl} is that disabling actor ``Teacher'' also disables all elements belonging to this actor. Furthermore, disabling task ``Dynamic simulation'' also disables all incoming and outgoing links with this task.
 
-In Section~\ref{sect:examples} we provide examples for all of these four effects.
+\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. In Figure~\ref{fig:transcripts:grl}, task ``Show map editor'' has been replaced various times, and this is shown in the figure as a \emph{refined} element. In this case, the participants were discussing the correct naming for this element (CQ13), leading to various replacements of the name. While the previous names are not shown in the figure, they show up in the details pane of the corresponding element.
+\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. In Figure~\ref{fig:transcripts:grl} we see one example of such a counter-attack. First, task ``Control car influx per road'' is attack by answering CQ2 (irrelevant task). However, after discussing this, the participants found that this was not the case, since the problem description stated that it is important that students can control the simulation manually. Therefore, the arguments that attacked the task is attacked by the counter-argument ``Important for students'', which re-enables the task ``Control car influx per road''. We provide a precise semantics for this in Figure~\ref{sect:formalframework}.
+\end{itemize}
 
 %MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?
 
