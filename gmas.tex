@@ -51,14 +51,14 @@ AS13 & Element $IE$ has name $n$ & CQ13 & Is the name clear/unambiguous? & REPLA
 \label{table:argument-schemes}
 \end{table*}
 
-In the previous section, we provided an overview of RationalGRL methodology. In this section, we discuss our argument schemes and critical questions in more detail. It is important to note that the list of argument schemes we present in this section is not exhaustive. It is an initial list that we have obtained by annotating transcripts, but our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
+In the previous section, we provided an overview of RationalGRL methodology. In this section, we discuss our argument schemes and critical questions in more detail. It is important to note that the list of argument schemes we present in this section is not exhaustive. It is an initial list that we have obtained by annotating transcripts. However, our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
 
 The list of argument schemes and critical questions that we have obtained from our analysis is shown in Table~\ref{table:argument-schemes}. The first four argument schemes (AS0-AS4) are arguments for an element of a goal model, the next seven (AS5-AS11) are related to relationships, the next two (AS12-AS13) are for intentional elements in general, and the last is (Att) is a generic counterargument for any type of argument that has been put forward.
 
 As we have already discussed in Section~\ref{sect:overview}, answering critical questions can have different impacts on the model. The right column in Table~\ref{table:argument-schemes} shows the impact of answering each critical question affirmatively. %SG: what does affirmatively mean?
 As mentioned earlier, answering a critical question can create an argument disabling the corresponding GRL element of the attacked argument scheme (\textsf{DISABLE}); it can create an argument introducing a new GRL element (\textsf{INTRO}); it can replace the GRL element corresponding to the original argument (\textsf{REPLACE}), or it can simply attack an argument directly (\textsf{ATTACK}).
 
-The RationalGRL language is an extension of GRL. The prototype tool we developed therefore also contains various new elements and a new relationship. The legend of the these additions is shown in Figure~\ref{fig:rationalgrllegend}.
+The RationalGRL language is an extension of GRL. The prototype tool we developed, thus, contains various new elements and a new relationship. The legends of the these additions are shown in Figure~\ref{fig:rationalgrllegend}.
 
 In the following subsections, we first explain the new visual language in more detail, after which we provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts).
 
@@ -66,11 +66,11 @@ In the following subsections, we first explain the new visual language in more d
 
 RationalGRL is an extension of GRL, and adds the following new elements (Figure~\ref{fig:rationalgrllegend}):
 \begin{itemize}
-\item \emph{Argument}: This represents an argument created by answering one of the critical questions which disables a GRL element, or counter-attacks a previous argument.
+\item \emph{Argument}: This represents an argument created by answering one of the critical questions which disables a GRL element, or counter-attacks a previous argument. %SG: I thought arguments can also do replace, or intro GRL elements. So why in this description we are very limiting? 
 \item \emph{Disabled GRL element}: If a GRL element is attacked by an argument, which itself is not attacked, then this GRL element will be disabled, meaning that it does not play a role in the analysis of the GRL model. 
-\item \emph{Refined GRL Element}: Not all critical questions attack a GRL element. It is also possible that a critical question \emph{replaces} an existing element (for instance, by clarifying the name of the element), or that it leads to the \emph{introduction} of a new element. In these cases, the corresponding GRL element is shown with a striped background. If the user clicks on this element, a details pane shows up containing the history of refinements (see Section~\ref{sect:tool}).
+\item \emph{Refined GRL Element}: Not all critical questions attack a GRL element. It is also possible that a critical question \emph{replaces} an existing element (for instance, by clarifying the name of the element), or that it leads to the \emph{introduction} of a new element. In these cases, the corresponding GRL element is shown with a striped background. If the user clicks on this element, a details pane shows up containing the history of refinements (see Section~\ref{sect:tool}). %SG: Can we have a separate element for the intro? or at least explain it in this text more explicitly?
 \item \emph{Attack Link}: An attack link can occur between an argument and a GRL element, or between two elements. It means that the source argument attacks the target GRL element or argument.
-\end{itemize}
+\end{itemize} %SG: what about the links? The links can also get attacked right? or have some arguments? what do we do with those?
 
 \begin{figure}[h]
 \centering
@@ -83,7 +83,7 @@ RationalGRL is an extension of GRL, and adds the following new elements (Figure~
 
 The transcripts we used are created as part of two master theses on improving design reasoning~\cite{masterthesis1,masterthesis2}.
 
-\paragraph{Subjects} The subjects for the case study are three teams of Master students from the University of Utrecht, following a Software Architecture course. Two teams consist of three students, and one team consists of two students.
+\paragraph{Subjects} The subjects for the case study are three teams of Master students from Utrecht University, following the Software Architecture course. Two teams consist of three students, and one team consists of two students.
 
 \paragraph{Experimental Setup} The goal of the experiment is to design a traffic simulator. Participants were asked to use a think-aloud method during the design session. The assignment was slightly adjusted to include several viewpoints as an end product in order to conform to the course material~\cite{Bass:2012:SAP:2392670}. The full problem descriptions can be found in Appendix~\ref{sect:designprompt}. All groups were instructed to apply the \emph{functional architecture method}, focusing on developing the \emph{context}, the \emph{functional}, and the \emph{informational} viewpoints of the traffic simulator software. The students had two hours for the tasks. The entire discussion was documented in transcripts. The details of the transcripts are shown in Table~\ref{table:transcripts:info}.
 
@@ -102,14 +102,14 @@ duration & 1h34m52s & 1h13m39s & 1h17m20s\\
 \label{table:transcripts:info}
 \end{table}
 
-\paragraph{Process of Extracting Argument Schemes and Critical Questions} %TODO I changed the title from annotation method. %MvZ: ok, looks good.
+\paragraph{Process of Extracting Argument Schemes and Critical Questions} 
 
 To develop the list of argument schemes and critical questions, we started with an initial list of 8 argument schemes and 18 critical questions that we derived from PRAS (AS1-AS4, AS6-AS9 of Table~\ref{table:argument-schemes}). We, then, annotated transcripts with arguments and critical questions from this initial list. If there were arguments or critical questions that did not appear in the initial list, we added them to the list.
 % Existing argument schemes that did not appear were removed from the list, but critical questions were not removed (see discussion in Section~\ref{sect:gmas:transcripts:analysis}). 
-%TODO I don't understand it! why?
+% I don't understand it! why?
 %MvZ: I agree it is confusing. The idea is that critical questions are often implicit, so we kept them in since we believe it may still stimulate discussions. I now simply left it out since it doesn't add much and will only be confusing.
 
-Most of the occurrences were not literally found back, but had to be inferred from the context. This can be seen in the various examples we will discuss.
+Most of the occurrences were not literally found back, but had to be inferred from the context. This can be seen in the various examples we will discuss in Section~\ref{sect:examples}.
 
 %It is generally known in the argumentation literature that it can be very difficult to identify arguments in natural language texts~\cite{walton-etal2004}. Arguments are often imprecise, lack conclusion, and may be supported by nonverbal communication that is not captured in transcripts. However, there is hardly any research on argument extraction in the requirement engineering domain. Thus, despite this potential weakness in our approach, we believe it nevertheless is at least useful as something that others can build further on (see Section~\ref{sect:goalmodeling:openissues}). 
 %TODO I don't understand the last few sentences... what does argument extraction mean? why is it needed? don't use "something that others" it is very informal for a journal paper. 
@@ -119,9 +119,9 @@ Most of the occurrences were not literally found back, but had to be inferred fr
 
 \begin{figure*}[h!]
 \includegraphics[width=\textwidth]{img/Fig6}
-\caption{The GRL model manually constructed from transcript $t_1$. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.}
+\caption{The GRL model manually constructed from transcript $t_1$. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.} %TODO We need to update the caption
 \label{fig:transcripts:grl}
-\end{figure*} %TODO Figure doesn't match the text!
+\end{figure*} 
 
 All original transcripts, annotations, and models are available on the following website \todo{Marc}{Marc}{Change URL and put everything together with the tool}:
 \begin{quote} \url{http://www.github.com/marcvanzee/RationalArchitecture}
@@ -187,22 +187,24 @@ CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
 \multicolumn{2}{|c|}{\textbf{TOTAL}}&69&80&69&222\\
 \hline
 \end{tabularx}
-\caption{Number of occurrences of AS0-AS9, CQ0-CQ12 in the transcripts. Critical questions not appearing in this table were not found back in the transcripts.}
+\caption{Number of Occurrences of AS0-AS9, CQ0-CQ12 in Transcripts. Critical Questions not Appearing in This Table were not Found in Transcripts.}
 \label{table:transcripts:results:argumentschemes}
 \end{table}
 
-We manually created RationalGRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. This figure shows a simplified version of the actual model in order to improve the presentation, but the full models can be found back in our repository. \todo{Marc}{all}{Perhaps we should explain a bit about the model here?}
+We manually created RationalGRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. This figure shows a simplified version of the actual model in order to improve the presentation, but the full models can be found back in our repository. \todo{Marc}{all}{Perhaps we should explain a bit about the model here?} 
 
 Answering a critical question can have four different effects on the original argument and the corresponding GRL element:
 \begin{itemize} 
-\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. In Figure~\ref{fig:transcripts:grl}, each GRL element can be seen as the instantiation of an argument scheme. For instance, the XOR-decomposition from ``Generate Cars'' is an instantiation of AS5 as follows: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. Suppose now that the modelers that created Figure~\ref{fig:transcripts:grl} would continue their analysis by discussing critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'', and that they would answer this with ``Yes, namely \texttt{Choose randomly}''. This then results in the introduction of another task with the name ``Choose randomly'', and the XOR-decomposes would go from ``Generate Cars'' into the three tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.''
-\item \textsf{DISABLE:} Disable the element or relationship of argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. In Figure~\ref{fig:transcripts:grl}, there are several examples of disabled GRL elements. The task ``Add traffic light'' (top-left in figure) is attacked by answering critical question CQ2: ``Is task Add traffic light possible?'' negatively, resulting in an argument that disables the GRL element. What we also see from Figure~\ref{fig:transcripts:grl} is that disabling actor ``Teacher'' also disables all elements belonging to this actor. Furthermore, disabling task ``Dynamic simulation'' also disables all incoming and outgoing links with this task.
+\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. In Figure~\ref{fig:transcripts:grl}, each GRL element can be seen as the instantiation of an argument scheme. For instance, the XOR-decomposition from ``Generate Cars'' is an instantiation of AS5 as follows: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. Suppose now that the modelers that created Figure~\ref{fig:transcripts:grl} would continue their analysis by discussing critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'', and that they would answer this with ``Yes, namely \texttt{Choose randomly}''. This then results in the introduction of another task with the name ``Choose randomly'', and the XOR-decomposes would go from ``Generate Cars'' into the three tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.'' %SG: Very good example. But should we also show it in the model as a new element?
+\item \textsf{DISABLE:} Disable the element or relationship of an argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. In Figure~\ref{fig:transcripts:grl}, there are several examples of disabled GRL elements. The task ``Add traffic light'' (top-left in figure) is attacked by answering critical question CQ2: ``Is task Add traffic light possible?'' negatively, resulting in an argument that disables the GRL element. What we also see from Figure~\ref{fig:transcripts:grl} is that actor ``Teacher'' is disabled and thus all the elements that are bound to this actor are disabled as well. Furthermore, disabled task ``Dynamic Simulation'' also disables all incoming and outgoing links with this task.
 
-\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. In Figure~\ref{fig:transcripts:grl}, task ``Show map editor'' has been replaced various times, and this is shown in the figure as a \emph{refined} element. In this case, the participants were discussing the correct naming for this element (CQ13), leading to various replacements of the name. While the previous names are not shown in the figure, they show up in the details pane of the corresponding element.
-\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. In Figure~\ref{fig:transcripts:grl} we see one example of such a counter-attack. First, task ``Control car influx per road'' is attack by answering CQ2 (irrelevant task). However, after discussing this, the participants found that this was not the case, since the problem description stated that it is important that students can control the simulation manually. Therefore, the arguments that attacked the task is attacked by the counter-argument ``Important for students'', which re-enables the task ``Control car influx per road''. We provide a precise semantics for this in Figure~\ref{sect:formalframework}.
+\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. In Figure~\ref{fig:transcripts:grl}, task ``Show map editor'' has been replaced various times, and this is shown in the figure as a \emph{refined} element. In this case, participants were discussing the correct naming for this element (CQ13), leading to various replacements of the name. While the previous names are not shown in the figure, they show up in the details pane of the corresponding element. %SG: why generate car has a star but not this one?
+\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. In Figure~\ref{fig:transcripts:grl}, we see one example of such a counter-attack. First, task ``Control car influx per road'' is attack by answering CQ2 (irrelevant task). However, after discussing this, participants found that this was not the case, since the problem description stated that it is important that students can control the simulation manually. Therefore, the argument that attacked the task is attacked by the counter-argument ``Important for students'', which re-enables the task ``Control car influx per road''. We provide a precise semantics for this in Figure~\ref{sect:formalframework}.
 \end{itemize}
 
-%MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?
+%MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?  
+
+%SG: I agree... It was more confusing and downgrade our approach
 
 %\subsection{Analysis}
 %\label{sect:gmas:transcripts:analysis}
