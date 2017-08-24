@@ -35,6 +35,8 @@ For all of the above definitions we assume that all identifiers used in each ato
 \end{itemize}
 \end{definition}
 
+\todo{F}{F,M}{Strictly speaking you don't define a set of atoms here, but a set of predicates... A neat solution would be to do it as follows: Def 1 is the \emph{GRL language} L, and we add a new Def for \emph{GRL models} M, which is then a set of atoms based on L. The definition of Argument is then the same as Model, but this is correct (cf. the metamodel: a model is an argument).}
+
 An example of the specification of the GRL model in Figure~\ref{fig:examples:decomposition} is shown in Table~\ref{table:grl_atom_spec}. The specification has been written in logic programming style. In this article we do not make use of any logic programming techniques but this would be interesting future work (see Section~\ref{sect:goalmodeling:openissues}). A more elaborate example of a specification is shown in Appendix~\ref{ch:grlspec}, showing a complete specification of the traffic simulator GRL model in Figure~\ref{fig:trafficsim}.
 
 \begin{table}[h!]
@@ -60,7 +62,7 @@ An example of the specification of the GRL model in Figure~\ref{fig:examples:dec
 In the previous subsection we introduced an atomic language to specify a GRL model. In this subsection we give a formal definition of an argument, which is simply a set of atoms from our language.
 
 \begin{definition}[Argument] \label{def:argument}
-An \emph{argument} $A\subseteq Att$ is a set of atoms from $Att$.
+An \emph{argument} $A\subseteq Args$ is a set of atoms from $At$.
 \end{definition}
 
 This simple definition allows us to form arguments about (parts of) a GRL model. For instance, $$\{goal(0),name(0,development\_team)\},$$ is an argument stating that identifier 0 is a goal element with name ``development team''. 
@@ -424,6 +426,8 @@ The algorithm is now called as follows: $CQ13(1,road\_pattern)$, i.e., the new n
 \end{figure}
 
 \subsection{Constructing GRL models}
+
+\todo{F}{F,M}{It would be good to have a formal definition of how to construct models given an argumentation framework. If we define a model M at the start of this section, this should be fairly easy.}
 
 Constructing GRL models from the arguments is extremely simple: We simply compute the extensions of the argumentation frameworks, and collect all atomic sentences in the accepted arguments. This forms out GRL model. Let us briefly do so for the examples of the previous subsection:
 \begin{itemize}
