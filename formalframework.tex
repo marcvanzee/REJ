@@ -37,6 +37,9 @@ For all of the above definitions we assume that all identifiers used in each ato
 
 \todo{F}{F,M}{Strictly speaking you don't define a set of atoms here, but a set of predicates... A neat solution would be to do it as follows: Def 1 is the \emph{GRL language} L, and we add a new Def for \emph{GRL models} M, which is then a set of atoms based on L. The definition of Argument is then the same as Model, but this is correct (cf. the metamodel: a model is an argument).}
 
+\todo{M}{F,M}{\url{https://en.wikipedia.org/wiki/Atomic_formula}
+I think atom just means there are no connectives or negations. I used this terminology since it is used in logic programming which is very concrete and clearly defined in terms of syntax. Predicates have such a wide meaning that it may confuse the reader: \url{https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)}. Anyway I am also not very happy with these definitions yet. I'll give it another try taking your suggestions into account.}
+
 An example of the specification of the GRL model in Figure~\ref{fig:examples:decomposition} is shown in Table~\ref{table:grl_atom_spec}. The specification has been written in logic programming style. In this article we do not make use of any logic programming techniques but this would be interesting future work (see Section~\ref{sect:goalmodeling:openissues}). A more elaborate example of a specification is shown in Appendix~\ref{ch:grlspec}, showing a complete specification of the traffic simulator GRL model in Figure~\ref{fig:trafficsim}.
 
 \begin{table}[h!]
