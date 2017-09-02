@@ -3,17 +3,15 @@
 
 In Section~\ref{sect:gmas} we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of Table~\ref{table:argument-schemes}): \textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}, and \textsf{ATTACK}.
 
-The examples and corresponding visualizations of the previous section provide some insight on how our RationalGRL framework can be used. However, since we would like to implement our framework in a tool, we require a more precise formalization.  In this section, we present a formalization of our framework using formal logic. This is the main approach using in formal argumentation, so it allows us to use many of the techniques developed in that area directly (see Section~\ref{sect:goalmodeling:relatedwork} for more details).
-
-In the first two subsections we formalize a static representation of our framework: We develop a formal language to specify a GRL model (independently of arguments) in the fist subsection, and we formalize the notion of an argument in the second subsection. In the third subsection we formalize the dynamics of our framwork: we develop algorithms for instantiating argument schemes and for answering critical questions. The formal framework we develop in this section serves as the underlying model for the prototype implementation we present in the next section.
+The examples and corresponding visualizations of the previous sections provide some insight on how our RationalGRL framework can be used. In this section, we present a more precise formalization of our framework. In the first two subsections we formalize a static representation of our framework: We develop a formal language to specify a GRL model (Section \ref{sect:goalmodeling:logicallanguage}) and we formalize the notion of an argument (Section \ref{sect:goalmodeling:argumentationsemantics}). In the third subsection we formalize the dynamics of our framework: we develop algorithms for instantiating argument schemes and for answering critical questions. The formal framework we develop in this section serves as the underlying model for the prototype implementation we present in the next section.
 
 \subsection{Logical Language for RationalGRL}
 \label{sect:goalmodeling:logicallanguage}
 
-We assume familiarity with basic notions from propositonal logic and set theory. A \emph{propositional atom} is a grounded formula (a formula without variables) with no logical connectives ($\vee, \wedge, \rightarrow, \leftrightarrow$) or negation ($\neg$). We use integers $i,j,k\in\mathbb{N}$ as identifiers for actors and GRL elements.
+We assume familiarity with basic notions from propositional logic and set theory. An \emph{atom} is a formula with no logical connectives ($\vee, \wedge, \rightarrow, \leftrightarrow$) or negation ($\neg$). We first define the logical language for RationalGRL. 
 
-\begin{definition}[GRL Atoms]
-The \emph{set of GRL atoms} $At$ contains the following atoms:
+\begin{definition}[RationalGRL Language]
+The \emph{RationalGRL language} $\mathcal{L}$ contains the following atoms:
 \begin{itemize}
 \item $actor(i)$: Identifier $i$ is an actor.
 \item $softgoal(i)$: Identifier $i$ is a softgoal.
@@ -28,19 +26,20 @@ The \emph{set of GRL atoms} $At$ contains the following atoms:
 \item $name(i,p)$: The name of the element corresponding to identifier $i$ is $p$.
 \end{itemize}
 
-For all of the above definitions we assume that all identifiers used in each atom are different, i.e.,
+We use integers $i,j,k\in\mathbb{N}$ as identifiers for actors and GRL elements. For all of the above definitions we assume that all identifiers used in each atom are different, i.e.,
 \begin{itemize}
 \item $k\not=i$,$k\not=i$,$k\not=j$
 \item forall $j\in J: k\not=j, i\not=j$
 \end{itemize}
 \end{definition}
 
-\todo{F}{F,M}{Strictly speaking you don't define a set of atoms here, but a set of predicates... A neat solution would be to do it as follows: Def 1 is the \emph{GRL language} L, and we add a new Def for \emph{GRL models} M, which is then a set of atoms based on L. The definition of Argument is then the same as Model, but this is correct (cf. the metamodel: a model is an argument).}
+Using the language from Definition 1, we can define GRL models. A \emph{ground atom} is an atom without variables.
 
-\todo{M}{F,M}{\url{https://en.wikipedia.org/wiki/Atomic_formula}
-I think atom just means there are no connectives or negations. I used this terminology since it is used in logic programming which is very concrete and clearly defined in terms of syntax. Predicates have such a wide meaning that it may confuse the reader: \url{https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)}. Anyway I am also not very happy with these definitions yet. I'll give it another try taking your suggestions into account.}
+\begin{definition}[GRL model] \label{def:argument}
+A \emph{GRL model} $\mathcal{M}$ is a set of ground atoms based on $\mathcal{L}$.
+\end{definition}
 
-An example of the specification of the GRL model in Figure~\ref{fig:examples:decomposition} is shown in Table~\ref{table:grl_atom_spec}. The specification has been written in logic programming style. In this article we do not make use of any logic programming techniques but this would be interesting future work (see Section~\ref{sect:goalmodeling:openissues}). A more elaborate example of a specification is shown in Appendix~\ref{ch:grlspec}, showing a complete specification of the traffic simulator GRL model in Figure~\ref{fig:trafficsim}.
+An example of the specification of the GRL model in Figure~\ref{fig:examples:decomposition} is shown in Table~\ref{table:grl_atom_spec}, written in logic programming style. In this article we do not make use of any logic programming techniques but this would be interesting future work (see Section~\ref{sect:goalmodeling:openissues}). A more elaborate example of a specification is shown in Appendix~\ref{ch:grlspec}, showing a complete specification of the traffic simulator GRL model in Figure~\ref{fig:trafficsim}.
 
 \begin{table}[h!]
 \centering
@@ -59,18 +58,18 @@ An example of the specification of the GRL model in Figure~\ref{fig:examples:dec
 \label{table:grl_atom_spec}
 \end{table}
 
-\subsection{Formal argumentation semantics}
+\subsection{Formal argumentation}
 \label{sect:goalmodeling:argumentationsemantics}
 
 In the previous subsection we introduced an atomic language to specify a GRL model. In this subsection we give a formal definition of an argument, which is simply a set of atoms from our language.
 
 \begin{definition}[Argument] \label{def:argument}
-An \emph{argument} $A\subseteq Args$ is a set of atoms from $At$.
+An \emph{argument} $A\subseteq Args$ is a set of ground atoms based on $\mathcal{L}$.
 \end{definition}
 
-This simple definition allows us to form arguments about (parts of) a GRL model. For instance, $$\{goal(0),name(0,development\_team)\},$$ is an argument stating that identifier 0 is a goal element with name ``development team''. 
+This simple definition allows us to form arguments about (parts of) a GRL model. For instance, $$\{goal(0),name(0,development\_team)\},$$ is an argument stating that identifier 0 is a goal element with name ``development team''. Notice that an argument and a GRL model are essentially the same: as was discussed in Section \ref{sect:metamodel}, each element of a GRL model is an argument. 
 
-Note that this definition does not put any restrictions on the content of an argument. This means it is possible to form arguments that do not correspond to correct or sensible GRL models. Consider for instance the following argument: $$\{goal(0), task(0), name(0,static\_simulation)\}.$$ This argument states that identifier 0 is both a goal and a task with name ``statis simulation'', which is clearly undesirable since it does not correspond to a valid GRL model. While we could have chosen to put logical constraints on the content of an argument, we choose not to do so here. Instead, we put these restrictions on the algorithms in section~\ref{sect:algorithms}. The algorithms are constructed in such a way that they only allow the construction of argumetns that correspond to valid GRL models.\footnote{Note that we do not provide formal proofs for these claims in this paper. This is an interesting direction of future work, but it is not the focus of this article.} The advantage of this approach is that it keeps the presentation of the formal part relatively simple.
+Definition \ref{def:argument} does not put any restrictions on the content of an argument. This means it is possible to form arguments that do not correspond to correct or sensible GRL models. Consider for instance the following argument: $$\{goal(0), task(0), name(0,static\_simulation)\}.$$ This argument states that identifier 0 is both a goal and a task with name ``static simulation'', which is clearly undesirable since it does not correspond to a valid GRL model. While we could have chosen to put logical constraints on the content of an argument, we choose not to do so here. Instead, we put these restrictions on the algorithms in section~\ref{sect:algorithms}. The algorithms are constructed in such a way that they only allow the construction of arguments that correspond to valid GRL models. The advantage of this approach is that it keeps the presentation of the formal part relatively simple.
 
 In line with the main approaches in formal argumentation, we next introduce an argumentation framework as a set of arguments and an attack relation between the arguments.
 
@@ -85,7 +84,7 @@ In order to determine which arguments are accepted or not, we define \emph{argum
 \item $S$ \emph{attacks} $A$ if some argument in $S$ attacks $A$,
 \item $S$ \emph{attacks} $S'$ if some argument in $S$ attacks some argument in $S'$,
 \item $S$ is \emph{conflict-free} if it does not attack itself,
-\item $S$ \emph{defends} $A$ if $S$ attacks each attack against $A$.
+\item $S$ \emph{defends} $A$ if for each $B$ such that $B$ attacks $A$, $S$ attacks $B$,
 \item $S$ is \emph{admissible} if $S$ is conflict-free and defends each argument in it.
 \end{itemize}
 \end{definition}
@@ -94,42 +93,31 @@ In order to determine which arguments are accepted or not, we define \emph{argum
 \begin{figure}[ht!]
 \centering
 \begin{tikzpicture}
-        \node[minimum size=1cm] (a) [argNodeIN] at (-2,-2) {$A_1$};
-        \node[minimum size=1cm] (b) [argNodeIN] at (-2,0) {$A_2$};
-        \node[minimum size=1cm] (c) [argNodeIN] at (0,0) {$A_3$};
-        \node[minimum size=1cm] (d) [argNodeIN] at (2,0) {$A_4$};
-        \node[minimum size=1cm] (e) [argNodeIN] at (2,-2) {$A_5$};
-        
+        \node[minimum size=1cm] (b) [argNodeIN] at (-2,0) {$A_1$};
+        \node[minimum size=1cm] (c) [argNodeIN] at (0,0) {$A_2$};
+        \node[minimum size=1cm] (d) [argNodeIN] at (2,0) {$A_3$};
+             
          \path
-    (a) edge [attackLink] (b)
     (c) edge [attackLink] (b)
-    (c) edge [attackLink] (d)
     (d) edge [attackLink] (c)
-    (d) edge [attackLink] (e)
-    (e) edge [attackLink, loop right] (e);
+    
 \end{tikzpicture}
 \caption{Example argumentation framework.}
 \label{fig:goalmodeling:arg2}
 \end{figure}
 
-Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}. We say that the set $\{A_1,A_4,A_5\}$ \emph{attacks} argument $A_2$, because $A_1$ attacks $A_2$. However, $\{A_1,A_4,A_5\}$ is not \emph{conflict-free}, because $A_4$ attacks $A_5$, so this set of arguments attacks itself. If we remove $A_5$ from this set, then it is conflict-free. In total, all the following sets are conflict-free in Figure~\ref{fig:goalmodeling:arg2}: $$\{A_1,A_3\},\{A_1,A_4\},\{A_2,A_4\},\{A_1\},\{A_2\},\{A_3\},\{A_4\},\emptyset.$$
+Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}, where $A_2$ attacks $A_1$ and $A_3$ attacks $A_2$. There are two admissible sets: $\{A_3\}$ and $\{A_1, A_3\}$, in which $A_3$ defends $A_1$ against its attacker $A_2$. Sets containing both $A_2$ and either $A_1$ or $A_3$ are not conflict free, and the sets $\{A_1\}$ and $\{A_2\}$ do not defend themselves against $A_2$ and $A_3$, respectively. 
 
-However, not all of these sets are \emph{admissible}. For instance, the set $\{A_2,A_4\}$ is not admissible, because $A_1$ attacks this set, but the set does not defend itself against this attack. The set $\{A_1,A_3\}$ is admissible, because its only attacker, $A_4$ is attacked by $A_3$. 
-
-There are a large number of different semantics using these notions to determine which arguments are acceptable, such as the \emph{grounded}, the \emph{preferred}, the \emph{stable}, and the \emph{complete} semantics. However, in this article our argumentation frameworks are very simple, in the sense that they do not introduce cycles. In future work, we aim to extend this by using preferences (see open issues in Section~\ref{sect:goalmodeling:openissues}). An advantage of our current approach is that all the standard semantics coincide when there are no cycles, which simplifies our case. We use the preferred semantics here, but we could equivalently have chosen any other version.
+Given the notion of admissible sets, we can then define our argumentation semantics. There are a large number of different semantics to determine which arguments are acceptable; in this article, we choose preferred semantics.
 
 \begin{definition}[Preferred semantics~\cite{Dung1995}] \label{def:semantics}
-Suppose an argumentation framework $AF=(Arg,Att)$. A set of arguments $S\subseteq Arg$ is a \emph{preferred extension} if and only if 
-\begin{itemize}
-\item $S$ is an admissible set of argument,
-\item For each admissible set of arguments $T\subseteq A$: $S\not\subset T$.
-\end{itemize}
+A preferred extension of an argumentation framework $AF$ is a maximal (w.r.t. set inclusion) admissible set of $AF$.
 \end{definition}
 
-In our example in Figure~\ref{fig:goalmodeling:arg2}, the preferred extensions are $\{A_1,A_3\}$ and $\{A_1,A_4\}$.
+In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_1,A_3\}$.
 
 \subsection{Algorithms for argument schemes and critical questions}
-\label[sect:algorithms]
+\label[sect:algorithms}
 
 Let us briefly take stock:
 \begin{itemize}
