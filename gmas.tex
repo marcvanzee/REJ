@@ -1,96 +1,14 @@
 \section{Argument Schemes for Goal Modeling: a Case Study}
-%FB: I added "a case study" to emphasize that we perform a case study on the transcripts (see also the introduction)
 \label{sect:gmas}
 
-\begin{table*}[h]
-\centering
-\begin{tabularx}{\textwidth}{|l|l|l|X|l|l|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Argument scheme}} & \multicolumn{2}{c|}{\textbf{Critical Questions}} & \textbf{Effect}\\
-\hline
-AS0 & Actor $a$ is relevant & CQ0 &Is the actor relevant? & DISABLE\\
-\hline
-AS1 & Actor $a$ has resource $R$ & CQ1 &Is the resource available? & DISABLE\\
-\hline
-AS2 & Actor $a$ can perform task $T$ & CQ2 &Is the task possible? & DISABLE\\
-\hline
-AS3 & Actor $a$ has goal $G$ & CQ3 & Can the desired goal be realized? & DISABLE\\
-\hline
-AS4 & Actor $a$ has softgoal $S$ & CQ4 & Is the softgoal a legitimate softgoal?& DISABLE\\
-\hline
-\hline
-AS5 & Goal $G$ decomposes into tasks $T_1,\ldots,T_n$ & CQ5a & Does the goal decompose into the tasks?& DISABLE\\
-& & CQ5b & Does the goal decompose into any other tasks?& REPLACE\\
-\hline
-AS6 & Task $T$ contributes to softgoal $S$& CQ6a & Does the task contribute to the softgoal?& DISABLE\\
-&& CQ6b & Are there alternative ways of contributing to the same softgoal?& INTRO \\
-&& CQ6c & Does the task have a side effect which contribute negatively to some other softgoal?& INTRO\\
-&& CQ6d & Does the task contribute to some other softgoal?& INTRO\\
-\hline
-AS7 & Goal $G$ contributes to softgoal $S$ & CQ7a & Does the goal contribute to the softgoal?& DISABLE\\
-&& CQ7b & Does the goal contribute to some other softgoal?& INTRO\\
-\hline
-AS8 & Resource $R$ contributes to task $T$ & CQ8 & Is the resource required in order to perform the task?& DISABLE\\
-\hline
-AS9 & Actor $a$ depends on actor $b$ & CQ9 & Does the actor depend on any actors?& INTRO\\
-\hline
-AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & CQ10a & Does the task decompose into other tasks?& REPLACE\\
- &  & CQ10b & Is the decomposition type correct? (AND/OR/XOR)& REPLACE\\
-\hline
-AS11 & Task $T$ contributes negatively to softgoal $S$& CQ11 & Does the task contribute negatively to the softgoal?& DISABLE\\
-\hline
-\hline
-AS12 & Element $IE$ is relevant & CQ12 & Is the element relevant/useful? & DISABLE\\
-\hline
-AS13 & Element $IE$ has name $n$ & CQ13 & Is the name clear/unambiguous? & REPLACE\\
-\hline
-\hline
-- & - & Att & Generic counterargument & ATTACK\\
-\hline
-\end{tabularx}
-\caption{List of argument schemes (AS0-AS13, left column), critical questions (CQ0-CQ12, middle column), and the effect of answering them (right column).}
-\label{table:argument-schemes}
-\end{table*}
 
-In the previous section, we provided an overview of RationalGRL methodology. In this section, we discuss our argument schemes and critical questions in more detail. It is important to note that the list of argument schemes we present in this section is not exhaustive. It is an initial list that we have obtained by annotating transcripts. However, our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
+The objective of our case study was to see which types of discourse are used during a discussion of system requirements, and how these discourse types can be captured as argument schemes and critical questions regarding goals and tasks. In order to study this, we manually coded transcripts of such discussions. For our coding, we used a list of argument schemes and critical questions based on GRL and PRAS. In this section we present our case study. All original transcripts, codings, and models are available in our online repository\footnote{\label{foot:url}\url{insertURL}}.   
 
-The list of argument schemes and critical questions that we have obtained from our analysis is shown in Table~\ref{table:argument-schemes}. The first four argument schemes (AS0-AS4) are arguments for an element of a goal model, the next seven (AS5-AS11) are related to relationships, the next two (AS12-AS13) are for intentional elements in general, and the last (Att) is a generic counterargument against any type of argument that has been put forward.
+In order to obtain actual requirements discussions, we turned to a recent series of experiments by Schriek et al. \cite{SchriekEtal2016}. In these experiments, Schriek and colleagues gave the traffic simulator assignment (Appendix~\ref{sect:designprompt}) to 12 groups of two or three students in a Software Architecture course at MSc level. These groups had a maximum of two hours to design a traffic simulator, which included a discussion of the requirements of this traffic simulator. The students did not use any goal modeling technique in the course or during the discussions. The students were asked to record their design sessions, and the recordings were subsequently transcribed. We used three of these transcripts, totaling 153 pages, for our case study. 
 
-As we have already discussed in Section~\ref{sect:overview}, answering critical questions can have different impacts on the model. The right column in Table~\ref{table:argument-schemes} shows the impact of answering each critical question affirmatively. %SG: what does affirmatively mean?
-As mentioned earlier, answering a critical question can create an argument disabling the corresponding GRL element of the attacked argument scheme (\textsf{DISABLE}); it can create an argument introducing a new GRL element (\textsf{INTRO}); it can replace the GRL element corresponding to the original argument (\textsf{REPLACE}), or it can simply attack an argument directly (\textsf{ATTACK}).
+Before we started coding the transcripts, we drew up an initial list of 10 argument schemes (AS0-AS9 in Table~\ref{table:transcripts:results:argumentschemes}), representing \emph{claims} about the goal model containing the requirements of the system. AS0 to AS4 are schemes that concern a single element of the goal model. So, for example, AS0 represents the claim `$a$ is a relevant actor for the system', and AS3 represents the claim `$G$ is a goal for the system'. AS5 to AS9 are claims about the links between GRL elements. Our initial list also contained 18 critical questions, inspired by the questions associated with the original Practical Reasoning Argumentation Scheme \cite{atkinson2007}. CQ2 to CQ6b (Table~\ref{table:transcripts:results:argumentschemes}) are examples of these critical questions, other examples are `Is the softgoal legitimate?' and `Are there alternative ways to contribute to the same softgoal?'.
 
-The RationalGRL language is an extension of GRL. The prototype tool we developed, thus, contains various new elements and a new relationship. The legends of the these additions are shown in Figure~\ref{fig:rationalgrllegend}.
-
-In the following subsections, we first explain the new visual language in more detail, after which we provide details of the transcript annotation process with concrete examples (see Appendix~\ref{sect:transcripts:excerpts} for transcript excerpts).
-
-\subsection{RationalGRL Language}
-
-RationalGRL is an extension of GRL, and adds the following new elements (Figure~\ref{fig:rationalgrllegend}):
-\begin{itemize}
-\item \emph{Argument}: This represents an argument created by answering one of the critical questions which disables a GRL element, or counter-attacks a previous argument. %SG: I thought arguments can also do replace, or intro GRL elements. So why in this description we are very limiting? 
-\item \emph{Disabled GRL element}: If a GRL element is attacked by an argument, which itself is not attacked, then this GRL element will be disabled, meaning that it does not play a role in the analysis of the GRL model. 
-\item \emph{Refined GRL Element}: Not all critical questions attack a GRL element. It is also possible that a critical question \emph{replaces} an existing element (for instance, by clarifying the name of the element), or that it leads to the \emph{introduction} of a new element. In these cases, the corresponding GRL element is shown with a striped background. If the user clicks on this element, a details pane shows up containing the history of refinements (see Section~\ref{sect:tool}). %SG: Can we have a separate element for the intro? or at least explain it in this text more explicitly?
-\item \emph{Attack Link}: An attack link can occur between an argument and a GRL element, or between two elements. It means that the source argument attacks the target GRL element or argument.
-\end{itemize} %SG: what about the links? The links can also get attacked right? or have some arguments? what do we do with those?
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.35\textwidth]{img/legend}
-\caption{The new elements and link of RationalGRL}
-\label{fig:rationalgrllegend}
-\end{figure}
-
-\subsection{Case Study Details}
-
-In order to come up with the list of argument schemes and critical questions in Table~\ref{table:argument-schemes}, we performed an extensive case study based on a recent series of experiments by Schriek et al. \cite{SchriekEtal2016}. In these experiments, Schriek and colleagues gave the traffic simulator assignment (Appendix~\ref{sect:designprompt}) to 12 groups of two or three students in a Software Architecture course at MSc level. These groups had a maximum of two hours to design a traffic simulator, which included a discussion of the requirements of this traffic simulator. The students were asked to record their design sessions, and the recordings were subsequently transcribed. We used three of these transcripts totalling 153 pages of discussion for our case study. In the case study, we annotated the transcripts with argument schemes and critical questions, and we created RationalGRL models based on the discussions. In this section we present examples of these annotations and models. All original transcripts, annotations, and models are available online\footnote{\url{insertURL}}.
-
-To develop the list of argument schemes and critical questions, we started with an initial list of 8 argument schemes and 18 critical questions that we derived from the original Practical Reasoning Argumentation Scheme \cite{atkinson2007}. We then annotated the three transcripts with arguments and critical questions from this initial list. If there were arguments or critical questions that did not appear in the initial list, we added them to the list. Argument schemes and critical questions that did not appear were removed from the list. Appendix~\ref{sect:transcripts:excerpts} contains some examples of annotations.
-
-\subsection{Case Study Results}
-
-We found a total of 159 instantiation of argument schemes AS0-AS11 in transcripts (Table~\ref{table:transcripts:results:argumentschemes}). The most used argument scheme was AS2: ``Actor $A$ has task $T$'', however, each argument scheme is found in transcripts at least twice . A large portion (about 60\%) of argument schemes involved discussions about tasks of the information system (AS2, AS10). We annotated 41 applications of critical questions. Many critical questions (about 55\%) involved clarifying the name of an element, or discussing its relevance (CQ12, CQ13).
-
-\begin{table}[ht]
+\begin{table}[t]
 \centering
 \begin{tabularx}{0.5\textwidth}{|l|X|l|l|l|>{\bfseries}l|}
 \hline
@@ -125,7 +43,7 @@ CQ2 & Task is possible? & 2 & 2 & 1 & 5\\
 \hline		
 CQ5a & Does the goal decompose into the tasks? & 0 & 1 & 0 & 1\\
 \hline
-CQ5b & Goes decomposes into other tasks? & 1 & 0 & 0 & 1\\
+CQ5b & Goal decomposes into other tasks? & 1 & 0 & 0 & 1\\
 \hline
 CQ6b & Task has negative side effects? & 2 & 0 & 0 & 2\\
 \hline
@@ -145,26 +63,15 @@ CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
 \multicolumn{2}{|c|}{\textbf{TOTAL}}&69&80&69&222\\
 \hline
 \end{tabularx}
-\caption{Number of Occurrences of AS0-AS9, CQ0-CQ12 in Transcripts. Critical Questions not Appearing in This Table were not Found in Transcripts.}
+\caption{Occurrences of argument schemes and critical questions in the transcripts.}
 \label{table:transcripts:results:argumentschemes}
 \end{table}
 
-We manually created RationalGRL models from argument schemes and critical questions found in each transcript, to verify whether the arguments put forward by the participants were sufficiently informative. An example of such a model is shown in Figure~\ref{fig:transcripts:grl}. This figure shows a simplified version of the actual model in order to improve the presentation, but the full models can be found back in our repository. 
+Using the initial list of arguments and critical questions, we coded three transcripts of requirements discussions. The codings were performed by one author and subsequently checked by another author. As the transcripts contain spoken language, the codings involved some interpretation. For example, the students almost never literally say `actor $a$ has task $T$'. Rather, they say things such as `...we have a set of actions. Save map, open map, ...' (Table~\ref{table:transcripts:traffic-light}, Appendix~\ref{sect:transcripts:excerpts}) and `... in that process there are activities like create a visual map, create a road' (Table~\ref{table:transcript:task-clarification}, Appendix~\ref{sect:transcripts:excerpts}). Furthermore, in some cases the critical questions are explicit. For example, CQ10b is found in the transcripts as `...is this an OR or an AND?' (Table \ref{table:transcript:decomposition}, Appendix~\ref{sect:transcripts:excerpts}). In other cases, however, the question remains implicit but we added it in the coding. For example, CQ12 is not found in the transcripts, but the related counterargument is:  `...you don't have to specifically add a traffic light' (Table~\ref{table:transcripts:traffic-light}, Appendix~\ref{sect:transcripts:excerpts}). 
 
-\begin{figure*}[h!]
-\includegraphics[width=\textwidth]{img/Fig6}
-\caption{The GRL model manually constructed from transcript $t_1$. Green dots indicate accepted underlying arguments, red dots indicate rejected underlying arguments. Elements and relationships with no dot have been inferred by us.} %TODO We need to update the caption
-\label{fig:transcripts:grl}
-\end{figure*} 
+In order to further verify the coherence of our codings, we constructed complete RationalGRL models based on the argument schemes and critical questions found in each transcript. An example model is shown in Figure~\ref{fig:transcripts:grl}, and the full models can be found in the repository. More examples of RationalGRL models based on our codings will be given in section \ref{sect:overview}.
 
-Answering a critical question can have four different effects on the original argument and the corresponding GRL element:
-\begin{itemize} 
-\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument of the critical question, but rather creates a new argument. In Figure~\ref{fig:transcripts:grl}, each GRL element can be seen as the instantiation of an argument scheme. For instance, the XOR-decomposition from ``Generate Cars'' is an instantiation of AS5 as follows: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. Suppose now that the modelers that created Figure~\ref{fig:transcripts:grl} would continue their analysis by discussing critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'', and that they would answer this with ``Yes, namely \texttt{Choose randomly}''. This then results in the introduction of another task with the name ``Choose randomly'', and the XOR-decomposes would go from ``Generate Cars'' into the three tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.'' %SG: Very good example. But should we also show it in the model as a new element?
-\item \textsf{DISABLE:} Disable the element or relationship of an argument scheme to which critical questions pertains. This operation does not create a new argument, but it only disables (i.e., attacks) the original one. In Figure~\ref{fig:transcripts:grl}, there are several examples of disabled GRL elements. The task ``Add traffic light'' (top-left in figure) is attacked by answering critical question CQ2: ``Is task Add traffic light possible?'' negatively, resulting in an argument that disables the GRL element. What we also see from Figure~\ref{fig:transcripts:grl} is that actor ``Teacher'' is disabled and thus all the elements that are bound to this actor are disabled as well. Furthermore, disabled task ``Dynamic Simulation'' also disables all incoming and outgoing links with this task.
-
-\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. In Figure~\ref{fig:transcripts:grl}, task ``Show map editor'' has been replaced various times, and this is shown in the figure as a \emph{refined} element. In this case, participants were discussing the correct naming for this element (CQ13), leading to various replacements of the name. While the previous names are not shown in the figure, they show up in the details pane of the corresponding element. %SG: why generate car has a star but not this one?
-\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. In Figure~\ref{fig:transcripts:grl}, we see one example of such a counter-attack. First, task ``Control car influx per road'' is attack by answering CQ2 (irrelevant task). However, after discussing this, participants found that this was not the case, since the problem description stated that it is important that students can control the simulation manually. Therefore, the argument that attacked the task is attacked by the counter-argument ``Important for students'', which re-enables the task ``Control car influx per road''. We provide a precise semantics for this in Figure~\ref{sect:formalframework}.
-\end{itemize}
+During the coding, the list of argument schemes and critical questions was updated: some schemes were removed or amended, and new ones were added. For example, we found that the discussants often talk about tasks decomposing into sub-tasks, so we added AS10 and CQ10a. Furthermore, because we noticed that there were many discussions on both the relevance and the clarity of the names of elements (goals, tasks, etc.), two generic critical questions CQ12 and CQ13 were added. The final results regarding the argument schemes and the critical questions found in the transcripts can be found in Table~\ref{table:transcripts:results:argumentschemes}; for results per transcript, please consult the online repository. We found a total of 159 instantiation of argument schemes AS0-AS11 in transcripts. The most used argument scheme was AS2: ``Actor $A$ has task $T$'', however, each argument scheme is found in transcripts at least twice. A large portion (about 60\%) of argument schemes involved discussions about tasks of the information system (AS2, AS10). We coded 41 applications of critical questions. Many critical questions (about 55\%) involved clarifying the name of an element, or discussing its relevance (CQ12, CQ13).
 
 %MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?  
 

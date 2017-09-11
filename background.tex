@@ -1,12 +1,12 @@
-\section{Background: Goal-oriented Requirements Language and argument schemes}
+\section{Background: Goal-oriented Requirements Language and Argumentation}
 \label{sect:background}
 
-In this section, we first introduce our running example, after which we introduce the Goal-oriented Requirements Language (GRL)~\cite{Amyot:2010:EGM:1841349.1841356}, which is the goal modeling language we use to integrate with the argumentation framework. Next, we introduce argument schemes, and in particular, we discuss the \emph{practical reasoning argument scheme (PRAS)}~\cite{atkinson2007}, which is an argument scheme that is used to form arguments and counter-arguments about situations involving goals. Finally, we give an overview of the integration between PRAS and GRL.  %This will be our starting point in the next section.
+In this section, we first introduce our running example, after which we introduce the Goal-oriented Requirements Language (GRL)~\cite{Amyot:2010:EGM:1841349.1841356}, which is the goal modeling language we use to integrate with the argumentation framework. Next, we introduce argumentation: we discuss the \emph{practical reasoning argument scheme (PRAS)}~\cite{atkinson2007}, an argument scheme that is used to form arguments and counter-arguments about situations involving goals, and we give informal examples of how argument and counterargument can influence the status of beliefs about goals. Finally, we briefly discuss the possibilities integrating PRAS and GRL.  %This will be our starting point in the next section.
 
 \subsection{Running example: Traffic Simulator}
 \label{sect:goals:runningexample}
 
-We use a traffic simulator design case to explain the concepts and framework in this paper. Our examples and case study are based on a recent series of experiments by Schriek et al. \cite{SchriekEtal2016}, who in turn base their work on the so-called Irvine experiment~\cite{UCIworkshop}, which presents a well-known design reasoning assignment in software engineering. In this assignment (see Appendix~\ref{sect:designprompt}), designers are provided with a problem description, requirements, and a description of the desired outcomes: The client of the project is Professor E, who teaches civil engineering courses at an American university. In order for the professor to teach students the various theories concerning traffic (such as queuing theory), traffic simulator software needs to be developed in which students can create visual maps of an area, regulate traffic, and so forth. Schriek and colleagues asked designers (groups of students) to discuss the goal and requirements of this traffic simulator. These discussions were recorded and transcribed, and we used these transcripts for an extensive case study in which we developed our argument schemes and critical questions (Sections \ref{sect:gmas} and \ref{sect:examples}). Furthermore, we also use the traffic simulator case for a simple  running example in this section (Figures \ref{fig:example-small}, \ref{fig:pras:example}). 
+We use a traffic simulator design case to explain the concepts and framework in this paper. Our examples and case study are based on a recent series of experiments by Schriek et al. \cite{SchriekEtal2016}, who in turn base their work on the so-called Irvine experiment~\cite{UCIworkshop}, which presents a well-known design reasoning assignment in software engineering. In this assignment (see Appendix~\ref{sect:designprompt}), designers are provided with a problem description, requirements, and a description of the desired outcomes: The client of the project is Professor E, who teaches civil engineering courses at an American university. In order for the professor to teach students the various theories concerning traffic (such as queuing theory), traffic simulator software needs to be developed in which students can create visual maps of an area, regulate traffic, and so forth. Schriek and colleagues asked designers (groups of students) to discuss the requirements of this traffic simulator. These discussions were recorded and transcribed, and we used these transcripts for an extensive case study (Section \ref{sect:} on the basis of which we developed our RationalGRL framework (Section \ref{sect:gmas}). Furthermore, we also use the traffic simulator case for a simple running example in this section (Figures \ref{fig:example-small}, \ref{fig:pras:example}). 
 
 \subsection{Goal-oriented Requirements Language (GRL)}
 \label{sect:background:grl}
@@ -48,50 +48,51 @@ The GRL model in Figure~\ref{fig:example-small} shows the softgoals, goals, task
 
 These are the type of the questions that we cannot answer by just looking at GRL models. The model in Figure~\ref{fig:example-small} does not contain information about discussions that led to the resulting model, such as various clarification steps for the naming, or alternatives that have been considered for the relationships. With our RationalGRL framework we aim to address this shortcoming.
 
-\subsection{Argument Scheme for Practical Reasoning (PRAS)}
+\subsection{Practical Reasoning Argument Scheme (PRAS)}
 \label{sect:background:pras}
 
-Reasoning about which goals to pursue and actions to take is often referred to as \emph{practical reasoning}, and has been studied extensively in philosophy (e.g. \cite{Raz1978-RAZPR,walton1990}) and artificial intelligence \cite{bratman1987,atkinson2007}. One approach is to capture practical reasoning with argument schemes~\cite{walton1990}. Applying an argument scheme results in an argument in favor of, for example, taking an action. This argument can then be tested with critical questions about, for instance, whether the action is possible given the situation, and a negative answer to such a question leads to a counterargument to the original argument for the action. 
+Reasoning about which goals to pursue and actions to take is often referred to as \emph{practical reasoning}, and has been studied extensively in philosophy and artificial intelligence. One approach is to capture practical reasoning with argument schemes~\cite{walton1990}. Applying an argument scheme results in an argument in favor of, for example, taking an action. This argument can then be tested with critical questions about, for instance, whether the action is possible given the situation, and a negative answer to such a question leads to a counterargument to the original argument for the action. 
 
-Atkinson and Bench-Capon~\cite{atkinson2007} develop and formalize the \emph{Practical Reasoning Argument Scheme} (PRAS). A slightly adapted version\footnote{The original argument scheme uses different terminology: Atkinson and Bench-Capon say that realizing a goal contributes to some \emph{value}, an interest which an agent may or may not wish to uphold or subscribe to, such as \texttt{High Performance}. In this paper, we use the term \emph{softgoal} to indicate such interests.} of this argument scheme is as follows:
+Atkinson and Bench-Capon~\cite{atkinson2007} develop and formalize the \emph{Practical Reasoning Argument Scheme} (PRAS). A simplified version of this argument scheme is as follows:
 
 \begin{itemize}
-\item[] We have goal $G$,
+\item[] $G$ is a goal,
 \item[] Performing action $A$ realizes goal $G$,
-\item[] Which will contribute positively to the softgoal $S$
+%\item[] Which will contribute positively to the softgoal $S$
 \item[] \textit{Therefore} 
-\item[] We should perform action $A$
+\item[] Action $A$ should be performed
 \end{itemize}
 
-Here, $G$, $A$, and $S$ are variables, which can be instantiated with concrete goals, actions, and softgoals to provide a specific practical argument. For example, a concrete argument about the traffic simulator is as follows: 
+Here, $G$ and $A$ are variables, which can be instantiated with concrete goals and actions to provide a specific practical argument. For example, a concrete argument about the traffic simulator is as follows: 
 \begin{itemize}
-\item[] We have goal \texttt{Simulate Traffic},
-\item[] Performing action \texttt{Static Simulation} realizes goal \texttt{Simulate Traffic}, 
-\item[] Which contributes positively to the softgoal \texttt{Improve Simulation} 
+\item[] \texttt{Generate Cars} is a goal,
+\item[] Performing action \texttt{Keep Same Cars} realizes goal \texttt{Generate Cars}, 
+%\item[] Which contributes positively to the softgoal \texttt{Improve Simulation} 
 \item[] \textit{Therefore} 
-\item[] We should perform action \texttt{Static Simulation}.
+\item[] Action \texttt{Keep same Cars} should be performed
 \end{itemize}
 
-Practical reasoning is defeasible, in that conclusions which are at one point acceptable can later be rejected because of new information. Atkinson et al.~\cite{atkinson2007} define a set of critical questions that point to typical ways in which a practical argument can be criticized by, for example, questioning the validity of the elements in the scheme or the connections between the elements. Some examples of critical questions are as follows.
+Note that PRAS is an argument scheme that captures a full inference step: `$G$, $A$ realizes $G$ \emph{Therefore} $A$'. There are, however, also schemes that capture simpler reasoning patterns, such as claims of the form `$A$ does not realize $G$'. We will discuss these schemes below. 
 
-%FB: I deleted a few of the critical questions
+In argumentation, conclusions which are at one point acceptable can later be rejected because of new information. For example, we may argue that, in fact, performing action \texttt{Keep Same Cars} does not realize goal \texttt{Generate cars}, thus giving a counterargument to the above instantiation of PRAS. Atkinson et al.~\cite{atkinson2007} define a set of so-called \emph{critical questions} that point to typical ways in which an argument based on PRAS can be criticized by. Some examples of critical questions are as follows.
+
 \begin{enumerate}
 \item Will the action realize the desired goal?
-\item Are there alternative ways of realizing the same goal or contributing to the same softgoal?
+\item Are there alternative ways of realizing the same goal?
 \item Does performing the action have a negative side effect?
 \end{enumerate}
 
-These critical questions can point to new arguments that might counter the original argument. Take, for example, critical question 1: if we find that performing a \texttt{Static Simulation} actually does not realize goal \texttt{Simulate Traffic}, we can form a counter-argument. Another way to criticize an argument for an action is to suggest an alternative action that realizes the same goal (question 2). For example, we can argue that performing a \texttt{Dynamic Simulation} also realizes the goal \texttt{Simulate Traffic} on its own. Finally, it is possible that performing an action has a negative side effect (critical question 3). For example, while the action \texttt{Create New Cars} realizes the goal \texttt{Generate Cars}, it has a negative side effect, namely hurting \texttt{Static Simulation}: having the simulation constantly create new cars is a functionality that does not allow for a static simulation. 
+The idea is that answers to critical questions are counterarguments to the the original PRAS argument. These counterarguments also follow a scheme; for example, a negative answer to critical question 1 follows the scheme `Action $A$ will not realize goal $G$', which can be instantiated (e.g. `\texttt{Keep Same Cars} does not realize \texttt{Generate Cars'}) to forma counterargument to the original argument. 
 
-%FB: I extended the example and put the figure back in. Note that this is just to explain argumentation, not to reason about the model in 2.2. Putting explicit text in the example makes it more clear.
+Another way to criticize an argument for an action is to suggest an alternative action that realizes the same goal (question 2). For example, we can argue that performing a \texttt{Create New Cars} also realizes the goal \texttt{Generate Cars} on its own. Also, it is possible that performing an action has a negative side effect (critical question 3). For example, while the action \texttt{Create New Cars} realizes the goal \texttt{Generate Cars}, it has a negative side effect, namely hurting \texttt{Static Simulation}: having the simulation constantly create new cars is a functionality that does not allow for a static simulation. 
 
 In argumentation, counterarguments are said to \emph{attack} the original arguments (and sometimes vice versa). In the work of Atkinson et al.~\cite{atkinson2007}, arguments and their attacks are captured as an \emph{argumentation framework} of arguments and attack relations. Given an argumentation framework, we can compute which arguments are accepted and which are rejected using different argumentation semantics~\cite{Dung1995}\footnote{Formal definitions of argumentation frameworks and semantics will be given in section \ref{sect:gmas}. In this section, we will briefly discuss the intuitions behind these concepts.}. Figure \ref{fig:pras:example} shows an argumentation framework with three arguments from the traffic simulation example, where arguments are rendered as boxes and attack relations as arrows. There are two slightly simplified practical reasoning arguments based on PRAS: argument A1 for \texttt{Keep Same Cars} and argument A2 for \texttt{Create New Cars}. Argument A2 proposes an alternative way of realizing the same goal \texttt{Generate Cars} with respect to argument A1 and vice versa (cf. critical question 2), so A1 and A2 mutually attack each other, denoted by the double-headed arrow between A1 and A2. Argument A3 says that \texttt{Create New Cars} has a negative effect on \texttt{Static Simulation}, so A3 attacks A2, as it points to a negative side-effect of \texttt{Create new cars} (critical question 3). 
 
 \begin{figure}[ht!]
 \centering
 \begin{tikzpicture}
-        \node[minimum size=1cm] (att3) [argNodeIN] at (-0.5,-3.4) {\argtext{A1}{Action \texttt{Keep Same Cars} realizes goal \texttt{Generate Cars}\\ \emph{\underline{Therefore}} we should perform \texttt{Keep Same Cars}}};
-        \node[minimum size=1cm] (att1) [argNodeOUT] at (-0.5,0) {\argtext{A2}{Action \texttt{Create New Cars} realizes goal \texttt{Generate Cars}\\ \emph{\underline{Therefore}} we should perform \texttt{Create New Cars}}};
+        \node[minimum size=1cm] (att3) [argNodeIN] at (-0.5,-3.4) {\argtext{A1}{Action \texttt{Keep Same Cars} realizes goal \texttt{Generate Cars}\\ \emph{\underline{Therefore}} Action \texttt{Keep Same Cars} should be performed}};
+        \node[minimum size=1cm] (att1) [argNodeOUT] at (-0.5,0) {\argtext{A2}{Action \texttt{Create New Cars} realizes goal \texttt{Generate Cars}\\ \emph{\underline{Therefore}} Action  \texttt{Create New Cars} should be performed}};
         \node[minimum size=1cm] (att2) [argNodeIN] at (3.5,0) {\argtext{A3}{\texttt{Create New Cars} has a negative effect on \texttt{Static Simulation}}};
          \path
     (att2) edge [attackLink] (att1)
@@ -103,12 +104,5 @@ In argumentation, counterarguments are said to \emph{attack} the original argume
 
 Given an argumentation framework, the acceptability of arguments can be determined according to the appropriate argumentation semantics~\cite{Dung1995}. The intuition is that an argument is acceptable if it is \emph{undefeated}, that is, any argument that attacks it, is itself defeated. In the argumentation framework in Figure~\ref{fig:pras:example}, argument A3 is undefeated because it has no attackers. This makes A2 defeated (indicated by the lighter grey color of A2), because its attacker A3 is undefeated. A1 is then also undefeated, since its only attacker, A2, is defeated by A3. Thus, the set of undefeated (acceptable) arguments given the argumentation framework in Figure~\ref{fig:pras:example} is $\{$A1, A3$\}$.
 
+Looking at PRAS and its critical questions, one can see how it could be used to argue about goals and actions or, more specifically, about goal models. However, we cannot literally use PRAS and its critical questions, as there are elements of the GRL language, such as actors and resources, which cannot be found in PRAS. Furthermore, it is not directly clear whether the critical questions as proposed by Atkinson and Bench-Capon~\cite{atkinson2007} actually apply to GRL models. In fact, our case study (Section \ref{sect:gmas}) shows that when discussing requirements, people very often do not structure their reasoning nicely in the way that PRAS presents it. That is, you do not see the discussants setting up an argument `We have goal $G$, $A$ realizes $G$ \emph{Therefore} we should perform $A$'. A typical discussion is much more unstructured, as is clear from the transcript excerpts in Appendix~\ref{sect:transcripts:excerpts}. So if we would use the version of PRAS presented in this section for our argumentation, we would violate requirement 1: The argumentation techniques should be close to the actual discussions of stakeholders or designers in the early requirements engineering phase. Our solution was to develop our own set of argument schemes and critical questions by analyzing transcripts of discussions about the traffic simulator. This set of schemes and questions and our case study are described in the next section. 
 
-\subsection{Combining PRAS and GRL}
-\label{sect:background:pras:motivation}
-
-In previous work on the RationalGRL framework~\cite{vanzee-etal:renext2015,vanZee-etal:er2016}, we have explored one way of combining PRAS and GRL. In this work, which takes a similar approach to \cite{Jureta:RE2008}, argument diagrams are translated to GRL models (an automatic translation tool is discussed in~\cite{vanZee-etal:comma2016}). The argument diagrams are complex practical reasoning arguments, where the premises are the goals and the conclusion is some action we need to perform to realize those goals. Thus, we have essentially two complex diagrams, a practical reasoning argument diagram and a GRL goal diagram, and a mapping between them. 
-
-Connecting argumentation and goal modelling by providing a mapping between two types of diagram was, in our opinion, ultimately an unsatisfying solution given the problems and requirements described in Section \ref{sect:introduction}. One problem is that the argument diagram is at least as complex as the GRL diagram, so any stakeholder trying to understand the discussion thus far has to parse two complex diagrams containing goals, alternative solutions, tasks, and so forth. Furthermore, in our previous work we did not provide the specific critical questions for goal models (see Section \ref{sect:gmas}). This meant that any counterargument had to be constructed from scratch, as no guidance was given as to possible ways to criticize a GRL model. So the previous iterations of the RationalGRL framework violated requirement 1: argument diagrams do not closely mirror the actual discussions of stakeholders in which ideas are proposed and challenged. Furthermore, not having specific argument schemes and critical questions for goal modelling makes it hard to develop a guiding methodology for the use of argumentation in goal modelling (requirement 4). 
-
-In the current version of GRL, we do not literally take the Practical Reasoning Argument Scheme and its critical questions - this would be impossible given that there are elements of the GRL language, such as resources, which cannot be found in PRAS. Furthermore, it is not directly clear whether the critical questions as proposed by Atkinson and Bench-Capon~\cite{atkinson2007} actually apply to GRL models. Therefore, we develop our own set of argument schemes and critical questions in Section~\ref{sect:gmas} by analyzing transcripts of discussions about the traffic simulator. Before doing so, we give an overview of our framework in the next section.
