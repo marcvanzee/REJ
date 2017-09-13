@@ -26,17 +26,15 @@ AS4 & Softgoal & 3 & 4 & 2 & 9\\
 \hline
 AS5 & Goal decomposes into tasks & 4 &0& 4 & 8\\
 \hline
-AS6 & Task contributes to softgoal & 6 & 2 &0& 8\\
+AS6 & Task contributes (negatively) to softgoal & 8 & 3 &0& 11\\
 \hline
-AS7 & Goal contributes to softgoal &0& 1 & 1 & 2\\
+AS7 & Goal contributes (negatively) to softgoal &0& 1 & 1 & 2\\
 \hline
 AS8 & Resource contributes to task & 0 & 4 & 3 & 7\\
 \hline
 AS9 & Actor depends on actor &0& 1 & 3 & 4\\
 \hline
 AS10 & Task decomposes into tasks & 11 &14 &11 &36\\ 
-\hline
-AS11 & Task contributes negatively to softgoal & 2 & 1 & 0 & 3\\
 \hline
 \hline
 CQ2 & Task is possible? & 2 & 2 & 1 & 5\\
@@ -54,7 +52,7 @@ CQ10b & Decomposition type correct? &1 &0& 1 &2\\
 \hline
 CQ12 & Is the element relevant/useful? & 2 & 3 & 2 &7\\
 \hline
-CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
+CQ13 & Is the element clear/unambiguous? &3 &10 & 3 & 16\\
 \hline
 \hline
 - & Generic counterargument & 0& 2 & 2 & 4\\
@@ -63,7 +61,7 @@ CQ13 & Is the name clear/unambiguous? &3 &10 & 3 & 16\\
 \multicolumn{2}{|c|}{\textbf{TOTAL}}&69&80&69&222\\
 \hline
 \end{tabularx}
-\caption{Occurrences of argument schemes and critical questions in the transcripts.}
+\caption{Occurrences of argument schemes and critical questions in the transcripts.\todo{F}{F}{check numbers against original annotation docs}}
 \label{table:transcripts:results:argumentschemes}
 \end{table}
 
@@ -71,7 +69,8 @@ Using the initial list of arguments and critical questions, we coded three trans
 
 In order to further verify the coherence of our codings, we constructed complete RationalGRL models based on the argument schemes and critical questions found in each transcript. An example model is shown in Figure~\ref{fig:transcripts:grl}, and the full models can be found in the repository. More examples of RationalGRL models based on our codings will be given in section \ref{sect:overview}.
 
-During the coding, the list of argument schemes and critical questions was updated: some schemes were removed or amended, and new ones were added. For example, we found that the discussants often talk about tasks decomposing into sub-tasks, so we added AS10 and CQ10a. Furthermore, because we noticed that there were many discussions on both the relevance and the clarity of the names of elements (goals, tasks, etc.), two generic critical questions CQ12 and CQ13 were added. The final results regarding the argument schemes and the critical questions found in the transcripts can be found in Table~\ref{table:transcripts:results:argumentschemes}; for results per transcript, please consult the online repository. We found a total of 159 instantiation of argument schemes AS0-AS11 in transcripts. The most used argument scheme was AS2: ``Actor $A$ has task $T$'', however, each argument scheme is found in transcripts at least twice. A large portion (about 60\%) of argument schemes involved discussions about tasks of the information system (AS2, AS10). We coded 41 applications of critical questions. Many critical questions (about 55\%) involved clarifying the name of an element, or discussing its relevance (CQ12, CQ13).
+During the coding, new argument schemes and critical questions were added to the list. For example, we found that the discussants often talk about tasks decomposing into sub-tasks, so we added AS10 and CQ10a. Furthermore, because there were many discussions on the relevance and the clarity of the names of elements (goals, tasks, etc.), two generic critical questions CQ12 and CQ13 were added. The final results of the coding can be found in Table~\ref{table:transcripts:results:argumentschemes}; for results per transcript, please consult the online repository. We found a total of 159 instantiation of argument schemes AS0-AS11 in transcripts. The most used argument scheme was AS2: ``Actor $A$ has task $T$'', however, each argument scheme is found in transcripts at least twice. A large portion (about 60\%) of argument schemes involved discussions about tasks of the information system (AS2, AS10). We coded 41 applications of critical questions. Many critical questions (about 55\%) involved clarifying the name of an element, or discussing its relevance (CQ12, CQ13).
+
 
 %MvZ: I completely removed the subsection below. I think it doesn't add much and it is confusing. What do you think?  
 
