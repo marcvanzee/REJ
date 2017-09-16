@@ -3,7 +3,46 @@
 
 In Section~\ref{sect:gmas} we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We also discussed various examples of applications of the different critical questions and all four different effects (right column of Table~\ref{table:argument-schemes}): \textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}, and \textsf{ATTACK}.
 
-The examples and corresponding visualizations of the previous sections provide some insight on how our RationalGRL framework can be used. In this section, we present a more precise formalization of our framework. In the first two subsections we formalize a static representation of our framework: We develop a formal language to specify a GRL model (Section \ref{sect:goalmodeling:logicallanguage}) and we formalize the notion of an argument (Section \ref{sect:goalmodeling:argumentationsemantics}). In the third subsection we formalize the dynamics of our framework: we develop algorithms for instantiating argument schemes and for answering critical questions. The formal framework we develop in this section serves as the underlying model for the prototype implementation we present in the next section.
+The examples and corresponding visualizations of the previous section provide some insight on how our RationalGRL framework can be used. However, since we would like to implement our framework in a tool, we require a more precise formalization.  In this section, we present a formalization of our framework using formal logic. This is the main approach using in formal argumentation, so it allows us to use many of the techniques developed in that area directly (see Section~\ref{sect:goalmodeling:relatedwork} for more details).
+
+In the first two subsections we formalize a static representation of our framework: We develop a formal language to specify a GRL model (Section \ref{sect:goalmodeling:logicallanguage}) and we formalize the notion of an argument (Section \ref{sect:goalmodeling:argumentationsemantics}). In the third subsection we formalize the dynamics of our framework: we develop algorithms for instantiating argument schemes and for answering critical questions. The formal framework we develop in this section serves as the underlying model for the prototype implementation we present in the next section.
+
+\subsection{Logic Programming}
+\label{sect:logicprogramming}
+
+Logic programming is a programming technique largely based on formal logic. Any program written in a logic programming language is a set of sentences in logical form, expressing facts and rules about some problem domain. Well-known logic programming language families include Prolog, Answer set programming (ASP) and Datalog. In all of these languages, rules are written in the form of clauses:
+\begin{align*}
+\texttt{H :- B1, ..., Bn.}.
+\end{align*}
+These clauses are understood declaratively as logical implications:
+\begin{align*}
+\texttt{H if B1 and ... and Bn.}.
+\end{align*}
+\texttt{H} is called the head of the rule and \texttt{B1, ..., Bn} is called the body. Facts are rules that have no body, and are written in the simplified form:
+\begin{align}
+\texttt{H.}.
+\end{align}
+In this article we only consider the simplest case of logic programs, where \texttt{H}, \texttt{B1}, ..., \texttt{Bn} are all atomic formulae, meaning that they are formulae without logical connectives ($\vee, \wedge, \rightarrow, \leftrightarrow$) or negation ($\neg$). Such clauses are called definite clauses or Horn clauses. 
+
+As we saw in the example above, conjunction (``and'') is denoted with a comma. Disjunction is denoted with a semi-colon. In logic programs, \emph{variables} are usually denoted as words starting with a capital letter, while atoms start with a lower-case letter.
+
+A simple example of a RationalGRL model as a logic program is as follows:
+
+\begin{verbatim}
+1. actor(0).
+2. name(0, student).
+3. softgoal(1).
+4. name(1, learn).
+5. has(0, 1).
+6. disabled(0).
+7. disabled(Y) :- actor(X), disabled(X), 
+               has(X,Y).
+\end{verbatim}
+
+The first six lines of this logic program are all facts, and the last line is a rule, which means it can be used to infer new facts. The first two lines assert that identifier 0 is an actor, and that the name of this actor is ``student''. The third and fourth line assert that identifier 1 is a softgoal with name ``learn''. The fifth line assert a dependency between these two identifiers, namely that actor ``student'' has softgoal ``learn''. The sixth line states that the actor is disabled (perhaps because of some underlying argument). Finally the last line states that if \texttt{X} is an actor that is disabled, and this actor has element \texttt{Y}, then this element will also be disabled. 
+
+If we run this program and we ask it whether element 1 is disabled, it will answer with \texttt{Yes}, since element 0 is disabled and element 0 has element 1.
+>>>>>>> Stashed changes
 
 \subsection{Logical Language for RationalGRL}
 \label{sect:goalmodeling:logicallanguage}
