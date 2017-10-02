@@ -37,8 +37,8 @@ AS3 & Actor $a$ has goal $G$ & CQ3 & Can the desired goal be realized? & \textsf
 AS4 & Actor $a$ has softgoal $S$ & CQ4 & Is the softgoal a legitimate softgoal?& \textsf{DISABLE} (no)\\
 \hline
 \hline
-AS5 & Goal $G$ decomposes into tasks $T_1,\ldots,T_n$ & CQ5a & Does the goal decompose into the tasks?& \textsf{DISABLE} (no)\\
-& & CQ5b & Does the goal decompose into other tasks? & \textsf{REPLACE} (yes)\\
+AS5 & Goal $G$ decomposes into task $T$ & CQ5a & Does the goal decompose into the task?& \textsf{DISABLE} (no)\\
+& & CQ5b & Does the goal decompose into other tasks? & \textsf{INTRO} (yes)\\
  &  & CQ5c & Is the decomposition type correct? & \textsf{REPLACE} (no)\\
 \hline
 AS6 & Task $T$ contributes (negatively) to softgoal $S$& CQ6a & Does the task contribute to the softgoal?& \textsf{DISABLE} (no)\\
@@ -52,8 +52,8 @@ AS8 & Task $T$ depends on resource $R$ & CQ8 & Is the resource required in order
 \hline
 AS9 & Actor $a$ depends on actor $b$ & CQ9 & Does the actor depend on any actors?& \textsf{INTRO} (yes)\\
 \hline
-AS10 & Task $T_1$ decomposes into tasks $T_2,\ldots,T_n$ & CQ10a & Does the task decompose into the tasks?& \textsf{DISABLE} (no)\\
- &  & CQ10b & Does the task decompose into other tasks?& \textsf{REPLACE} (yes)\\
+AS10 & Task $T_i$ decomposes into task $T_j$ & CQ10a & Does the task decompose into the task? & \textsf{DISABLE} (no)\\
+ &  & CQ10b & Does the task decompose into other tasks?& \textsf{INTRO} (yes)\\
  &  & CQ10c & Is the decomposition type correct? & \textsf{REPLACE} (no)\\
 \hline
 AS11 & Element $IE$ is relevant & CQ11 & Is the element relevant/useful? & \textsf{DISABLE} (no)\\
@@ -105,12 +105,12 @@ The practical reasoning and argumentation package depicts the concepts we introd
 
 Notice that there are various \textsf{OperationTypes} in the Argumentation package. In RationalGRL, these operations are performed by instantiating an argument scheme or answering a critical question in a certain way. An \textsf{INTRO} operation introduces a new RationalGRL element. A \textsf{DISABLE} operation creates a new argument that attacks another argument or GRL element, effectively disabling it. The \textsf{REPLACE} operation replaces a RationalGRL element with a new element. Instantiating an argument scheme from Table~\ref{table:argument-schemes} always leads to an \textsf{INTRO} operation, that is, it always introduces a new RationalGRL element. Answering a critical question can have different effects depending on the critical question and the answer. Table~\ref{table:argument-schemes} shows these effects for the different critical questions and answers. For example, answering CQ0 with ``no'' disables the argument based on AS0. 
 
-There are two important links between the \emph{practical reasoning \& argumentation} and \emph{goal model construction} packages. First, each \textsf{GRLModelElement} is an \textsf{Argument}. This means that each model element inherits the \textsf{AcceptStatus} as well, allowing GRL elements to be accepted or rejected. This, furthermore, means that argument schemes can be applied to all GRL elements, capturing the intuition that each GRL element can be regarded as an instantiated argument scheme. Finally, the relation between \textsf{GRLModelElement} and \textsf{Argument} means that, as we already briefly indicated when discussing the framework in Figure~\ref{fig:rationalgrl-framework}, the class of \textsf{RatinalGRLmodel} is a superclass of \textsf{GRLmodel}: besides arguments about GRL elements, we can also have arguments that does not relate to any of the GRL elements.
+There are two important links between the \emph{practical reasoning \& argumentation} and \emph{goal model construction} packages. First, each \textsf{GRLModelElement} is an \textsf{Argument}. This means that each model element inherits the \textsf{AcceptStatus} as well, allowing GRL elements to be accepted or rejected. This, furthermore, means that argument schemes can be applied to all GRL elements, capturing the intuition that each GRL element can be regarded as an instantiated argument scheme. Note that besides arguments about elements of the GRL model, we also have a \textsf{GenericArgument} which is simply a counter-argument to an existing argument that does not relate to any of the GRL elements. Finally, the relation between \textsf{GRLModelElement} and \textsf{Argument} means that, as we already briefly indicated when discussing the framework in Figure~\ref{fig:rationalgrl-framework}, the class of \textsf{RatinalGRLmodel} is a superclass of \textsf{GRLmodel}: besides arguments about GRL elements, we can also have arguments that does not relate to any of the GRL elements.
 
 \subsection{From Practical Reasoning to RationalGRL Models: examples from the case study}
 \label{sect:overview:examples}
 
-We now turn to the interactions between the \emph{practical reasoning \& argumentation} (i.e. the bottom left element of the framework in Figure~\ref{fig:rationalgrl-framework}) on the one hand, and \emph{RationalGRL models} (i.e. the top left element of the framework in Figure~\ref{fig:rationalgrl-framework}) on the other hand. We provide informal examples of the links between the practical reasoning found in our case study transcripts and RationalGRL models. The formal grounding for the connection between practical reasoning and RationalGRL models can be found in the RationalGRL Metamodel (Section~\ref{sect:metamodel}) and in more detail in the logical formalization of the Argument Schemes and Critical Questions (Section~\ref{sect:algorithms}). Furthermore, the connection between the RationalGRL models shown in this section and regular GRL models is further formally defined in section \ref{sect:rationalGRL-GRL}. 
+We now turn to the interactions between the \emph{practical reasoning \& argumentation} (i.e. the bottom left element of the framework in Figure~\ref{fig:rationalgrl-framework}) on the one hand, and \emph{RationalGRL models} (i.e. the top left element of the framework in Figure~\ref{fig:rationalgrl-framework}) on the other hand. We provide informal examples of the links between the practical reasoning found in our case study transcripts and RationalGRL models. The formal grounding for the connection between practical reasoning and RationalGRL models can be found in the RationalGRL Metamodel (Section~\ref{sect:metamodel}) and in more detail in the logical formalization of the Argument Schemes and Critical Questions (Section~\ref{sect:algorithms}). The connection between the RationalGRL models shown in this section and regular GRL models is further formally defined in section \ref{sect:rationalGRL-GRL}. 
 
 \paragraph{Example 1 - Introducing GRL elements with arguments (\textsf{INTRO)}}
 
@@ -148,7 +148,7 @@ The transcript excerpt of this example is shown in Table~\ref{table:transcript:d
 
 \paragraph{Example 4: Clarifying a task by answering critical questions (\textsf{REPLACE})}
 
-The transcript excerpt of this example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_1$. The discussion starts with an instantiation of argument scheme AS2: ``Actor \emph{Student} has task \emph{Set car influx}''. This argument is then challenged with critical question CQ12: ``Is the task \emph{Set car influx} specific enough?''. This is answered negatively, creating a new argument ``Actor \emph{Student} has task \emph{Set car influx per road}'', which attacks the original argument for \emph{Set car influx} and rejects (disables) the corresponding original RationalGRL task (Figure~\ref{fig:examples:clarification}). 
+The transcript excerpt of this example is shown in Table~\ref{table:transcript:task-clarification} in Appendix~\ref{sect:transcripts:excerpts} and comes from transcript $t_1$. The discussion starts with an instantiation of argument scheme AS2: ``Actor \emph{Student} has task \emph{Set car influx}''. This argument is then challenged with critical question CQ12: ``Is the task \emph{Set car influx} specific enough?''. This is answered negatively, creating a new argument ``Actor \emph{Student} has task \emph{Set car influx per road}'', which attacks the original argument for \emph{Set car influx}. Note how the new task \emph{Set car influx per road} also attacks (and disables) the original RationalGRL task \emph{Set car influx} (Figure~\ref{fig:examples:clarification}). 
 
 \begin{figure}[b]
 \centering
