@@ -237,7 +237,7 @@ We now develop algorithms for our critical questions. \todo{F}{M}{check of alle 
 \noindent\textbf{Algorithm~\ref{alg:disable} (\textsf{DISABLE}) for critical questions CQ0-CQ5a, CQ6a, CQ7a, CQ8, CQ11, and CQ12:} 
 \todo{F}{M}{Wat ik dacht is dat we zeggen dat ``element $n$ is disabled because $r$'' en dan voegen we een nieuwe ARG toe met $disable(id,r)$ welke het argument met naam $n$ aanvalt}
 The disable operation consists of adding an argument stating the GRL element with identifier $i$ is disabled. Let us reconsider the example of Figure~\ref{fig:examples:relevant-actor}. This example consists of an instantiation of argument scheme AS0, which is attacked by an argument that resulted from answering critical question. The instantiation of AS0 leads to the argument $A=\{actor(0),name(0,dev\_team\}$. After applying $DISABLE(0)$ we obtain the arguments: $$Args=\{\{actor(0),name(0,dev\_team\}, \{disabled(0)\}\}.$$ Note that our implementation of this attack does not lead to an actual attack in the argumentation framework.
-
+\todo{F}{M}{algoritmes voor het introduceren van beliefs als je antwoord geeft op een CQ}
 \begin{algorithm}[h]
   \caption{Answering CQ5b: ``Does goal $G$ decompose into any other tasks?'' With: ``Yes, namey into tasks $t_1,\ldots,t_k$''}\label{alg:cq5b}
   \begin{algorithmic}[1]
