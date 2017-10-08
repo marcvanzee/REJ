@@ -1,11 +1,15 @@
 \section{RationalGRL: Logical Framework}
 \label{sect:formalframework}
 
-In Section~\ref{sect:gmas} we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We then presented the RationalGRL framework in secton~\ref{sect:overview}, consisting of a modeling language, a metamodel, and various examples of using the argument schemes and critical questions. In section~\ref{sect:methodology} we explained how this framework can be used by practitioners by explaining the methodology and tool support.
+In Section~\ref{sect:gmas} we developed a list of critical questions and argument schemes by analyzing transcripts of discussions about the development of a traffic simulator. The resulting list is shown in Table~\ref{table:argument-schemes}. We then presented the RationalGRL framework in secton~\ref{sect:overview}, consisting of a modeling language, a metamodel, and various examples of using the argument schemes and critical questions. In section~\ref{sect:meth+tool} we explained how this framework can be used by practitioners by explaining the methodology and tool support.
 
 In this section we present a formalization of RationalGRL based on formal logic. This is done for multiple reasons: (i) Most approaches in formal argumentation use formal logic, allowing us to employ existing technique directly in order to compute which arguments are accepted and which are rejected, (ii) we can be more precise about how critical questions are answered, (iii) we can show that RationalGRL models can be translated in to valid GRL models in a very precise way, and (iv) the formal approach is a basis for automating the framework in terms of tool support.
 
-In the first two subsections we formalize a static representation of our framework: We provide a formal specification of a GRL model based on the GRL metamodel (Section \ref{sect:goalmodeling:logicallanguage}) in the first subsection, and we extend this with arguments and attack links in the second subsection, hereby obtaining a formal specification of a RationalGRL model. In the third subsection we turn to the dynamics of our framework. We develop algorithms for instantiating argument schemes and for answering critical questions. We show that each algorithm is correct, meaning that if the RationalGRL model was valid before applying the algorithm, it is also valid afterwards.
+In the first two subsections we formalize a static representation of our framework: We provide a formal specification of a GRL model based on the GRL metamodel (Section \ref{sect:goalmodeling:logicallanguage}) in the first subsection, and we extend this with arguments and attack links in the second subsection, hereby obtaining a formal specification of a RationalGRL model. We then provide a formal translation procedure from a RationalGRL model to a GRL model.
+
+In the third subsection we turn to the dynamics of our framework. We develop algorithms for instantiating argument schemes and for answering critical questions.
+
+The two main results of this section are that (i) the translation procedure from a RationalGRL model to a GRL model is correct, meaning that if the RationalGRL model is valid, the resulting GRL model is also valid, (ii) the algorithms for applying argument schemes and critical questions are correct as well, meaning that if the Rational model is valid before, it is also valid afterwards. These two results together entail that our framework and the corresponding operations on it are consistent.
 
 \subsection{Formal Specification of GRL}
 \label{sect:goalmodeling:logicallanguage}
@@ -14,12 +18,12 @@ In this subsection we formalize a GRL model based on the GRL metamodel and the j
 
 \subsubsection{Intentional Element and Actors}
 
-We start with the definition of various sets of elements that we use in subsequent definitions.
+We start with some general definition that we use in subsequent definitions.
 
-\begin{definition}[Set definitions]
+\begin{definition}[General definitions]
 \label{def:set-definitions}
-Throughout this section, we adopt the convention that variables start with a lowercase letter, and sets and constants start with an uppercase.
-\label{def:ie}
+Throughout this section, we adopt the convention that variables start with a lowercase letter (e.g, $id, i, j, name, ie, goal$, and sets and constants start with an uppercase letter (e.g., $Type, AND, Goal$).
+
 We define the following sets:
 \begin{itemize}
 \item $Type = \{Softgoal, Goal, Task, Resource\}$,
@@ -42,6 +46,8 @@ An intentional element $ie\in \mathbb{N}\times Type\times Names\times DecompType
 \end{itemize}
 A set of intentional elements is denoted by $IE$.
 \end{definition}
+
+\paragraph{Example} \todo{Marc}{Marc}{Give example here}
 
 The definition above is sufficient to capture all intentional elements used in GRL. However, we present some syntactic sugar in the next definition by abbreviating the definition above in various ways. This does not add anything new to the previous definition, but it simplifies some of the notation.
 
