@@ -165,10 +165,10 @@ In order to develop a logical framework for RationalGRL, we extend the GRL logic
 \begin{itemize}
 \item A new element called \emph{generic argument},
 \item A new link called \emph{attack link},
-\item An labeling of the elements, assigning to each element (an IE, link, or generic argument) the label IN (accepted) or OUT (reject).
+\item An labeling of the elements, assigning to each element (an IE, link, or generic argument) the label IN (accepted) or OUT (reject). In the next section we explain how the labeling is computed, but in this section we only provide a formal definition.
 \end{itemize}
 
-In the next section we explain how the labeling is computed, but in this section we only provide a formal definition.
+Furthermore, we also change the representation of IE, links, and actors. In GRL, these elements have a single identifier. However, in RationalGRL, we allow the user to \emph{replace} such elements when answering a critical question with effect REPLACE. Therefore, for each GRL element, we maintain a history, which is a list in which the last element of the list corresponds to the element that ends up in the GRL model.
 
 We start with the new element which we call the \emph{Generic Argument}.
 
@@ -193,18 +193,41 @@ Intuitively, $att=(i,j)$ means that element $i$ is attacking element $j$.
 
 Note that the previous definition did not put any constraint on which elements can be connected with attack links. This is what we make explicit in the definition of a RationalGRL model later.
 
-We next add the last part of the RationalGRL addition, namely the labeling of elements. This labeling determines whether an element is accepted (which means it shows up in the GRL model if it is an IE or a link), or rejected (which means it won't be shown).
+We next add the the labeling of elements. This labeling determines whether an element is accepted (which means it shows up in the GRL model if it is an IE or a link), or rejected (which means it won't be shown).
 
 \begin{definition}[RationalGRL labeling]
 \label{def:labeling}
 A RationalGRL labeling function $Lab:\mathcal{N}\rightarrow {in,out}$ that is total on the ids of the RationalGRL elements. This means that $Lab(id)$ is defined for each $ie.id, contr.id, decomp.id, dep.id, arg.id$.
 \end{definition}
 
+Finally we add the last part of the RationalGRL extension. We define a list of intentional elements, contribution links, and actors.
+
+\begin{definition}[IE History, Contribution History, Actor History]
+\label{def:element-list}
+\begin{itemize}
+\item An \emph{IE History for element with id $i$}, denoted $\overline{ie}_i=(ie_0,\ldots,ie_n)$, is a list of IEs $ie_0,\ldots,ie_n$ such that $ie_1.id=\ldots=ie_n.id=i$. 
+\item An \emph{Actor history for actor with id $j$}, denoted $\overline{act}_j=(actor_0,\ldots,actor_n)$, is a list of actors $actor_0,\ldots,actor_n$ such that $actor_0.id=\ldots=actor_n.id=j$. 
+\item A \emph{Contribution history for link with id $k$}, denoted $\overline{contrib}_j=(contrib_0,\ldots,contrib_n)$, is a list of contribution links $contrib_0,\ldots,contrib_n$ such that $contrib_0.id=\ldots=contrib_n.id=k$.
+\end{itemize}
+If the id in the list is not relevant we may omit the subscript notation, e.g., we may write $\overline{ie}$ instead of $\overline{ie}_i$.
+
+Sets of histories for IEs, actors, and contribution links are denoted with respectively $\overline{IE}$, $\overline{Act}$, and $\overline{Contrib}$. 
+
+The last element of a list is called the \emph{head element}.
+\end{definition}
+
+Note that we do not require a history for decomposition links or dependency links. This is because these links do not have associated REPLACE operations.
+
 \begin{definition}[RationalGRL Model]
 \label{def:rationalgrl-model}
-A \emph{RationalGRL model} $RationalGRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep, Arg, Att, Label)$ consists of:
+A \emph{RationalGRL model} $RationalGRL=(\overline{IE}, \overline{Act}, R_{ActIE}, \overline{Contrib}, Decomp, Dep, Arg, Att, Label)$ consists of:
 \begin{itemize}
-\item A GRL model $(IE, Act, R_{ActIE}, Contr, Decomp,$ $Dep)$
+\item A set $\overline{IE}$ of lists of intentional elements (Def.~\ref{def:element-list}),
+\item A set $\overline{Act}$ of lists of actors (Def.~\ref{def:element-list}),
+\item A set $R_{ActIE}$ of Actor-IE relations (Def.~\ref{def:act-ie-relation}),
+\item A set $\overline{Contr}$ of lists of contribution links (Def.~\ref{def:element-list}),
+\item A set $Decomp$ of decomposition links (Def.~\ref{def:link:decomp}),
+\item A set $Dep$ of dependency links (Def.~\ref{def:link:dependency}).
 \item A set of generic arguments $Arg$ (Def.~\ref{def:generic-argument}),
 \item A set of attack links (Def.~\ref{def:link:attack}).
 \item A labeling function $Lab$ (Def.~\ref{def:labeling}).
@@ -212,8 +235,12 @@ A \emph{RationalGRL model} $RationalGRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep,
 
 Furthermore, the following conditions are satisfied. In the following, let $Elems = \{IE, Act, Contr, Decomp, Dep, Arg\}$:
 \begin{enumerate}
-\item All conditions on a GRL model are satisfied, (Def.~\ref{def:grl-model}),
-\item ids are globally unique across IEs, Links, Actors, and Generic arguments, i.e., let $X,Y\in Elems$. For all $X_i$ and $Y_j$: if $i=j$ then $X=Y$ and $X_i=Y_j$.
+\item ids are globally unique across IEs, Links, and Actors, i.e., let $X,Y\in \{\overline{IE},\overline{Act}, \overline{Contr}, Decomp, Dep\}$. For all $X_i$ and $Y_j$: if $i=j$ then $X=Y$ and $X_i=Y_j$.
+\item All intentional elements of actors exist: $\forall (i,j)\in R_{ActIE}: \overline{act}_i \in \overline{Act} \wedge ie_j \in IE$.
+\item An intentional element belongs at most to one actor: $\forall ie_i\in IE: |\{(k,i)\in R_{ActIE}\}| \le 1$.
+\item Contribution links connect intentional elements: $\forall (i,j,k,value)\in \overline{Contrib}: \{ie_j,ie_k\}\subseteq IE$.
+\item Decomposition links connect intentional elements: $\forall (i,j,k)\in Decomp: \{ie_j,ie_k\}\subseteq IE$.
+\item Dependency links connect intentional elements: $\forall (i,j,)\in Dep: \{ie_j,ie_k\}\subseteq IE$.
 \item Attack links connect generic arguments, IEs, actors, and links with each other, i.e., let   $\forall (i,j)\in Att: \exists X\in Elems$ s.t. $X_i\in X$ and $\exists Y\in Elems$ s.t. $Y_i\in Y$.
 \end{enumerate}
 \end{definition}
@@ -263,21 +290,36 @@ In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred e
 
 \todo{Marc}{Marc}{Give example with concrete RationalGRL model}
 
+\begin{algorithm}[h]
+  \caption{Translation Algorithm}\label{alg:translation}
+  \begin{algorithmic}[1]
+    \State TODO
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+If a RationalGRL model $m$ satisfies the conditions of a RationalGRL model (Def.~\ref{def:rationalgrl-model}), then $Trans(m)$ satisfies the conditions of a GRL model (Def.~\ref{def:grl-model}).
+\end{theorem}
+
+\begin{proof}
+TODO
+\end{proof}
+
 \subsection{Algorithms for argument schemes}
 \label{sect:algorithms}
 
-In the previous section we formalize a \emph{static} representation of the RationalGRL framework. In this section we formalize the \emph{dynamics}. We do so by developing algorithms for applying argument schemes and critical questions in the context of a RationalGRL model~\ref{def:rationalgrl-model}. These algorithms produce new elements and attack relations. We can then use argumentation semantics (Definition~\ref{def:semantics}) to compute sets of accepted arguments. The content of these arguments is then used to compute the resulting RationalGRL model, together with enabled and disabled GRL elements and their underlying arguments.
+In the previous section we formalized a \emph{static} representation of the RationalGRL framework. In this section we formalize the \emph{dynamics}. We do so by developing algorithms for applying argument schemes and critical questions in the context of a RationalGRL model (Def.~\ref{def:rationalgrl-model}). These algorithms produce new elements and attack relations. We can then use argumentation semantics (Def.~\ref{def:semantics}) to compute sets of accepted arguments. The content of these arguments is then used to compute the resulting RationalGRL model, together with enabled and disabled GRL elements and their underlying arguments.
 
 The algorithms for the argument schemes consist of forming a new argument and adding it to the set of arguments. No attack relations are introduced.
 
 \begin{algorithm}[h]
   \caption{Applying AS0: Actor $a$ is relevant}\label{alg:as0}
   \begin{algorithmic}[1]
-    \State $RationalGRL=(IE, Act, R_{ActIE}, Contr, Decomp,$
+    \State $RationalGRL=(\overline{IE}, \overline{Act}, R_{ActIE}, \overline{Contr}, Decomp,$
     \State \qquad\qquad\qquad\qquad$Dep, Arg, Att, Label)$
     \Procedure{$AS_0$}{$a$}
     \State $id\gets mintId()$\label{alg:as0:1}
-    \State $Act \gets Act \cup (id, a)$\label{alg:as0:2}
+    \State $\overline{Act} \gets \overline{Act} \cup ((id, a))$\label{alg:as0:2}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
@@ -286,20 +328,22 @@ The algorithms for the argument schemes consist of forming a new argument and ad
 
 \paragraph{Explanation} For all of the argument schemes and critical questions algorithms, we assume an underlying RationalGRL model as defined in Def.~\ref{def:rationalgrl-model}. This model is shown in the first two lines.
 
-The algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted. On line~\ref{alg:as0:2}, the the tuple $(id,a)$ is added to the set of actors $Act$, meaning that a new actor with id $id$ and name $a$ is added to the RationalGRL model (Def.~\ref{def:actor}). In Figure~\ref{fig:examples:relevant-actor2}, the application of the argument scheme $AS_0(\text{Development team})$, results in one argument: $$Args = \{\{actor(0), name(0, \text{Development team})\}\}.$$
+The algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted. On line~\ref{alg:as0:2}, then a list containing a single tuple $(id,a)$ is added to the set of lists of actors $\overline{Act}$, meaning that a new actor with id $id$ and name $a$ is added to the RationalGRL model (Def.~\ref{def:element-list}). In Figure~\ref{fig:examples:relevant-actor2}, .. TODO
 
 \begin{algorithm}[h]
-  \caption{Applying AS1: Actor $a_{id}$ has resource $n$}\label{alg:as1}
+  \caption{Applying AS1: Actor $a_{id}$ has resource $r_{id}$}\label{alg:as1}
   \begin{algorithmic}[1]
-    \Procedure{$AS_1$}{$a_{id}, n$}
-    \State $id\gets id+1$
-    \State $A\gets \{resource(id), name(id,n), has(a_{id},id)\}$
-    \State $Args \gets Args\cup A$
+     \State $RationalGRL=(\overline{IE}, \overline{Act}, R_{ActIE}, \overline{Contr}, Decomp,$
+    \State \qquad\qquad\qquad\qquad$Dep, Arg, Att, Label)$
+    \Procedure{$AS_1$}{$a_{id}, r_{id}$}
+    \State $R_{ActIE}\gets (a_{id}, r_{id}$
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Example} \emph{Algorithm~\ref{alg:as1} for argument scheme AS1:} This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. The algorithm is similar to the previous one, with the difference that the newly added argument contains the statement $has(a_{id},id)$ as well, meaning that the actor with id $a_{id}$ has element $id$ (which is a resource). As an example, let us formalize the argument corresponding to resource \emph{External library} of actor \emph{Traffic tycoon} in Figure~\ref{fig:transcripts:grl}. First, we assume some id is associated with the actor: $$\{actor(0),name(0,traffic\_tycoon)\}.$$ Then we can formalize the argument for the resource as follows: $$\{resource(1),name(1,external\_library),has(0,1)\}.$$
+\paragraph{Example} \todo{Marc}{Marc}{Clarify that the actor and resource exist already. If not, we should first execute Algorithm 2, and then Algorithm 3. No need to combine them}
+
+\emph{Algorithm~\ref{alg:as1} for argument scheme AS1:} This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. The algorithm is similar to the previous one, with the difference that the newly added argument contains the statement $has(a_{id},id)$ as well, meaning that the actor with id $a_{id}$ has element $id$ (which is a resource). As an example, let us formalize the argument corresponding to resource \emph{External library} of actor \emph{Traffic tycoon} in Figure~\ref{fig:transcripts:grl}. First, we assume some id is associated with the actor: $$\{actor(0),name(0,traffic\_tycoon)\}.$$ Then we can formalize the argument for the resource as follows: $$\{resource(1),name(1,external\_library),has(0,1)\}.$$
 
 \paragraph{Proof of Correctness} In order to show that this algorithm is correct, we should show that the new RationalGRL model still satisfies all the conditions of Def.~\ref{def:grl-model}. This is clearly the case, since adding a single element does not invalidate any condition.
 
@@ -327,9 +371,13 @@ Argument scheme AS1 to AS4 are all very similar, in the sense that they all asse
   \end{algorithmic}
 \end{algorithm}
 
+\todo{Marc}{Marc}{This algorithm does not make much sense to me. We simply add a decomposition link, no need to make it so complicated. I actually think we can omit this algorithm.}
+
 \subsubsection{Algorithm~\ref{alg:as5} for argument scheme AS5}
 
-\paragraph{Explanation} The procedure in Algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The difficulty of this algorithm is that each of the tasks are stated in natural language, and it is not directly clear whether these tasks are already in the GRL model or not. Therefore, we have to check for each tasks whether it already exists, and if not, we have to create a new task. On line~\ref{alg:as5:1}, the set $T_{id}$ is initialized, which will contain the ids of the tasks $T_1,\ldots,T_n$ to decompose into. In the for-loop, the if-statement on line~\ref{alg:as5:2} checks whether some argument already exists for the current task $T_i$, and if so, it simply adds the identifier of the task ($t_{id}$) to the set of task identifiers $T_{id}$.\footnote{Note that the existing task may be disabled, but this does not matter, since the decomposition relation will be suppressed for disabled elements.} Otherwise (line~\ref{alg:as5:3}), a new task is created and the new identifier $id$ is added to the set of task identifiers. After the for loop on line~\ref{alg:as5:4}, an argument for the decomposition link itself is constructed, and it is added to the set of arguments $Args$.
+\paragraph{Explanation} \todo{Marc}{Marc}{I think we should remove all this stuff. In this part we are simply adding GRL elements, which is trivial. The interesting part are the critical questions}
+
+The procedure in Algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The difficulty of this algorithm is that each of the tasks are stated in natural language, and it is not directly clear whether these tasks are already in the GRL model or not. Therefore, we have to check for each tasks whether it already exists, and if not, we have to create a new task. On line~\ref{alg:as5:1}, the set $T_{id}$ is initialized, which will contain the ids of the tasks $T_1,\ldots,T_n$ to decompose into. In the for-loop, the if-statement on line~\ref{alg:as5:2} checks whether some argument already exists for the current task $T_i$, and if so, it simply adds the identifier of the task ($t_{id}$) to the set of task identifiers $T_{id}$.\footnote{Note that the existing task may be disabled, but this does not matter, since the decomposition relation will be suppressed for disabled elements.} Otherwise (line~\ref{alg:as5:3}), a new task is created and the new identifier $id$ is added to the set of task identifiers. After the for loop on line~\ref{alg:as5:4}, an argument for the decomposition link itself is constructed, and it is added to the set of arguments $Args$.
 
 \paragraph{Example}
 Let us explain this algorithm with the XOR-decomposition of goal \texttt{Generate cars} of Figure~\ref{fig:transcripts:grl}. Suppose the following arguments are constructed already:
@@ -362,6 +410,7 @@ Suppose furthermore that someone wants to put forward the argument that goal \te
 
 \subsubsection{Algorithm~\ref{alg:as6} for argument scheme AS6} 
 
+\todo{Marc}{Marc}{This one is also not interesting.. just add a contribution link}
 \paragraph{Explanation} The procedure in Algorithm~\ref{alg:as6} takes two arguments: $t_{id}$ is the identifier of task $T$, and $s$ is the softgoal name that is contributed to. The idea behind this algorithm is very similar to the previous one, with the difference that in the current algorithm we create a single relation, while we created a set of relations in the previous algorithm. First, the if-statement on line~\ref{alg:as6:if} checks whether the softgoal exists already, and if not, an argument is added for it. This ensures that all softgoals have corresponding arguments. After the if-statement, the argument for the contribution link is created and it is added to the set of arguments $Args$. 
 
 \paragraph{Example} Let us again illustrate this with a simple example from Figure~\ref{fig:transcripts:grl}. Suppose the following argument exists already: $\{task(0),name(0,keep\_same\_cars\}$, and suppose someone would like to add an argument that the task \texttt{Keep same cars} contributes positively to softgoal \texttt{Dynamic simulation}, i.e. $AS_6(0,dynamic\_simulation)$. The algorithm first checks whether an argument already exists for the softgoal, and when it finds out it does not exist, creates the argument $\{softgoal(1),name(1,dynamic\_simulation)\}$ and adds it to $Args$. Then, the argument for the contribution is added to $Args$ as well, which is $\{contr(2,0,1,pos)\}$.
@@ -384,6 +433,8 @@ We now develop algorithms for our critical questions. Recall that answering a cr
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+
+\todo{Marc}{Marc}{Here we would add an argument and an attack from the argument to the intentional element. We don't add ``disabled'' because this is what argumentation semantics should do for us.}
 
 \emph{Algorithm~\ref{alg:disable} (\textsf{DISABLE}) for critical questions CQ0-CQ5a, CQ6a, CQ7a, CQ8, CQ11, and CQ12:} The disable operation consists of adding an argument stating the GRL element with identifier $i$ is disabled. Let us reconsider the example of Figure~\ref{fig:examples:relevant-actor}. This example consists of an instantiation of argument scheme AS0, which is attacked by an argument that resulted from answering critical question. The instantiation of AS0 leads to the argument $A=\{actor(0),name(0,dev\_team\}$. After applying $DISABLE(0)$ we obtain the arguments: $$Args=\{\{actor(0),name(0,dev\_team\}, \{disabled(0)\}\}.$$ Note that our implementation of this attack does not lead to an actual attack in the argumentation framework.
 
