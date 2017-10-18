@@ -26,8 +26,8 @@ Throughout this section, we adopt the convention that variables start with a low
 
 We define the following sets:
 \begin{itemize}
-\item $Types = \{Softgoal, Goal, Task, Resource\}$,
-\item $Elements = Type \cup \{Actor, Contr, Dependency, Decomp, Belief\}$
+\item $IETypes = \{Softgoal, Goal, Task, Resource\}$,
+\item $Types = IETypes \cup \{Actor, Contr, Dependency, Decomp, Belief\}$
 \item $Names$ is a finite set of strings.
 \item $DecompTypes = \{AND,OR,XOR\}$.
 \item $ContribValues = \{Break, Hurt, Some\ nega-$ $tive, Unknown, Some\  positive, Help, Make\},$
@@ -38,10 +38,10 @@ Next we define an intentional element.
 
 \begin{definition}[Intentional Element]
 \label{def:ie}
-An intentional element $ie\in \mathbb{N}\times Types\times Names\times DecompType$ is a relation, where $ie = (id, type, name, decomptype)$ means:
+An intentional element $ie\in \mathbb{N}\times IETypes\times Names\times DecompType$ is a relation, where $ie = (id, type, name, decomptype)$ means:
 \begin{itemize}
 \item $id\in \mathbb{N}$ is a unique identifier for the element,
-\item $type\in Types$ specifies the type of the element,
+\item $type\in IETypes$ specifies the type of the element,
 \item $name \in Names$ is a string description of the element,
 \item $decomptype\in DecompType$ refers to the type of decomposition.\footnote{Note that the decomposition type is relevant only if the element is in fact decomposed into other elements, but since the jUCMNav implementation defines the decomposition type on the element, we do the same here.}
 \end{itemize}
@@ -277,13 +277,11 @@ Let us briefly verify that our previous formalization of Figure~\ref{fig:example
 \subsection{Formal specification of RationalGRL}
 \label{sect:formalframework:rationalgrl}
 
-In order to develop a logical framework for RationalGRL, we extend the GRL logical framework of the previous section by adding three elements (see Figure~\ref{fig:rationalgrllegend}):
+In order to develop a logical framework for RationalGRL, we extend the GRL logical framework of the previous section by adding two elements (see Figure~\ref{fig:rationalgrllegend}):
 \begin{itemize}
 \item A new element called \emph{generic argument},
 \item A new link called \emph{attack link}
 \end{itemize}
-
-Following the RationalGRL metamodel (Figure~\ref{fig:metamodel}), we define an \emph{Argument} as either a generic argument or any of the GRL elements, and we define attack relations between arguments. Thus, a RationalGRL model is simply a set of arguments and attack relations. We use \emph{argumentation semantics} to compute extensions, which are sets of accepted arguments.
 
 We start with the new element which we call the \emph{Generic Argument}.
 
@@ -297,9 +295,22 @@ A generic argument $ga \in \mathbb{N}\times Names$ is a relation such that $ga=(
 We may refer to the argument with id $i$ simply with $ga_i$. A set of arguments is denoted by $GA$.
 \end{definition}
 
-Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link:contrib},~\ref{def:link:decomp}, and~\ref{def:link:dependency}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is correct, since generic arguments are not part of GRL, so they should also not occur in links.
+\paragraph{Rationale and example} 
 
-We next define the attack link, which is the only link that RationalGRL adds to GRL. 
+\todo{Marc}{Marc}{Add extended version of Fig.~\ref{fig:example-small2} with some arguments and disabled elements and use that to explain this section}
+
+Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link:contrib},~\ref{def:link:decomp}, and~\ref{def:link:dependency}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is correct, since generic arguments are not part of GRL, so they should also not occur in links. 
+
+\begin{definition}[Argument]
+\label{def:argument}
+An argument $A=(elem,type)$ is a pair such that:
+\begin{itemize}
+\item $elem$ is either an intentional element $ie$ (Def.~\ref{def:ie}), an actor $act$ (Def.~\ref{def:actor}), an Actor-IE relation $r_{ActIE}$ (Def.~\ref{def:act-ie-relation}),  a contribution link $contr$, a decomposition link $decomp$ (Def.~\ref{def:link:decomp}), a dependency link $dep$ (Def.~\ref{def:link:dependency}), or a generic argument $ga$ (Def.~\ref{def:generic-argument}).
+\item $type\in Type$ (Def.~\ref{def:set-definitions}) is the type of the argument.
+\end{itemize}
+\end{definition}
+
+\paragraph{Rationale and example} We define an argument as either a generic argument or any of the GRL elements or links. This captures the specification in the RationalGRL metamodel (Fig.~\ref{fig:metamodel}) in which the class \textsf{Argument} is a superclass of \textsf{GenericArgument} and \textsf{GRLModelElement}, which again is a superclass of both \textsf{ElementLink} and \textsf{GRLLinkableElement}. A \textsf{GRLLinkableElement} is in turn a superclass of \textsf{Actor} and \textsf{IntentionalElement}. In sum, we define an argument simply as any one of the GRL elements or links, or a generic argument.
 
 \begin{definition}[Attack Link]
 \label{def:link:attack}
@@ -311,33 +322,7 @@ An attack link $att\in \mathbb{N}\times \mathbb{N}$ is a relation such that $att
 Intuitively, $att=(i,j)$ means that element $i$ is attacking element $j$. A set of attack links is denoted by $Att$.
 \end{definition}
 
-Next we define an argument as either a generic argument or any of the GRL elements or links. This captures the specification in the RationalGRL metamodel (Fig.~\ref{fig:metamodel}) in which the class \textsf{Argument} is a superclass of \textsf{GenericArgument} and \textsf{GRLModelElement}, which again is a superclass of both \textsf{ElementLink} and \textsf{GRLLinkableElement}. A \textsf{GRLLinkableElement} is in turn a superclass of \textsf{Actor} and \textsf{IntentionalElement}. In sum, we define an argument simply as any one of the GRL elements or links, or a generic argument.
-
-\begin{definition}[Argument]
-\label{def:argument}
-A set of arguments $Arg = IE\cup Act\cup R_{ActIE}\cup Contr\cup Decomp \cup Dep\cup GA$ consists of:
-\begin{itemize}
-\item a set of intentional elements $IE$ (Def.~\ref{def:ie}), 
-\item a set of actors $Act$ (Def.~\ref{def:actor}),
-\item a set of Actor-IE relations $R_{ActIE}$ (Def.~\ref{def:act-ie-relation}), 
-\item a set of contribution links $Contr$ (Def.~\ref{def:link:contrib}), 
-\item a set of decomposition links $Decomp$ (Def.~\ref{def:link:decomp}), 
-\item a set of dependency links $Dep$ (Def.~\ref{def:link:dependency}), 
-\item a set of a generic arguments $GA$ (Def.~\ref{def:generic-argument}).
-\end{itemize}
-\end{definition}
-
-In order to identify arguments with the corresponding GRL element, we also add a relation between the element ids and the corresponding element. Recall the definition of $Element$ from Def.~\ref{def:set-definitions}.
-
-\begin{definition}[Argument-Element mapping]
-\label{def:arg-elem-mapping}
-An \emph{argument-element mapping} $argElem\in \mathbb{N}\times Element$ is a mapping from an element identifier to its corresponding GRL element. So if $argElem=(i,elem)$, then
-\begin{itemize}
-\item $i\in\mathbb{N}$ is the identifier of the GRL element,
-\item $elem\in Element$ (Def.~\ref{def:set-definitions}) is the GRL element type identified by $i$.
-\end{itemize}
-We denote a set of argument-element mappings with $ArgElem$.
-\end{definition}
+\paragraph{Rationale and example} The attack link is the only link that RationalGRL adds to GRL.
 
 \begin{definition}[RationalGRL Model]
 \label{def:rationalgrl-model}
@@ -346,7 +331,7 @@ A \emph{RationalGRL model} $RatGRL=(Arg, Att, ArgElem)$ consists of a set of arg
 
 In order to compute when an argument is accepted and when not we use argumentation semantics.  We use the standard approach here, which is known as \emph{Dung's semantics}. The following notions are preliminary.
 
-\begin{definition}[Argumentation Framework\~cite{}]
+\begin{definition}[Argumentation Framework~\cite{}]
 \label{def:argumentation-framework}
 An \emph{argumentation framework} $AF=(Arg,Att)$ consists of a set of arguments $Arg$ and a set of attack relations $Att\subseteq Arg\times Arg.$
 \end{definition}
@@ -441,7 +426,7 @@ In the previous section we formalized a \emph{static} representation of the Rati
 
 In all of the following algorithms, we assume the following
 \begin{itemize}
-\item There algorithms are being applied to some valid RationalGRL model $RGRL$,
+\item There algorithms are being applied to some valid RationalGRL model $RatGRL$,
 \item The procedure $mindId()$ generates a new unique id.
 \end{itemize}
 
@@ -450,107 +435,43 @@ The algorithms for applying argument schemes are short, and consist simply of ad
 \begin{algorithm}[h]
   \caption{AS0: Add a new actor with name $n$}\label{alg:as0}
   \begin{algorithmic}[1]
-    \Procedure{$AS_0$}{$Arg, Att, n$}
-    \State $actor \leftarrow (mintId(), n)$ 
-    \State $Arg\leftarrow Arg \cup \{actor\}$\label{alg:as0:2}
+    \Procedure{$AS_0$}{$n$}
+    \State $actor \leftarrow (mintId(), n)$ \label{alg:as0:1}
+    \State $Arg\leftarrow Arg \cup \{(actor,Actor)\}$\label{alg:as0:2}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Algortihm~\ref{alg:as0} for argument scheme AS0}
-
-\paragraph{Explanation} For all of the argument schemes and critical questions algorithms, we assume an underlying RationalGRL model as defined in Def.~\ref{def:rationalgrl-model}. This model is shown in the first two lines.
-
-The algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted. On line~\ref{alg:as0:2}, then a list containing a single tuple $(id,a)$ is added to the set of lists of actors $\overline{Act}$, meaning that a new actor with id $id$ and name $a$ is added to the RationalGRL model (Def.~\ref{def:element-list}). In Figure~\ref{fig:examples:relevant-actor2}, .. TODO
+\paragraph{Rationale and example} The algorithm takes one argument, namely the name of the actor $n$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2} the pair $(actor,Actor)$ is added as a new argument, indicating that an argument of type $Actor$ is added.
 
 \begin{algorithm}[h]
-  \caption{Applying AS1: Actor $a_{id}$ has resource $r_{id}$}\label{alg:as1}
+  \caption{Applying AS1: Actor with id $i$ has resource $n$}\label{alg:as1}
   \begin{algorithmic}[1]
-     \State $RationalGRL=(\overline{IE}, \overline{Act}, R_{ActIE}, \overline{Contr}, Decomp,$
-    \State \qquad\qquad\qquad\qquad$Dep, Arg, Att, Label)$
-    \Procedure{$AS_1$}{$a_{id}, r_{id}$}
-    \State $R_{ActIE}\gets (a_{id}, r_{id}$
+    \Procedure{$AS_1$}{$i, n$}
+    \State $rId\gets mintId()$
+    \State $r\leftarrow (rId, Resource, n, AND)$
+    \State $Arg\gets Arg\cup \{(r, Resource),(i,rId)\}$
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Example} \todo{Marc}{Marc}{Clarify that the actor and resource exist already. If not, we should first execute Algorithm 2, and then Algorithm 3. No need to combine them}
-
-\emph{Algorithm~\ref{alg:as1} for argument scheme AS1:} This argument scheme takes two arguments, the identifier $a_{id}$ of the actor and the resource name $n$. The algorithm is similar to the previous one, with the difference that the newly added argument contains the statement $has(a_{id},id)$ as well, meaning that the actor with id $a_{id}$ has element $id$ (which is a resource). As an example, let us formalize the argument corresponding to resource \emph{External library} of actor \emph{Traffic tycoon} in Figure~\ref{fig:transcripts:grl}. First, we assume some id is associated with the actor: $$\{actor(0),name(0,traffic\_tycoon)\}.$$ Then we can formalize the argument for the resource as follows: $$\{resource(1),name(1,external\_library),has(0,1)\}.$$
-
-\paragraph{Proof of Correctness} In order to show that this algorithm is correct, we should show that the new RationalGRL model still satisfies all the conditions of Def.~\ref{def:grl-model}. This is clearly the case, since adding a single element does not invalidate any condition.
-
-Argument scheme AS1 to AS4 are all very similar, in the sense that they all assert that some element belongs to an actor. Therefore, we only provide the algorithm for AS1 and we assume the reader can easily construct the remaining algorithms AS2-AS4.
+\paragraph{Rationale and example} Explain here...
 
 \begin{algorithm}[h]
-  \caption{Applying AS5: Goal $g_{id}$ decomposes into tasks $T_1,\ldots,T_n$}\label{alg:as5}
+  \caption{Applying AS5: Goal with id $i$ decomposes into tasks $t$}\label{alg:as5}
   \begin{algorithmic}[1]
-    \Procedure{$AS_5$}{$g_{id}, \{T_1,\ldots,T_n\}, type$}
-    \State $T_{id} = \emptyset$\label{alg:as5:1}
-    \For{$T_i$ in $\{T_1,\ldots,T_n\}$}
-      \If{$\exists_{A\in Args}\label{alg:as5:2} \{task(t_{id}),name(t_{id},T_i)\}\subseteq A$}
-        \State $T_{id} \gets T_{id} \cup \{t_{id}\}$
-      \Else\label{alg:as5:3}
-        \State $id\gets id+1$
-        \State $A \gets \{task(id),name(id,T_i)\}$
-        \State $Args \gets Args\cup A$
-        \State $T_{id} \gets T_{id} \cup \{id\}$
-      \EndIf
-    \EndFor
-    \State $id\gets id+1$\label{alg:as5:4}
-    \State $A\gets \{decomp(id, g_{id}, T_{id}, type)\}$
-    \State $Args \gets Args\cup A$
+    \Procedure{$AS_5$}{$i, t$}
+    \State $tId\gets mintId()$
+    \State $t\leftarrow (tId, Task, t, AND)$
+    \State $Arg\gets Arg\cup \{(t, Task),(i,tId)\}$
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\todo{Marc}{Marc}{This algorithm does not make much sense to me. We simply add a decomposition link, no need to make it so complicated. I actually think we can omit this algorithm.}
+\paragraph{Rationale and example} Explain here.
 
-\subsubsection{Algorithm~\ref{alg:as5} for argument scheme AS5}
 
-\paragraph{Explanation} \todo{Marc}{Marc}{I think we should remove all this stuff. In this part we are simply adding GRL elements, which is trivial. The interesting part are the critical questions}
-
-The procedure in Algorithm~\ref{alg:as5} takes three arguments: $g_{id}$ is the identifier of goal $G$, $T=(T_1,\ldots,T_n)$ is a list of decomposing task names, and $type\in\{and,or,xor\}$ is the decomposition type. The difficulty of this algorithm is that each of the tasks are stated in natural language, and it is not directly clear whether these tasks are already in the GRL model or not. Therefore, we have to check for each tasks whether it already exists, and if not, we have to create a new task. On line~\ref{alg:as5:1}, the set $T_{id}$ is initialized, which will contain the ids of the tasks $T_1,\ldots,T_n$ to decompose into. In the for-loop, the if-statement on line~\ref{alg:as5:2} checks whether some argument already exists for the current task $T_i$, and if so, it simply adds the identifier of the task ($t_{id}$) to the set of task identifiers $T_{id}$.\footnote{Note that the existing task may be disabled, but this does not matter, since the decomposition relation will be suppressed for disabled elements.} Otherwise (line~\ref{alg:as5:3}), a new task is created and the new identifier $id$ is added to the set of task identifiers. After the for loop on line~\ref{alg:as5:4}, an argument for the decomposition link itself is constructed, and it is added to the set of arguments $Args$.
-
-\paragraph{Example}
-Let us explain this algorithm with the XOR-decomposition of goal \texttt{Generate cars} of Figure~\ref{fig:transcripts:grl}. Suppose the following arguments are constructed already:
-\begin{itemize}
-\item $\{goal(0),name(0,generate\_cars)\},$
-\item $\{taks(1),name(1,keep\_same\_cars\}.$
-\end{itemize}
-Suppose furthermore that someone wants to put forward the argument that goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create news cars}. Formally: $AS_5(0,\{generate\_cars,keep\_same\_cars\},xor)$. The algorithm will first set $T_{id}=\emptyset$, and then iterate over the two task names. For the first task $generate\_cars$, there does not exist an argument $\{task(t_{id}),name(t_{id},generate\_cars)\}$ yet, so a  new argument is created. Suppose the following argument is created: $\{task(2),name(2,generate\_cars)\}.$ After this, 2 is added to $T_{id}$. For the second task an argument exists already, namely $\{task(1),name(1,keep\_same\_cars)\}$, so 1 is simply added to $T_{id}$. After the for loop, we have $T_{id}=\{1,2\}$. Next, the decomposition argument is created, which is $\{decomp(3,0,\{1,2\},xor)\}$. This argument is added to $Args$ and the algorithm terminates.
-
-\begin{algorithm}[h]
-  \caption{Applying AS6: Task $t_{id}$ contributes to softgoal $s$}\label{alg:as6}
-  \begin{algorithmic}[1]
-    \Procedure{$AS_6$}{$t_{id}, s$}
-    \If{$\exists_{A\in Args} \{softgoal(i),name(i,s)\}\subseteq A$} \label{alg:as6:if}
-        \State $s_{id} \gets i$
-    \Else
-      \State $id\gets id+1$
-      \State $A \gets \{softgoal(id),name(id,t)\}$
-      \State $Args \gets Args\cup A$
-      \State $s_{id} \gets id$
-    \EndIf
-    \State $id\gets id+1$
-    \State $A\gets \{contr(id, t_{id}, s_{id}, pos)\}$
-    \State $Args \gets Args\cup A$
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\paragraph{Proof of Correctness}
-
-\subsubsection{Algorithm~\ref{alg:as6} for argument scheme AS6} 
-
-\todo{Marc}{Marc}{This one is also not interesting.. just add a contribution link}
-\paragraph{Explanation} The procedure in Algorithm~\ref{alg:as6} takes two arguments: $t_{id}$ is the identifier of task $T$, and $s$ is the softgoal name that is contributed to. The idea behind this algorithm is very similar to the previous one, with the difference that in the current algorithm we create a single relation, while we created a set of relations in the previous algorithm. First, the if-statement on line~\ref{alg:as6:if} checks whether the softgoal exists already, and if not, an argument is added for it. This ensures that all softgoals have corresponding arguments. After the if-statement, the argument for the contribution link is created and it is added to the set of arguments $Args$. 
-
-\paragraph{Example} Let us again illustrate this with a simple example from Figure~\ref{fig:transcripts:grl}. Suppose the following argument exists already: $\{task(0),name(0,keep\_same\_cars\}$, and suppose someone would like to add an argument that the task \texttt{Keep same cars} contributes positively to softgoal \texttt{Dynamic simulation}, i.e. $AS_6(0,dynamic\_simulation)$. The algorithm first checks whether an argument already exists for the softgoal, and when it finds out it does not exist, creates the argument $\{softgoal(1),name(1,dynamic\_simulation)\}$ and adds it to $Args$. Then, the argument for the contribution is added to $Args$ as well, which is $\{contr(2,0,1,pos)\}$.
-
-\emph{Algorithms for argument schemes AS7-AS11:} The algorithms for $AS7$ to $AS11$ all have a very similar structure as Algorithm~\ref{alg:as6} and have therefore been omitted. Again, we assume the reader can reconstruct them straightforwardly.
-
-\paragraph{Proof of correctness} 
+The remaining argument schemes are all very similar, in the sense that they all simply add a single argument to the set of arguments containing the element to be added. We therefore have omitted them here.
 
 \subsubsection*{Algorithms for critical questions}
 
