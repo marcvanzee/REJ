@@ -5,18 +5,18 @@ In Section~\ref{sect:gmas} we developed a list of critical questions and argumen
 
 In this section we present a formalization of RationalGRL based on formal logic. This is done for multiple reasons: (i) Most approaches in formal argumentation use formal logic, allowing us to employ existing technique directly in order to compute which arguments are accepted and which are rejected, (ii) we can be more precise about how critical questions are answered, (iii) we can show that RationalGRL models can be translated in to valid GRL models in a very precise way, and (iv) the formal approach is a basis for automating the framework in terms of tool support.
 
-In the first two subsections we formalize a static representation of our framework: We provide a formal specification of a GRL model based on the GRL metamodel (Section \ref{sect:goalmodeling:logicallanguage}) in the first subsection, and we extend this with arguments and attack links in the second subsection, hereby obtaining a formal specification of a RationalGRL model. We then provide a formal translation procedure from a RationalGRL model to a GRL model.
+In the first two subsections we formalize a static representation of our framework: We provide a formal specification of a GRL model based on the GRL metamodel (Section \ref{sect:goalmodeling:logicallanguage}) in the first subsection, and we extend this with arguments and attack links in the second subsection, hereby obtaining a formal specification of a RationalGRL model. 
 
-In the third subsection we turn to the dynamics of our framework. We develop algorithms for instantiating argument schemes and for answering critical questions.
+In the third subsection we develop algorithms in order to translate a GRL model into a RationalGRL model, and visa versa.
 
-The two main results of this section are that (i) the translation procedure from a RationalGRL model to a GRL model is correct, meaning that if the RationalGRL model is valid, the resulting GRL model is also valid, (ii) the algorithms for applying argument schemes and critical questions are correct as well, meaning that if the Rational model is valid before, it is also valid afterwards. These two results together entail that our framework and the corresponding operations on it are consistent.
+In the fourth and final subsection we turn to the dynamics of our framework. We develop algorithms for instantiating argument schemes and for answering critical questions. 
 
 \subsection{Formal Specification of GRL}
 \label{sect:formalframework:grl}
 
 In this subsection we formalize a GRL model based on the GRL metamodel and the jUCMNav implementation. We first formalize elements of GRL (intentional elements and actors), and then formalize the links.
 
-\subsubsection{Intentional Element and Actors}
+\subsubsection{Intentional Element, beliefs and actors}
 
 We start with some general definition that we use in subsequent definitions.
 
@@ -26,10 +26,11 @@ Throughout this section, we adopt the convention that variables start with a low
 
 We define the following sets:
 \begin{itemize}
-\item $Type = \{Softgoal, Goal, Task, Resource\}$,
+\item $Types = \{Softgoal, Goal, Task, Resource\}$,
+\item $Elements = Type \cup \{Actor, Contr, Dependency, Decomp, Belief\}$
 \item $Names$ is a finite set of strings.
-\item $DecompType = \{AND,OR,XOR\}$.
-\item $ContribValue = \{Break, Hurt, Some\ nega-$ $tive, Unknown, Some\  positive, Help, Make\},$
+\item $DecompTypes = \{AND,OR,XOR\}$.
+\item $ContribValues = \{Break, Hurt, Some\ nega-$ $tive, Unknown, Some\  positive, Help, Make\},$
 \end{itemize}
 \end{definition}
 
@@ -37,17 +38,15 @@ Next we define an intentional element.
 
 \begin{definition}[Intentional Element]
 \label{def:ie}
-An intentional element $ie\in \mathbb{N}\times Type\times Names\times DecompType$ is a relation, where $ie = (id, type, name, decomptype)$ means:
+An intentional element $ie\in \mathbb{N}\times Types\times Names\times DecompType$ is a relation, where $ie = (id, type, name, decomptype)$ means:
 \begin{itemize}
 \item $id\in \mathbb{N}$ is a unique identifier for the element,
-\item $type\in Type$ specifies the type of the element,
+\item $type\in Types$ specifies the type of the element,
 \item $name \in Names$ is a string description of the element,
 \item $decomptype\in DecompType$ refers to the type of decomposition.\footnote{Note that the decomposition type is relevant only if the element is in fact decomposed into other elements, but since the jUCMNav implementation defines the decomposition type on the element, we do the same here.}
 \end{itemize}
 A set of intentional elements is denoted by $IE$.
 \end{definition}
-
-\paragraph{Example} \todo{Marc}{Marc}{Give example here}
 
 The definition above is sufficient to capture all intentional elements used in GRL. However, we present some syntactic sugar in the next definition by abbreviating the definition above in various ways. This does not add anything new to the previous definition, but it simplifies some of the notation.
 
@@ -56,13 +55,46 @@ The definition above is sufficient to capture all intentional elements used in G
 We adopt three conventions simplifying our notation:
 \begin{itemize}
 \item
-We refer to the element of an intention element $ie$ using the dot (".") notation. That is, we may refer to the id, type, name and decomposition type with respectively $ie.id$, $ie.type$, $ie.name$, and $ie.decomptype$.
+We refer to the element of a tuple using the dot (".") notation. That is, we may for instance refer to the id, type, name and decomposition type of an $IE$ with respectively $ie.id$, $ie.type$, $ie.name$, and $ie.decomptype$.
 \item 
-We refer to the set of intentional elements with $ie.id=i$ by $IE_i$, and if this is a single element, we denote it by $ie_i$\footnote{In GRL, there always exists at most one element for every id (see Def.~\ref{def:grl-model}), in RationalGRL, however, this condition does not hold (see Def.~\ref{def:rationalgrl-model}).} For instance, we may refer to the intentional element $ie = (0, Goal, \text{Make profit}, AND)$ with $ie_0$ and write $ie_0.type = Goal$, $ie_0.name = \text{Make profit}$, and $ie_0.decompositiontype = AND$. 
+We refer to a set of elements with the same id $i$  using the $i$ subscript on the set. For instance a set of IEs with id $i$ is denoted by $E_i$, and if this is a single element, we denote it by $ie_i$\footnote{In GRL, there always exists at most one element for every id (see Def.~\ref{def:grl-model}), in RationalGRL, however, this condition does not hold (see Def.~\ref{def:rationalgrl-model}).} For instance, we may refer to the intentional element $ie = (0, Goal, \text{Make profit}, AND)$ with $ie_0$ and write $ie_0.type = Goal$, $ie_0.name = \text{Make profit}$, and $ie_0.decompositiontype = AND$. 
 \item
 We can also refer to intention elements of a specific type simply by $type_{id}$. For instance, we can abbreviate the element in the previous item with $goal_0$ and write $goal_0.name = \text{Make profit}$, and $goal_0.decomptype = AND$.
 \end{itemize}
 \end{definition}
+
+\paragraph{Rationale and example} Throughout this section we use the example in Figure~\ref{fig:example-small}, which we reproduce in Figure~\ref{fig:example-small2}. Our formalization of GRL is very much in line with the way in which GRL models are represented in the open-source Eclipse-based tool jUCMNav.\footnote{See \url{http://jucmnav.softwareengineering.ca/foswiki/ProjetSEG}} This tool is actively developed and has a rich number of features for the analysis of both GRL and URN models. By keeping our formalization in line with this tool, we simplify the translation step from RationalGRL to GRL.
+
+Some of the IEs in Figure~\ref{fig:example-small2} can be formalized using Def.~\ref{def:ie} as follows:
+\begin{itemize}
+\item $(2, goal, \text{Generate traffic}, XOR)$: This represents the goal ``Generate traffic'', which is XOR-decomposed. Note the identifier is not shown in the GRL model, but it is stored internally.
+\item $(5, resource, \text{Car objects}, AND)$: Although this element does not decompose into any other elements, it still contains an AND-decomposition. Our motivation for this choice is that it simplifies the formalization of decomposition links. It is in line with jUCMNav implementation, the open source implementation of GRL.
+\end{itemize}
+
+Using the short-hand notation defined in Def.~\ref{def:notation}, we can make the following statements:
+\begin{itemize}
+\item $ie_2.name = \text{Generate traffic}$
+\item $goal_2.decomptype = XOR$
+\item $resource_5.name = \text{Car objects}$
+\end{itemize}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{img/Example1.pdf}
+\caption{Partial GRL Model of the traffic simulator example}
+\label{fig:example-small2}
+\end{figure} 
+
+\begin{definition}[Belief]
+\label{def:belief}
+A belief $bel\in \mathbb{N}\times Names$ is a relation where $bel=(id,name)$ means:
+\begin{itemize}
+\item $id\in\mathbb{N}$ is the identifier of the belief,
+\item $name\in Names$ is a string description of the belief.
+\end{itemize}
+\end{definition}
+
+\paragraph{Rational and example} Beliefs are different from IEs in the sense that they are not being used in decompositions, dependencies, or contributions. They merely provide additional explanation for an element. The only belief in Figure~\ref{fig:example-small2} is formalized as $(1, \text{Not scientifically correct})$.
 
 \begin{definition}[Actor]
 \label{def:actor}
@@ -77,8 +109,9 @@ Similar to intentional elements, we may refer to $act = (id,name)$ with $act_{id
 A set of actors is denoted by $Act$.
 \end{definition}
 
-In the next definition we specify relations between actors and intentional elements. Each actor can own one or multiple intentional elements. We chose to define this simply as a actor-element relation, which is in line with the jUCMNav implementation.
+\paragraph{Rationale and example} An actor is simply a pair consisting of its identifier and its name. The relation between actors and their intentional element is formalized in the next definition. 
 
+We can formalize the actor of Figure~\ref{fig:example-small2} as $act=(0,\text{Traffic Simulator})$, and we can for instance state $act_0.name = \text{Traffic Simulator}$.
 
 \begin{definition}[Actor-IE Relations]
 \label{def:act-ie-relation}
@@ -87,22 +120,58 @@ An \emph{Actor-IE relation} $r_{ActIE}\in\mathbb{N}\times\mathbb{N}$ is a relati
 A set of Actor-IE relations is denoted by $R_{ActIE}$.
 \end{definition}
 
+\paragraph{Rationale and example} The previous definition specifies relations between actors and intentional elements. Each actor can own one or multiple intentional elements, but each intentional element can only be owned by at most one actor (we will make these assumptions explicit in Def.~\ref{def:valid-grl-model}).
+
+In Figure~\ref{fig:example-small2}, recall we formalized two IEs and the actor as follows:
+\begin{itemize}
+\item $(2, goal, \text{Generate traffic}, XOR)$
+\item $(5, resource, \text{Car objects}, AND)$
+\item $(0, \text{Traffic Simulator})$
+\end{itemize}
+
+We can then formalize the Actor-IE relationships for these elements as: $(0,2)$ and $(0,5)$.
+
 \subsubsection{Links}
 
 At this point we have defined all intentional elements in GRL and a containment relation between actors and intentional elements. We now turn to the GRL links.
 
+\begin{definition}[Belief link]
+\label{def:link:belief}
+A \emph{belief} link: $bellink\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is a relation such that $dep = (i,j,k)$ means
+\begin{itemize}
+\item $i\in \mathbb{N}$ is the unique identifier of the link,
+\item $j\in \mathbb{N}$ is the unique identifier of the belief element,
+\item $k\in \mathbb{N}$ is the unique identifier of the IE.
+\end{itemize}
+Intuitively, $bellink = (i,j,k)$ means that $bel_i$ is a belief for $ie_j$.
+
+A set of belief links is denoted by $Bellink$.
+\end{definition}
+
+\paragraph{Rationale and example} The belief links can only be used to connect a belief with an intentional element. However, this is not made explicit in the definition above. We make this assumption, together with various assumption, explicit in the definition of a \emph{valid GRL model} (Def.~\ref{def:valid-grl-model}). Figure~\ref{fig:example-small2} does not contain any belief links.
+
 \begin{definition}[Contribution Link]
 \label{def:link:contrib}
-A \emph{contribution} link: $contrib\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}\times Contribvalue$ is a relation such that $contrib = (i,j,k,value)$ means
+A \emph{contribution} link: $contrib\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}\times Contribvalues$ is a relation such that $contrib = (i,j,k,value)$ means
 \begin{itemize}
 \item $i\in \mathbb{N}$ is the unique identifier of the link,
 \item $j\in \mathbb{N}$ is the unique identifier of the IE from which the contribution originates,
 \item $k\in \mathbb{N}$ is the unique identifier of the IE to which is contributed.
+\item $value\in ContribValues$ is the strength of the contribution.
 \end{itemize}
 Intuitively, $contrib = (i,j,k,value)$ means that $ie_i$ contributes to $ie_j$ with $value$.
 
 A set of contribution links is denoted by $Contrib$.
 \end{definition}
+
+\paragraph{Rationale and example} Similar to IEs, links have identifiers as well. In Fig.~\ref{fig:example-small2}, there are two contribution links. First, let us formalize the related IEs:
+\begin{itemize}
+\item $(3, softgoal, \text{Realisitc simulation}, AND)$
+\item $(4, softgoal, \text{Simple design}, AND)$
+\item $(6, task, \text{Create new cars}, AND)$
+\end{itemize}
+
+We can formalize the contribution links as $(9, 6, 3, \text{Help})$ and $(10, 6, 4, \text{Hurt})$.
 
 \begin{definition}[Decomposition Link]
 \label{def:link:decomp}
@@ -117,6 +186,14 @@ Intuitively, $decomp = (i,j,k)$ means that $ie_i$ decomposes $ie_j$.\footnote{No
 A set of decomposition links is denoted by $Decomp$.
 \end{definition}
 
+\paragraph{Rationale and example} Decomposition links are simpler than contribution links, because they only contain information about which elements are being connected. Recall that the decomposition type is stored in the element that is being decomposed. In order to formalize the decomposition links in Figure~\ref{fig:example-small2}, let us first formalize the related IEs:
+\begin{itemize}
+\item $(5, goal, \text{Generate traffic}, XOR)$
+\item $(6, task, \text{Create new cars}, AND)$
+\item $(7, task, \text{Keep same cars}, AND)$
+\end{itemize}
+The decomposition links can be formalized as $(11, 6, 5)$ and $(12, 7, 5)$.
+
 \begin{definition}[Dependency Link]
 \label{def:link:dependency}
 A \emph{dependency} link: $dep\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is a relation such that $dep = (i,j,k)$ means
@@ -125,27 +202,52 @@ A \emph{dependency} link: $dep\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is
 \item $j\in \mathbb{N}$ is the unique identifier of the dependee IE,
 \item $k\in \mathbb{N}$ is the unique identifier of the dependent IE.
 \end{itemize}
-Intuitively, $dep = (i,j,k)$ means that $ie_j$ depends on $ie_j$. \todo{Marc}{Sepideh}{Is this correct? For a dependency relation $A\rightarrow B$, who is dependent on who?}
+Intuitively, $dep = (i,j,k)$ means that $ie_j$ depends on $ie_j$.
 
 A set of dependency links is denoted by $Dep$.
 \end{definition}
 
-Similar to intentional elements and actors, we may refer to links with an id using the subscript notation, e.g., $contrib_0$ is a contribution link with $contrib.id = 0$.
+\paragraph{Rationale and example} The representation of dependency links is exactly the same as decomposition links. In Figure~\ref{fig:example-small2}, let us formalize the IEs related to the only dependency link:
+\begin{itemize}
+\item $(2, resource, \text{Car objects}, AND)$
+\item $(5, goal, \text{Generate traffic}, XOR)$
+\end{itemize}
+
+The dependency link between these two elements is formalized as $(8, 5, 2)$.
 
 \begin{definition}[GRL Model]
 \label{def:grl-model}
-A \emph{GRL model} $GRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep)$ consists of:
+A \emph{GRL model} $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ consists of:
 \begin{itemize}
 \item A set $IE$ of intentional elements (Def.~\ref{def:ie}),
+\item A set $Bel$ of beliefs (Def.~\ref{def:belief}),
 \item A set $Act$ of actors (Def.~\ref{def:actor}),
 \item A set $R_{ActIE}$ of Actor-IE relations (Def.~\ref{def:act-ie-relation}),
+\item A set $Bellink$ of belief links (Def.~\ref{def:link:belief}),
 \item A set $Contr$ of contribution links (Def.~\ref{def:link:contrib}),
 \item A set $Decomp$ of decomposition links (Def.~\ref{def:link:decomp}),
 \item A set $Dep$ of dependency links (Def.~\ref{def:link:dependency}).
 \end{itemize}
 \end{definition}
 
-The definitions above come with various implicit assumptions in order to form a valid GRL model. For instance, if an Actor-IE relation $(i,j)$ occurs in a GRL model, then there should exist an actor with id $i$, and there also should exist an IE with id $j$. We make these assumptions explicit in the following definition.
+\paragraph{Rationale and example} The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small2}. This model is formalized as
+ $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ where:
+\begin{flalign*}
+&IE=&\{&(2, task, \text{Car objects}, AND),&\\
+&   &  &(3, softgoal, \text{Realistic simulation}, AND),&\\
+&   &  &(4, softgoal, \text{Simple design}, AND),&\\
+&   &  &(5, goal, \text{Generate traffic}, XOR),&\\
+&   &  &(6, task, \text{Create new cars}, AND),&\\
+&   &  &(7, task, \text{Keep same cars}, AND)\}&\\
+&Bel=& &\{(1, \text{Not scientifically correct})\}&\\
+&Act=& &\{(0, \text{Traffic Simulator})\}&\\
+&R_{ActIE}=& &\{(0,i)\mid 2\le i\le 7\}&\\
+&Bellink = & &\emptyset&\\
+&Contr=& &\{(9, 6, 3, \text{Help}), (10, 6, 4, \text{Hurt})\}&\\
+&Decomp=& &\{(11, 6, 5), (12, 7, 5)\}&\\
+&Dep=& &\{(8, 5, 2)\}&
+\end{flalign*}
+
 
 \begin{definition}[Valid GRL Model]
 \label{def:valid-grl-model}
@@ -160,7 +262,17 @@ A GRL model $GRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-mo
 \end{enumerate}
 \end{definition}
 
-\todo{Marc}{Marc}{Provide explanation and example here.}
+\paragraph{Rationale and example} The definition of a GRL model (Def.~\ref{def:grl-model}) comes with various implicit assumptions in order to form a valid GRL model. For instance, if an Actor-IE relation $(i,j)$ occurs in a GRL model, then there should exist an actor with id $i$, and there also should exist an IE with id $j$. We make these assumptions explicit in this definition.
+
+Let us briefly verify that our previous formalization of Figure~\ref{fig:example-small2} satisfies all the constraints of Def.~\ref{def:valid-grl-model}:
+\begin{enumerate}
+\item All elements in the formalization have different ids, so this constraint is satisfied.
+\item $R_{ActIE}$ contains one element $(0,i)$ for each IE with id $i$, so this constraint is satisfied as well. Note that other elements (beliefs and links) are not related to actors. This is in line with the jUCMNav implementation.
+\item Since we have only one actor with id 0, and this is the only actor that appears in $R_{ActIE}$, this constraint is satisfied.
+\item The contribution links connect elements with ids 3, 4, and 6, which are all IEs.
+\item The decomposition links connect elements with ids 5, 6, and 7, which are all IEs.
+\item The dependency link connects id 2 with 5, which are both IEs.
+\end{enumerate}
 
 \subsection{Formal specification of RationalGRL}
 \label{sect:formalframework:rationalgrl}
@@ -182,7 +294,7 @@ A generic argument $ga \in \mathbb{N}\times Names$ is a relation such that $ga=(
 \item $id\in \mathbb{N}$ is the identifier of the generic argument,
 \item $name\in Names$ is a string description of its name.
 \end{itemize}
-We may refer to the argument with id $i$ simply with $arg_i$. A set of arguments is denoted by $GA$.
+We may refer to the argument with id $i$ simply with $ga_i$. A set of arguments is denoted by $GA$.
 \end{definition}
 
 Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link:contrib},~\ref{def:link:decomp}, and~\ref{def:link:dependency}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is correct, since generic arguments are not part of GRL, so they should also not occur in links.
@@ -198,8 +310,6 @@ An attack link $att\in \mathbb{N}\times \mathbb{N}$ is a relation such that $att
 \end{itemize}
 Intuitively, $att=(i,j)$ means that element $i$ is attacking element $j$. A set of attack links is denoted by $Att$.
 \end{definition}
-
-Note that the previous definition did not put any constraint on which elements can be connected with attack links. This is what we make explicit in the definition of a valid RationalGRL model later.
 
 Next we define an argument as either a generic argument or any of the GRL elements or links. This captures the specification in the RationalGRL metamodel (Fig.~\ref{fig:metamodel}) in which the class \textsf{Argument} is a superclass of \textsf{GenericArgument} and \textsf{GRLModelElement}, which again is a superclass of both \textsf{ElementLink} and \textsf{GRLLinkableElement}. A \textsf{GRLLinkableElement} is in turn a superclass of \textsf{Actor} and \textsf{IntentionalElement}. In sum, we define an argument simply as any one of the GRL elements or links, or a generic argument.
 
@@ -217,14 +327,33 @@ A set of arguments $Arg = IE\cup Act\cup R_{ActIE}\cup Contr\cup Decomp \cup Dep
 \end{itemize}
 \end{definition}
 
-\begin{definition}[RationalGRL Model]
-\label{def:rationalgrl-model}
-A \emph{RationalGRL model} $RationalGRL=(Arg, Att)$ consists of a set of arguments $Args$ (Def.~\ref{def:argument}) and a set of attack links $Att$ (Def.~\ref{def:link:attack}).
+In order to identify arguments with the corresponding GRL element, we also add a relation between the element ids and the corresponding element. Recall the definition of $Element$ from Def.~\ref{def:set-definitions}.
+
+\begin{definition}[Argument-Element mapping]
+\label{def:arg-elem-mapping}
+An \emph{argument-element mapping} $argElem\in \mathbb{N}\times Element$ is a mapping from an element identifier to its corresponding GRL element. So if $argElem=(i,elem)$, then
+\begin{itemize}
+\item $i\in\mathbb{N}$ is the identifier of the GRL element,
+\item $elem\in Element$ (Def.~\ref{def:set-definitions}) is the GRL element type identified by $i$.
+\end{itemize}
+We denote a set of argument-element mappings with $ArgElem$.
 \end{definition}
 
-The definition of a RationalGRL model of above is very general, and does not put any constraints on the model. In order to define the notion of a \emph{valid} RationalGRL model (similar to that of a valid GRL model, Def.~\ref{def:valid-grl-model}), we should be able to determine precisely when an argument is accepted and when not. This is what we do using argumentation semantics.  We used the standard approach here, which is known as \emph{Dung's semantics}. The following notions are preliminary.
+\begin{definition}[RationalGRL Model]
+\label{def:rationalgrl-model}
+A \emph{RationalGRL model} $RatGRL=(Arg, Att, ArgElem)$ consists of a set of arguments $Args$ (Def.~\ref{def:argument}), a set of attack links $Att$ (Def.~\ref{def:link:attack}), and an of argument-element mappings (Def.~\ref{def:arg-elem-mapping}).
+\end{definition}
 
-\begin{definition}[Attack, conflict-freeness, defense, and admissibility~\cite{Dung1995}] Suppose a RationalGRL model $\emph{RationalGRL=(Arg,Att)}$, two sets of arguments $S\cup S'\subseteq Arg$, and some argument $A\in Arg$. We say that
+In order to compute when an argument is accepted and when not we use argumentation semantics.  We use the standard approach here, which is known as \emph{Dung's semantics}. The following notions are preliminary.
+
+\begin{definition}[Argumentation Framework\~cite{}]
+\label{def:argumentation-framework}
+An \emph{argumentation framework} $AF=(Arg,Att)$ consists of a set of arguments $Arg$ and a set of attack relations $Att\subseteq Arg\times Arg.$
+\end{definition}
+
+We see that the definition of an argumentation framework is very close to that of a RationalGRL model. This allows us to use the following results directly.
+
+\begin{definition}[Attack, conflict-freeness, defense, and admissibility~\cite{Dung1995}] Suppose an argumentation framework $AF=(Arg,Att)$, two sets of arguments $S\cup S'\subseteq Arg$, and some argument $A\in Arg$. We say that
 \begin{itemize}
 \item $S$ \emph{attacks} $A$ if some argument in $S$ attacks $A$,
 \item $S$ \emph{attacks} $S'$ if some argument in $S$ attacks some argument in $S'$,
@@ -233,7 +362,6 @@ The definition of a RationalGRL model of above is very general, and does not put
 \item $S$ is \emph{admissible} if $S$ is conflict-free and defends each argument in it.
 \end{itemize}
 \end{definition}
-
 
 \begin{figure}[ht!]
 \centering
@@ -255,6 +383,8 @@ Let us explain these definitions using the example argumentation framework in Fi
 
 Given the notion of admissible sets, we can then define our argumentation semantics. There are a large number of different semantics to determine which arguments are acceptable; in this article, we choose preferred semantics.
 
+\todo{Marc}{Marc}{Say something about what we do with multiple extensions.}
+
 \begin{definition}[Preferred semantics~\cite{Dung1995}] \label{def:semantics}
 A preferred extension of a RationalGRL model $R$ is a maximal (w.r.t. set inclusion) admissible set of $R$.
 \end{definition}
@@ -263,29 +393,66 @@ In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred e
 
 \todo{Marc}{Marc}{Give example with concrete RationalGRL model}
 
-The previous definition of a preferred extension allows us to compute accepted arguments in a RationalGRL model. However, it does not yet put constraints on the resulting accepted arguments, and thus does not allow us to transform it into a valid GRL model. This is what we do in the following definition.
+\begin{algorithm}[h]
+  \caption{RationalGRL to GRL Translation}\label{alg:translation}
+  \begin{algorithmic}[1]
+    \Procedure{$Translate$}{$RatGRL$}
+    \State $E \leftarrow ComputeExtension(Arg,Att)$
+    \State $IE\leftarrow\emptyset$, $Act\leftarrow\emptyset$, $R_{ActIE}\leftarrow\emptyset$, $Contr\leftarrow\emptyset$
+    \State $Decomp\leftarrow\emptyset$, $Dep\leftarrow\emptyset$
+    \For{$(A.id, T)\in ArgElem \mid A\in E$}
+      \Switch{$T$}
+          \Case{$T\in Type$}
+            \State $IE\leftarrow IE\cup \{A\}$
+          \EndCase
+          \Case{$T = Actor$}
+            \State $Act\leftarrow Act \cup\{A\}$
+          \EndCase
+          \Case{$T=Contr$}
+            \State $Contr\leftarrow Contr\cup \{A\}$
+          \EndCase
+          \Case{$T=Dep$}
+            \State $Dep\leftarrow Dep\cup \{A\}$
+          \EndCase
+          \Case{$T=Decomp$}
+            \State $Decomp\leftarrow Decomp\cup\{A\}$
+          \EndCase
+      \EndSwitch
+    \EndFor
+    \State \Return $(IE,Act,R_{ActIE}, Contr, Decomp, Dep)$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+The previous definition of a preferred extension allows us to compute accepted arguments in a RationalGRL model. In the following definition we make precise the notion of a valid RationalGRL model.
 
 \begin{definition}[Valid RationalGRL Model]
-A RationalGRL model \emph{R = $(Arg, Att)$} is a \emph {valid RationalGRL model} iff the preferred extension $E = IE\cup Act\cup R_{ActIE}\cup Contr\cup Decomp \cup Dep\cup GA$ forms a valid GRL model $(IE,  Act, R_{ActIE}, Contr, Decomp, Dep)$
+Suppose a RationalGRL model $RatGRL = (Arg, Att, ArgElem)$ with preferred extension $E=(A_1,\ldots,A_n)$. $RatGRL$ is a \emph{valid RationalGRL model} iff $Translate(RatGRL)$ (Alg.~\ref{alg:translation}) is a valid GRL model (Def.~\ref{def:valid-grl-model}).
 \end{definition}
 
 \todo{Marc}{Marc}{Explain conditions here and give some examples}
 
-\subsection{Algorithms for argument schemes}
+\subsection{Algorithms for argument schemes and critical questions}
 \label{sect:algorithms}
 
 In the previous section we formalized a \emph{static} representation of the RationalGRL framework. In this section we formalize the \emph{dynamics}. We do so by developing algorithms for applying argument schemes and critical questions in the context of a RationalGRL model (Def.~\ref{def:rationalgrl-model}). These algorithms produce new elements and attack relations. We can then use argumentation semantics (Def.~\ref{def:semantics}) to compute sets of accepted arguments. The content of these arguments is then used to compute the resulting RationalGRL model, together with enabled and disabled GRL elements and their underlying arguments.
 
-The algorithms for the argument schemes consist of forming a new argument and adding it to the set of arguments. No attack relations are introduced.
+\paragraph{Argument Schemes}
+
+In all of the following algorithms, we assume the following
+\begin{itemize}
+\item There algorithms are being applied to some valid RationalGRL model $RGRL$,
+\item The procedure $mindId()$ generates a new unique id.
+\end{itemize}
+
+The algorithms for applying argument schemes are short, and consist simply of adding an argument for the element that is being added.
 
 \begin{algorithm}[h]
-  \caption{Applying AS0: Actor $a$ is relevant}\label{alg:as0}
+  \caption{AS0: Add a new actor with name $n$}\label{alg:as0}
   \begin{algorithmic}[1]
-    \State $RationalGRL=(\overline{IE}, \overline{Act}, R_{ActIE}, \overline{Contr}, Decomp,$
-    \State \qquad\qquad\qquad\qquad$Dep, Arg, Att, Label)$
-    \Procedure{$AS_0$}{$a$}
-    \State $id\gets mintId()$\label{alg:as0:1}
-    \State $\overline{Act} \gets \overline{Act} \cup ((id, a))$\label{alg:as0:2}
+    \Procedure{$AS_0$}{$Arg, Att, n$}
+    \State $actor \leftarrow (mintId(), n)$ 
+    \State $Arg\leftarrow Arg \cup \{actor\}$\label{alg:as0:2}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
