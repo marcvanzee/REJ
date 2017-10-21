@@ -297,7 +297,7 @@ In order to develop a logical framework for RationalGRL, we extend the GRL logic
 \label{fig:example-small3}
 \end{figure} 
 
-We illustrate the new elements using Figure~\ref{fig:example-small3}, which is an extension of Figure~\ref{fig:example-small2}.
+We illustrate the new elements using Figure~\ref{fig:example-small3}, which is an extension of Figure~\ref{fig:example-small2}. 
 
 We start with the new element which we call the \emph{Generic Argument}.
 
@@ -313,7 +313,7 @@ We may refer to the argument with id $i$ simply with $ga_i$. A set of arguments 
 
 \paragraph{Rationale and example} A generic counterargument is simply an argument that can be used to attack any previous argument, or an IE. It is different from a belief element, since a generic counterargument is used in the computation to determine whether a RationalGRL element is accepted or rejected. Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link:contrib},~\ref{def:link:decomp}, and~\ref{def:link:dependency}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is correct, since generic arguments are not part of GRL, so they should also not occur in links. 
 
-In Fig.~\ref{fig:example-small3}, there is a single generic counterargument which can be formalized as $(13, \text{Redundant})$.
+In Fig.~\ref{fig:example-small3}, there are two generic counterargument which can be formalized as $(19, \text{Redundant})$ and $(20, \text{Necessary})$.
 
 \begin{definition}[Argument]
 \label{def:argument}
@@ -326,55 +326,81 @@ An argument $A=(elem,type)$ is a pair such that:
 
 \paragraph{Rationale and example} We define an argument as either a generic argument or any of the GRL elements or links. This captures the specification in the RationalGRL metamodel (Fig.~\ref{fig:metamodel}) in which the class \textsf{Argument} is a superclass of \textsf{GenericArgument} and \textsf{GRLModelElement}, which again is a superclass of both \textsf{ElementLink} and \textsf{GRLLinkableElement}. A \textsf{GRLLinkableElement} is in turn a superclass of \textsf{Actor} and \textsf{IntentionalElement}. In sum, we define an argument simply as any one of the GRL elements or links, or a generic argument.
 
-In Fig.~\ref{fig:example-small3}, the actor, all the intentional elements, all links with identifiers, and the generic counter argument are arguments. We will give a full formalization of this after the definition of a RationalGRL model (Def.~\ref{def:rationalgrl-model}.
+In Fig.~\ref{fig:example-small3}, the actor, all IEs, all links, and all generic counterarguments are arguments. We will give a full formalization of this after the definition of a RationalGRL model (Def.~\ref{def:rationalgrl-model}).
 
 \begin{definition}[Attack Link]
 \label{def:link:attack}
-An attack link $att\in \mathbb{N}\times \mathbb{N}$ is a relation such that $att=(i,j)$ means:
+Given a set of arguments $Arg$, an attack link $att\in Arg\times Arg$ is a relation such that $att=(A_i,A_j)$ means:
 \begin{itemize}
-\item $i\in \mathbb{N}$ is the unique identifier of the element that is performing that attack,
-\item $j\in \mathbb{N}$ is the unique identifier of the element that is being attacked.
+\item $A_i\in Arg$ is the unique identifier of the element that is performing that attack,
+\item $A_j\in Arg$ is the unique identifier of the element that is being attacked.
 \end{itemize}
-Intuitively, $att=(i,j)$ means that element $i$ is attacking element $j$. A set of attack links is denoted by $Att$.
+Intuitively, $att=(A_i,A_j)$ means that argument $A_i$ is attacking argument $A_j$. A set of attack links is denoted by $Att$.
 \end{definition}
 
-\paragraph{Rationale and example} The attack link is the only link that RationalGRL adds to GRL. It is used to attack arguments. In Fig~\ref{fig:example-small3}, there is a single attack link that is used to connect the following two elements:
+\paragraph{Rationale and example} The attack link is the only link that RationalGRL adds to GRL. In Fig~\ref{fig:example-small3}, there are three attack links. The first two attack links originate from generic counterarguments and involve the following three elements:
 \begin{itemize}
-\item $(13, \text{Redundant}$
-\item $(2, Resource, \text{Car objects}, AND)$
+\item $A_1 = ((1, Resource, \text{Car objects}, AND), Resource)$
+\item $A_{19} = ((19, \text{Necessary}), GenArg)$
+\item $A_{20} = ((20, \text{Redundant}), GenArg)$
 \end{itemize}
 
-The attack link is formalized as $(13, 2)$.
+These two attack links are formalized as $(A_{20},A_{19})$ and $(A_{19}, A_1)$.
+
+The third attack link is an attack link created by \emph{replacing} and existing argument (we will discuss this process in more detail in Sect.~\ref{sect:algorithms}). It involves two version of the same IE:
+\begin{itemize}
+\item $A_{4} = ((5, goal, \text{Generate traffic}, AND), Goal)$
+\item $A_{18} = ((5, goal, \text{Generate traffic}, XOR), Goal)$
+\end{itemize}
+
+This attack link is formalized at $(A_{18},A_4)$.
+
+The last example shows an important difference between RationalGRL models and valid GRL models: While a valid GRL model disallows multiple elements with the same identifier (Def.~\ref{def:valid-grl-model}, condition 1), RationalGRL models do not enforce this restriction. This is because it is possible to create multiple arguments for the same element, where argument contains different content for the same element. This is what the example above also shows. However, the set of \emph{accepted} elements in a RationalGRL should all have unique identifier (see Def.~\ref{def:valid-rationalgrl-model}).
 
 \begin{definition}[RationalGRL Model]
 \label{def:rationalgrl-model}
-A \emph{RationalGRL model} $RatGRL=(Arg, Att, ArgElem)$ consists of a set of arguments $Args$ (Def.~\ref{def:argument}), a set of attack links $Att$ (Def.~\ref{def:link:attack}).
+A \emph{RationalGRL model} $RatGRL=(Arg, Att)$ consists of a set of arguments $Args$ (Def.~\ref{def:argument}) and a set of attack links $Att$ (Def.~\ref{def:link:attack}).
 \end{definition}
 
-\paragraph{Rational and example} The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small3}. This model is formalized as
- $RationalGRL=(Arg, Att)$ where:
+\paragraph{Rationale and example} The definition of a RationalGRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small3}. Let us first enumerate all the arguments used in this example:
 \begin{flalign*}
-Arg=&\{((2, task, \text{Car objects}, AND), Task),&\\
-   &  ((3, softgoal, \text{Real. sim.}, AND), Softgoal),&\\
-   &  ((4, softgoal, \text{Simple des.}, AND), Softgoal),&\\
-   &  ((5, goal, \text{Generate traffic}, XOR), Goal),&\\
-   &  ((6, task, \text{Create new cars}, AND), Task),&\\
-   &  ((7, task, \text{Keep same cars}, AND)\}, Task),&\\
-   &  ((0, \text{Traffic Simulator}), Actor),&\\
-   &  \{((0,i), ActIE)\mid 2\le i\le 7\},&\\
-   &  ((9, 6, 3, \text{Help}), Contr),&\\
-   &  ((10, 6, 4, \text{Hurt}), Contr),&\\
-   &  ((11, 6, 5), Decomp),&\\
-   &  ((12, 7, 5), Decomp),&\\
-   &  ((8, 5, 2), Dep),&\\
-   &  ((13, \text{Redundant}), GenArg),&\\
-Att=&\{(13,2)\}
+A_0 = &((0, Actor, \text{Traffic simulator}), Actor)&\\
+A_1 = &((1, task, \text{Car objects}, AND), Task),&\\
+A_2 = &((2, softgoal, \text{Real. sim.}, AND), Softgoal),&\\
+A_3 = &((3, softgoal, \text{Simple des.}, AND), Softgoal),&\\
+A_4 = &((4, goal, \text{Generate traffic}, AND), Goal),&\\
+A_5 = &((5, task, \text{Create new cars}, AND), Task),&\\
+A_6 = &((6, task, \text{Keep same cars}, AND)\}, Task),&\\
+A_7 = &((7, 4, 1), Dep),&\\
+A_8 = &((8, 5, 2, \text{Help}), Contr),&\\
+A_9 = &((9, 5, 3, \text{Hurt}), Contr),&\\
+A_{10} = &((10, 5, 4), Decomp),&\\
+A_{11} = &((11, 6, 4), Decomp),&\\
+A_i = &((0,i-11),ActIE), \text{for } 12\le i\le 17&\\
+A_{18} = &((4, goal, \text{Generate traffic}, XOR), Goal),&\\
+A_{19} = &((18, \text{Redundant}), GenArg),&\\
+A_{20} = &((19, \text{Necessary}), GenArg),&
 \end{flalign*}
+
+This model is then formalized as $RationalGRL=(Arg, Att)$ where:
+\begin{flalign*}
+Arg = &\{A_0,A_1,\ldots,A_{20}\}\\
+Att=&\{(A_{18},A_4), (A_{19},A_1), (A_{20},A_{19})\}
+\end{flalign*}
+
+All the arguments and the attack relations of this RationalGRL model are shown in Figure~\ref{fig:example-small4}. Note the arguments for Actor-IE containment (arguments $A_{12}$ to $A_{20}$) have been omitted from this figure for readability. It can be read from the figure that two arguments are currently rejected, namely $A_4$ and $A_{19}$. However, we did not yet make precise how exactly this is computed. We will do so in the following definitions.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{img/Example1-new-arguments}
+\caption{Argumentation framework of RationalGRL model from Fig.~\ref{fig:example-small3}}
+\label{fig:example-small4}
+\end{figure} 
 
 
 In order to compute when an argument is accepted and when not we use argumentation semantics.  We use the standard approach here, which is known as \emph{Dung's semantics}. The following notions are preliminary.
 
-\begin{definition}[Argumentation Framework~\cite{}]
+\begin{definition}[Argumentation Framework~\cite{Dung1995}]
 \label{def:argumentation-framework}
 An \emph{argumentation framework} $AF=(Arg,Att)$ consists of a set of arguments $Arg$ and a set of attack relations $Att\subseteq Arg\times Arg.$
 \end{definition}
@@ -394,38 +420,77 @@ We see that the definition of an argumentation framework is very close to that o
 \begin{figure}[ht!]
 \centering
 \begin{tikzpicture}
-        \node[minimum size=1cm] (b) [argNodeIN] at (-3,0) {Car objects ($A_1$)};
-        \node[minimum size=1cm] (c) [argNodeIN] at (0,0) {Redundant ($A_2$)};
-        \node[minimum size=1cm] (d) [argNodeIN] at (3,0) {Necessary ($A_3$)};
+        \node[minimum size=1cm] (a20) [argNodeIN] at (-3,0) {$A_{20}$};
+        \node[minimum size=1cm] (a19) [argNodeIN] at (0,0) {$A_{19}$};
+        \node[minimum size=1cm] (a1) [argNodeIN] at (3,0) {$A_1$};
              
          \path
-    (c) edge [attackLink] (b)
-    (d) edge [attackLink] (c);
+    (a20) edge [attackLink] (a19)
+    (a19) edge [attackLink] (a1);
     
 \end{tikzpicture}
-\caption{Example argumentation framework.}
+\caption{Example argumentation framework, subset of Fig.~\ref{fig:example-small4}.}
 \label{fig:goalmodeling:arg2}
 \end{figure}
 
-Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}, which contains two of the arguments used in Figure~\ref{fig:example-small3}, ``Car objects'' ($A_1$) and ``Redundant'' ($A_2$), and contains an additional argument ``Necessary'' ($A_3$) attacking argument ``Redundant''. In this example, there are two admissible sets: $\{A_3\}$ and $\{A_1, A_3\}$, in which $A_3$ defends $A_1$ against its attacker $A_2$. Sets containing both $A_2$ and either $A_1$ or $A_3$ are not conflict free, and the sets $\{A_1\}$ and $\{A_2\}$ do not defend themselves against $A_2$ and $A_3$, respectively. 
+Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}, which is a subset of Figure~\ref{fig:example-small4} containing only arguments $A_1, A_{19}$, and $A_{20}$. In this example, there are two admissible sets: $\{A_{20}\}$ and $\{A_1, A_{20}\}$. In the last admissible set, $A_{20}$ defends $A_1$ against its attacker $A_{19}$. Sets containing both $A_{19}$ and either $A_1$ or $A_{20}$ are not conflict free, and the sets $\{A_1\}$ and $\{A_{19}\}$ do not defend themselves against $A_{19}$ and $A_{20}$, respectively. 
 
-Given the notion of admissible sets, we can then define our argumentation semantics. There are a large number of different semantics to determine which arguments are acceptable; in this article, we choose preferred semantics.
+Given the notion of admissible sets, we can then define our argumentation semantics. There are a large number of different semantics to determine which arguments are acceptable; in this article, we focused on the preferred semantics.
 
-\begin{definition}[Preferred semantics~\cite{Dung1995}] \label{def:semantics}
+\begin{definition}[Preferred semantics~\cite{Dung1995}] 
+\label{def:preferred-semantics}
 A preferred extension of an argumentation framework $(Arg,Att)$ is a maximal (w.r.t. set inclusion) admissible set of $R$.
 \end{definition}
 
-In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_1,A_3\}$. This means that arguments ``Car objects'' and ``Necessary'' are both \emph{accepted}, while ``Redundant'' is rejected. We say that the argument for ``Car objects'' is \emph{reinstated} by argument ``Necessary'', which attacks its only attacker ``Redundant'', thereby making ``Car objects'' acceptable.
+In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_{20},A_1\}$. Returning to our running example of Figure~\ref{fig:example-small3}, this means that the intentional elements \text{Car objects} (task) and the generic counerargument \emph{Necessary} are both \emph{accepted}, while the generic counter argument ``Redundant'' is rejected.
+
+\subsection{Translation algorithms}
+
+Now that we have formalized both a GRL model and a RationalGRL model, we develop algorithm in order to translate between these two models. Both of these two translation algorithms are straightforward. Their main task is to ensure that in RationalGRL models, the GRL elements and links are wrapped in an argument with the corresponding type.
+
+\paragraph{GRL to RationalGRL Translation} We start with the translation algorithm from GRL to RationalGRL, which is shown in Algorithm~\ref{alg:translation:to-rationalgrl}.  The translation algorithm translates all of the GRL elements and links into arguments. It takes a GRL model as input. Recall that a GRL model is defined as $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-model}). Then, on line~\ref{alg:translation:to-rationalgrl:init}, the set of arguments is initialized with the empty set. Each of the five for loops in the algorithm translates a different GRL component into an argument. For instance, in the for loop starting at line~\ref{alg:translation:to-rationalgrl:ie}, all IEs are added as pairs consisting of the IE itself, and its corresponding type. This is in line with the definition of an argument~\ref{def:argument}). Since the other for loops are very similar, we do not explain them here. At line~\ref{alg:translation:to-rationalgrl:return}, the algorithm returns a RationalGRL model $(Arg,\emptyset)$ containing all arguments in $Arg$, and an empty set of attack relations. 
 
 \begin{algorithm}[h]
-  \caption{RationalGRL to GRL Translation}\label{alg:translation}
+  \caption{GRL to RationalGRL Translation}
+  \label{alg:translation:to-rationalgrl}
   \begin{algorithmic}[1]
-    \Procedure{$Translate$}{$RatGRL$}
+    \Procedure{$TranslateToRationalGRL$}{$GRL$}
+    \State $Arg \leftarrow \emptyset$\label{alg:translation:to-rationalgrl:init}
+    \For{$ie\in IE$}\label{alg:translation:to-rationalgrl:ie}
+      \State $Arg \leftarrow Arg \cup \{(ie,ie.type)\}$
+    \EndFor
+    \For{$act\in Act$}
+      \State $Arg \leftarrow Arg \cup \{(act, Actor)\}$
+    \EndFor
+    \For{$actIE\in ActIE$}
+      \State $Arg \leftarrow Arg \cup \{(actIE, ActIE)\}$
+    \EndFor
+    \For{$contr\in Contr$}
+      \State $Arg \leftarrow Arg \cup \{(contr, Contr)\}$
+    \EndFor
+    \For{$dep\in Dep$}
+      \State $Arg \leftarrow Arg \cup \{(dep, Dep)\}$
+    \EndFor
+    \For{$decomp\in Decomp$}
+      \State $Arg \leftarrow Arg \cup \{(decomp, Decomp)\}$
+    \EndFor
+    \State \Return $(Arg, \emptyset)$\label{alg:translation:to-rationalgrl:return}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\paragraph{RationalGRL to GRL translation} The translation from a RationalGRL model to a GRL model is given in Algorithm~\ref{alg:translation:to-grl}. It is very similar to the previous algorithm, but then works in the other direction. In this case, arguments are unpacked and put in the corresponding IE components. The most important difference between the previous algorithm and this one is that in the RationalGRL to GRL translation, argumentation semantics is used to determine the \emph{preferred extension} (Def.~\ref{def:preferred-semantics}). This is a set containing all accepted arguments. The GRL is then generated from all the accepted arguments. This is done by iterating over all arguments in the extension in line~\ref{alg:translation:to-grl:extension-iter}. The switch statement on line~\ref{alg:translation:to-grl:switch} then does a case distinction on the type of the arguments, and each case ensures the argument is put in the right GRL component. Finally, the algorithm returns a GRL model on line~\ref{alg:translation:to-grl:return}.
+
+\begin{algorithm}[h]
+  \caption{RationalGRL to GRL Translation}
+  \label{alg:translation:to-grl}
+  \begin{algorithmic}[1]
+    \Procedure{$TranslateToGRL$}{$RatGRL$}
     \State $E \leftarrow ComputeExtension(Arg,Att)$
     \State $IE\leftarrow\emptyset$, $Act\leftarrow\emptyset$, $R_{ActIE}\leftarrow\emptyset$, $Contr\leftarrow\emptyset$
     \State $Decomp\leftarrow\emptyset$, $Dep\leftarrow\emptyset$
-    \For{$(Elem, T)\in E$}
-      \Switch{$T$}
+    \For{$(Elem, T)\in E$}\label{alg:translation:to-grl:extension-iter}
+      \Switch{$T$}\label{alg:translation:to-grl:switch}
           \Case{$T\in Type$}
             \State $IE\leftarrow IE\cup \{Elem\}$
           \EndCase
@@ -443,15 +508,16 @@ In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred e
           \EndCase
       \EndSwitch
     \EndFor
-    \State \Return $(IE,Act,R_{ActIE}, Contr, Decomp, Dep)$
+    \State \Return $(IE,Act,R_{ActIE}, Contr, Decomp, Dep)$\label{alg:translation:to-grl:return}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-The previous definition of a preferred extension allows us to compute accepted arguments in a RationalGRL model. In the following definition we make precise the notion of a valid RationalGRL model.
+\paragraph{Valid RationalGRL model} While we have defined a notion of a \emph{valid GRL model} (Def.~\ref{def:valid-grl-model}), we have not done so for a RationalGRL model yet. This is because it depends on the translation procedure. We define a RationalGRL model as valid if and only if the RationalGRL to GRL translation results in a valid GRL model. In this way, we do not have to reiterate all conditions on a GRL model, but use the translation algorithm.
 
 \begin{definition}[Valid RationalGRL Model]
-Suppose a RationalGRL model $RatGRL = (Arg, Att, ArgElem)$ with preferred extension $E=(A_1,\ldots,A_n)$. $RatGRL$ is a \emph{valid RationalGRL model} iff $Translate(RatGRL)$ (Alg.~\ref{alg:translation}) is a valid GRL model (Def.~\ref{def:valid-grl-model}).
+\label{def:valid-rationalgrl-model}
+A RationalGRL model $RatGRL = (Arg, Att)$ with preferred extension $E=(A_1,\ldots,A_n)$ is a \emph{valid RationalGRL model} iff $TranslateToGRL(RatGRL)$ (Alg.~\ref{alg:translation:to-grl}) is a valid GRL model (Def.~\ref{def:valid-grl-model}).
 \end{definition}
 
 \subsection{Algorithms for argument schemes and critical questions}
