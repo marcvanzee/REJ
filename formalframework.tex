@@ -27,10 +27,10 @@ Throughout this section, we adopt the convention that variables start with a low
 We define the following sets:
 \begin{itemize}
 \item $IETypes = \{Softgoal, Goal, Task, Resource\}$,
-\item $Types = IETypes \cup \{Actor, Contr, Dep,$\\ \qquad $Decomp, Belief, GenArg\}$
-\item $Names$ is a finite set of strings.
+\item $LinkTypes = \{PosContr, NegContr, Dep, Decomp\}$\footnote{Note that for decomposition links, we only distinguish between a positive contribution ($PosContr$) and a negative contribution ($NegContr$). The GRL metamodel specifies a total of seven contribution values. We instead have chosen only two here to simplify some of the notation, but it is straightforward to extend this to seven values.},
+\item $Types = IETypes \cup LinkTypes\cup\{Actor, GenArg, ActIE\}$,
+\item $Names$ is a finite set of strings,
 \item $DecompTypes = \{AND,OR,XOR\}$.
-\item $ContribValues = \{Break, Hurt, Some\ nega-$ $tive, Unknown, Some\  positive, Help, Make\},$
 \end{itemize}
 \end{definition}
 
@@ -38,7 +38,7 @@ Next we define an intentional element.
 
 \begin{definition}[Intentional Element]
 \label{def:ie}
-An intentional element $ie\in \mathbb{N}\times IETypes\times Names\times DecompType$ is a relation, where $ie = (id, type, name, decomptype)$ means:
+An intentional element $ie\in \mathbb{N}\times IETypes\times Names\times DecompType$ is a tuple, where $ie = (id, type, name, decomptype)$ means:
 \begin{itemize}
 \item $id\in \mathbb{N}$ is a unique identifier for the element,
 \item $type\in IETypes$ specifies the type of the element,
@@ -67,15 +67,15 @@ We can also refer to intention elements of a specific type simply by $type_{id}$
 
 Some of the IEs in Figure~\ref{fig:example-small2} can be formalized using Def.~\ref{def:ie} as follows:
 \begin{itemize}
-\item $(2, goal, \text{Generate traffic}, XOR)$: This represents the goal ``Generate traffic'', which is XOR-decomposed. Note the identifier ``2'' is not shown in the GRL model, but it is stored internally.
-\item $(5, resource, \text{Car objects}, AND)$: Although this element does not decompose into any other elements, it still contains an AND-decomposition. Our motivation for this choice is that it simplifies the formalization of decomposition links. It is in line with with GRL metamodel and the jUCMNav implementation.
+\item $(4, Goal, \text{Generate traffic}, XOR)$: This represents the goal ``Generate traffic'', which is XOR-decomposed. Note the identifier ``2'' is not shown in the GRL model, but it is stored internally.
+\item $(1, Resource, \text{Car objects}, AND)$: Although this element does not decompose into any other elements, it still contains an AND-decomposition. Our motivation for this choice is that it simplifies the formalization of decomposition links. It is in line with with GRL metamodel and the jUCMNav implementation.
 \end{itemize}
 
 Using the short-hand notation defined in Def.~\ref{def:notation}, we can make the following statements:
 \begin{itemize}
-\item $goal_2.name = \text{Generate traffic}$
-\item $goal_2.decomptype = XOR$
-\item $resource_5.name = \text{Car objects}$
+\item $goal_4.name = \text{Generate traffic}$
+\item $goal_4.decomptype = XOR$
+\item $resource_1.name = \text{Car objects}$
 \end{itemize}
 
 \begin{figure}[ht]
@@ -85,22 +85,12 @@ Using the short-hand notation defined in Def.~\ref{def:notation}, we can make th
 \label{fig:example-small2}
 \end{figure} 
 
-\begin{definition}[Belief]
-\label{def:belief}
-A belief $bel\in \mathbb{N}\times Names$ is a relation where $bel=(id,name)$ means:
-\begin{itemize}
-\item $id\in\mathbb{N}$ is the identifier of the belief,
-\item $name\in Names$ is a string description of the belief.
-\end{itemize}
-\end{definition}
-
-\paragraph{Rational and example} Beliefs are different from IEs in the sense that they are not being used in decompositions, dependencies, or contributions. They merely provide additional explanation for an element. The only belief in Figure~\ref{fig:example-small2} is formalized as $(1, \text{Not scientifically correct})$.
-
 \begin{definition}[Actor]
 \label{def:actor}
-An actor $act \in \mathbb{N}\times Names$ is a relation where $act=(id,name)$ means:
+An actor $act \in \mathbb{N}\times {Actor}\times Names$ is a tuple where $act=(id,Actor, name)$ means:
 \begin{itemize}
 \item $id\in\mathbb{N}$ is the identifier of the actor, 
+\item $Actor$ states that this tuple is an actor,\footnote{While this element may look redundant in this tuple, it will become important when translating between RationalGRL models and GRL models. Otherwise it would not be possible to identify this tuple as an actor.}
 \item $name\in Names$ is a string description of its name.
 \end{itemize}
 
@@ -111,11 +101,17 @@ A set of actors is denoted by $Act$.
 
 \paragraph{Rationale and example} An actor is simply a pair consisting of its identifier and its name. The relation between actors and their intentional element is formalized in the next definition. 
 
-We can formalize the actor of Figure~\ref{fig:example-small2} as $act=(0,\text{Traffic Simulator})$, and we can for instance state $act_0.name = \text{Traffic Simulator}$.
+We can formalize the actor of Figure~\ref{fig:example-small2} as $act=(0,Actor,\text{Traffic Simulator})$, and we can for instance state $act_0.name = \text{Traffic Simulator}$.
 
 \begin{definition}[Actor-IE Relations]
 \label{def:act-ie-relation}
-An \emph{Actor-IE relation} $r_{ActIE}\in\mathbb{N}\times\mathbb{N}$ is a relation $(i,j)$ meaning that an actor with id $i$ has intentional element with id $j$.
+An \emph{Actor-IE relation} $r_{ActIE}\in\mathbb{N}\times\{ActIE\}\times\mathbb{N}\times\mathbb{N}$ is a tuple where $r_{ActIE}=(id,ActIE, i, j)$ means:
+\begin{itemize}
+\item $id\in\mathbb{N}$ is the identifier of the relation, 
+\item $ActIE$ states that this tuple is an Actor-IE relation,
+\item $i\in\mathbb{N}$ is an id of an actor,
+\item $j\in\mathbb{N}$ is an id of an IE.
+\end{itemize}
 
 A set of Actor-IE relations is denoted by $R_{ActIE}$.
 \end{definition}
@@ -124,134 +120,101 @@ A set of Actor-IE relations is denoted by $R_{ActIE}$.
 
 In Figure~\ref{fig:example-small2}, recall we formalized two IEs and the actor as follows:
 \begin{itemize}
-\item $(2, goal, \text{Generate traffic}, XOR)$
-\item $(5, resource, \text{Car objects}, AND)$
+\item $(1, Resource, \text{Car objects}, AND)$
+\item $(4, Goal, \text{Generate traffic}, XOR)$
 \item $(0, \text{Traffic Simulator})$
 \end{itemize}
 
-We can then formalize the Actor-IE relationships for these elements as: $(0,2)$ and $(0,5)$.
+We can then formalize the Actor-IE relationships for these elements as:
+\begin{itemize}
+\item $(12, ActIE, 0, 1)$
+\item $(15, ActIE, 0, 4)$
+\end{itemize}
 
 \subsubsection{Links}
 
 At this point we have defined all intentional elements in GRL and a containment relation between actors and intentional elements. We now turn to the GRL links.
 
-\begin{definition}[Belief link]
-\label{def:link:belief}
-A \emph{belief} link: $bellink\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is a relation such that $bellink = (i,j)$ means
+\begin{definition}[GRL Link]
+\label{def:link}
+A \emph{GRL link}: $link\in \mathbb{N}\times LinkTypes\times \mathbb{N}\times\mathbb{N}$ is a tuple such that $link = (id,type,src,dest)$ means
 \begin{itemize}
-\item $i\in \mathbb{N}$ is the unique identifier of the belief element,
-\item $j\in \mathbb{N}$ is the unique identifier of the IE.
+\item $id\in \mathbb{N}$ is the unique identifier of the link,
+\item $type\in LinkTypes$ specifies the type of the link, 
+\item $src\in \mathbb{N}$ is the identifier of the IE from which the link starts,
+\item $dest\in \mathbb{N}$ is the identifier of the IE at which the link ends.
 \end{itemize}
-Intuitively, $bellink = (i,j)$ means that $bel_i$ is a belief for $ie_j$.
 
-A set of belief links is denoted by $Bellink$.
+A set of links is denoted by $Link$.
 \end{definition}
 
-\paragraph{Rationale and example} The belief links can only be used to connect a belief with an intentional element, and they are not used in any of the algorithms. Instead, they can be understood as metadata, they provide additional documentation on the rationale for making certain design choices. Therefore, belief links do not require unique identifiers.
+We also introduce some simplified notation for the links.
 
-The fact that belief links only connect beliefs with IEs is not made explicit in the definition above. We make this assumption, together with various assumption, explicit in the definition of a \emph{valid GRL model} (Def.~\ref{def:valid-grl-model}). Figure~\ref{fig:example-small2} contains one belief links. It connects the following two elements:
+\begin{definition}[Notation]
+\label{def:notation2}
 \begin{itemize}
-\item $(1, \text{Not scientifically correct})$,
-\item $(4, softgoal, \text{Simple design}, AND)$.
+\item
+We can refer to links of a specific type simply by $type_{id}$. For instance, we can abbreviate the link $(0,PosContr,2,3)$ with $posContr_0$. 
+\item 
+We can refer to a set of positive contribution links, negative contribution links, dependency links, and decomposition link with respectively $PosContr, NegContr, Dep,$, and $Decomp$. 
+\item
+We can refer to a set of contribution links that can be either positive or negative simply with $Contr$.
 \end{itemize}
-The belief link is then formalized as $(1, 4)$.
-
-\begin{definition}[Contribution Link]
-\label{def:link:contrib}
-A \emph{contribution} link: $contrib\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}\times Contribvalues$ is a relation such that $contrib = (i,j,k,value)$ means
-\begin{itemize}
-\item $i\in \mathbb{N}$ is the unique identifier of the link,
-\item $j\in \mathbb{N}$ is the unique identifier of the IE from which the contribution originates,
-\item $k\in \mathbb{N}$ is the unique identifier of the IE to which is contributed.
-\item $value\in ContribValues$ is the strength of the contribution.
-\end{itemize}
-Intuitively, $contrib = (i,j,k,value)$ means that $ie_i$ contributes to $ie_j$ with $value$.
-
-A set of contribution links is denoted by $Contrib$.
 \end{definition}
 
-\paragraph{Rationale and example} Similar to IEs, links have identifiers as well. In Fig.~\ref{fig:example-small2}, there are two contribution links. First, let us formalize the related IEs:
+\paragraph{Rationale and example} Similar to IEs, links have identifiers as well. In Fig.~\ref{fig:example-small2}, there are five links. First, let us formalize the related IEs:
 \begin{itemize}
-\item $(3, softgoal, \text{Realisitc simulation}, AND)$
-\item $(4, softgoal, \text{Simple design}, AND)$
-\item $(6, task, \text{Create new cars}, AND)$
+\item (1, Resource, \text{Car objects}, AND),
+\item (2, Softgoal, \text{Realistic simulation}, AND),
+\item (3, Softgoal, \text{Simple design}, AND),
+\item (4, Goal, \text{Generate traffic}, XOR),
+\item (5, Task, \text{Create new cars}, AND),
+\item (6, Task, \text{Keep same cars}, AND).
 \end{itemize}
 
-We can formalize the contribution links as $(9, 6, 3, \text{Help})$ and $(10, 6, 4, \text{Hurt})$.
-
-\begin{definition}[Decomposition Link]
-\label{def:link:decomp}
-A \emph{decomposition} link: $decomp\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is a relation such that $decomp = (i,j,k)$ means
+We can formalize the links as follows:
 \begin{itemize}
-\item $i\in \mathbb{N}$ is the unique identifier of the link,
-\item $j\in \mathbb{N}$ is the unique identifier of the decomposing IE,
-\item $k\in \mathbb{N}$ is the unique identifier of the IE that is being decomposed.
-\end{itemize}
-Intuitively, $decomp = (i,j,k)$ means that $ie_i$ decomposes $ie_j$.\footnote{Note that the decomposition type is defined on $IE_{k}$, see Definition~\ref{def:ie}.}
-
-A set of decomposition links is denoted by $Decomp$.
-\end{definition}
-
-\paragraph{Rationale and example} Decomposition links are simpler than contribution links, because they only contain information about which elements are being connected. Recall that the decomposition type is stored in the element that is being decomposed. In order to formalize the decomposition links in Figure~\ref{fig:example-small2}, let us first formalize the related IEs:
-\begin{itemize}
-\item $(5, goal, \text{Generate traffic}, XOR)$
-\item $(6, task, \text{Create new cars}, AND)$
-\item $(7, task, \text{Keep same cars}, AND)$
-\end{itemize}
-The decomposition links can be formalized as $(11, 6, 5)$ and $(12, 7, 5)$.
-
-\begin{definition}[Dependency Link]
-\label{def:link:dependency}
-A \emph{dependency} link: $dep\in \mathbb{N}\times\mathbb{N}\times\mathbb{N}$ is a relation such that $dep = (i,j,k)$ means
-\begin{itemize}
-\item $i\in \mathbb{N}$ is the unique identifier of the link,
-\item $j\in \mathbb{N}$ is the unique identifier of the dependee IE,
-\item $k\in \mathbb{N}$ is the unique identifier of the dependent IE.
-\end{itemize}
-Intuitively, $dep = (i,j,k)$ means that $ie_j$ depends on $ie_j$.
-
-A set of dependency links is denoted by $Dep$.
-\end{definition}
-
-\paragraph{Rationale and example} The representation of dependency links is exactly the same as decomposition links. In Figure~\ref{fig:example-small2}, let us formalize the IEs related to the only dependency link:
-\begin{itemize}
-\item $(2, resource, \text{Car objects}, AND)$
-\item $(5, goal, \text{Generate traffic}, XOR)$
+\item $(7, Dep, 4, 1)$
+\item $(8, PosContr, 5, 2)$
+\item $(9, NegContr, 5, 3)$
+\item $(10, Decomp, 5, 4)$
+\item $(11, Decomp, 6, 4)$
 \end{itemize}
 
-The dependency link between these two elements is formalized as $(8, 5, 2)$.
+Let us next provide some examples of the notation of Definition~\ref{def:notation2}:
+\begin{itemize}
+\item $dep_7 = (7, Dep, 4, 1)$
+\item $Decomp = \{(10, Decomp, 5, 4), (11, Decomp, 6, 4)\}$
+\item $PosContr = \{(8, PosContr, 5, 2)\}$
+\item $Contr = \{(8, PosContr, 5, 2), (9, NegContr, 5, 3)\}$
+\end{itemize}
 
 \begin{definition}[GRL Model]
 \label{def:grl-model}
-A \emph{GRL model} $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ consists of:
+A \emph{GRL model} $GRL=(IE, Act, R_{ActIE}, Link)$ consists of:
 \begin{itemize}
 \item A set $IE$ of intentional elements (Def.~\ref{def:ie}),
-\item A set $Bel$ of beliefs (Def.~\ref{def:belief}),
 \item A set $Act$ of actors (Def.~\ref{def:actor}),
 \item A set $R_{ActIE}$ of Actor-IE relations (Def.~\ref{def:act-ie-relation}),
-\item A set $Bellink$ of belief links (Def.~\ref{def:link:belief}),
-\item A set $Contr$ of contribution links (Def.~\ref{def:link:contrib}),
-\item A set $Decomp$ of decomposition links (Def.~\ref{def:link:decomp}),
-\item A set $Dep$ of dependency links (Def.~\ref{def:link:dependency}).
+\item A set $Link$ of GRL links (Def.~\ref{def:link}).
 \end{itemize}
 \end{definition}
 
-\paragraph{Rationale and example} The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small2}. This model is formalized as
- $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ where:
+\paragraph{Rationale and example} The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small2}. This model is formalized as $GRL=(IE, Act, R_{ActIE}, Link)$, where:
 \begin{flalign*}
-&IE=&\{&(2, task, \text{Car objects}, AND),&\\
-&   &  &(3, softgoal, \text{Realistic simulation}, AND),&\\
-&   &  &(4, softgoal, \text{Simple design}, AND),&\\
-&   &  &(5, goal, \text{Generate traffic}, XOR),&\\
-&   &  &(6, task, \text{Create new cars}, AND),&\\
-&   &  &(7, task, \text{Keep same cars}, AND)\}&\\
-&Bel=& &\{(1, \text{Not scientifically correct})\}&\\
-&Act=& &\{(0, \text{Traffic Simulator})\}&\\
-&R_{ActIE}=& &\{(0,i)\mid 2\le i\le 7\}&\\
-&Bellink = & &\{(1, 4)\}&\\
-&Contr=& &\{(9, 6, 3, \text{Help}), (10, 6, 4, \text{Hurt})\}&\\
-&Decomp=& &\{(11, 6, 5), (12, 7, 5)\}&\\
-&Dep=& &\{(8, 5, 2)\}&
+&IE=&\{&(1, Resource, \text{Car objects}, AND),&\\
+&   &  &(2, Softgoal, \text{Realistic simulation}, AND),&\\
+&   &  &(3, Softgoal, \text{Simple design}, AND),&\\
+&   &  &(4, Goal, \text{Generate traffic}, XOR),&\\
+&   &  &(5, Task, \text{Create new cars}, AND),&\\
+&   &  &(6, Task, \text{Keep same cars}, AND)\}&\\
+&Act=& &\{(0, Actor, \text{Traffic Simulator})\}&\\
+&R_{ActIE}=& &\{(i+11, ActIE, 0,i)\mid 1\le i\le 6\}&\\
+&Link=&\{&(7, Dep, 4, 1)&\\
+&     & &(8, PosContr, 5, 2)&\\
+&     & &(9, NegContr, 5, 3)&\\
+&     & &(10, Decomp, 5, 4)&\\
+&     & &(11, Decomp, 6, 4)\}&\\
 \end{flalign*}
 
 \begin{definition}[Valid GRL Model]
@@ -259,12 +222,9 @@ A \emph{GRL model} $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ 
 A GRL model $GRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-model}) is a \emph{valid GRL model} iff the following conditions are satisfied:
 \begin{enumerate}
 \item ids are globally unique across IEs, Beliefs, Links, and Actors, i.e., let $X,Y\in \{IE,Act, Belief, Contr, Decomp, Dep\}$. For all $X_i$ and $Y_j$: if $i=j$ then $X=Y$ and $X_i=Y_j$.
-\item All intentional elements of actors exist: $\forall (i,j)\in R_{ActIE}: act_i \in Act \wedge ie_j \in IE$.
-\item An intentional element belongs at most to one actor: $\forall ie_i\in IE: |\{(k,i)\in R_{ActIE}\}| \le 1$.
-\item Contribution links connect intentional elements: $\forall (i,j,k,value)\in Contrib: \{ie_j,ie_k\}\subseteq IE$.
-\item Decomposition links connect intentional elements: $\forall (i,j,k)\in Decomp: \{ie_j,ie_k\}\subseteq IE$.
-\item Dependency links connect intentional elements: $\forall (i,j,k)\in Dep: \{ie_j,ie_k\}\subseteq IE$.
-\item Belief links connect beliefs with intentional elements: $\forall (i,j)\in Bellink: bel_i\in Bel\wedge ie_j\in IE$.
+\item Intentional elements of actors exist: $\forall (k, ActIE, i,j)\in R_{ActIE}: act_i \in Act \wedge ie_j \in IE$.
+\item An intentional element belongs at most to one actor: $\forall ie_i\in IE: |\{(k,ActIE,j,i)\in R_{ActIE}\}| \le 1$.
+\item Links connect intentional elements: $\forall (i,type, j,k)\in Link: \{ie_j,ie_k\}\subseteq IE$.
 \end{enumerate}
 \end{definition}
 
@@ -273,12 +233,9 @@ A GRL model $GRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-mo
 Let us briefly verify that our previous formalization of Figure~\ref{fig:example-small2} satisfies all the constraints of Def.~\ref{def:valid-grl-model}:
 \begin{enumerate}
 \item All elements in the formalization have different ids, so this constraint is satisfied.
-\item $R_{ActIE}$ contains one element $(0,i)$ for each IE with id $i$, so this constraint is satisfied as well. Note that other elements (beliefs and links) are not related to actors. This is in line with the jUCMNav implementation.
+\item $R_{ActIE}$ contains one element for each IE with id $i$, so this constraint is satisfied as well. Note that links are not related to actors. This is in line with the GRL metamodel.
 \item Since we have only one actor with id 0, and this is the only actor that appears in $R_{ActIE}$, this constraint is satisfied.
-\item The contribution links connect elements with ids 3, 4, and 6, which are all IEs.
-\item The decomposition links connect elements with ids 5, 6, and 7, which are all IEs.
-\item The dependency link connects id 2 with 5, which are both IEs.
-\item The belief link connects id 1 with id 4, which are respectively a belief and an IE.
+\item All links connect IEs: the contribution links connect elements with ids 2, 3, and 5, which are all IEs; the decomposition links connect elements with ids 4, 5, and 6, which are all IEs; and the dependency link connects id 1 with 4, which are both IEs.
 \end{enumerate}
 
 \subsection{Formal specification of RationalGRL}
@@ -303,24 +260,28 @@ We start with the new element which we call the \emph{Generic Argument}.
 
 \begin{definition}[Generic Argument]
 \label{def:generic-argument}
-A generic argument $ga \in \mathbb{N}\times Names$ is a relation such that $ga=(id, name)$ means
+A generic argument $ga \in \mathbb{N}\times \{GenArg\}\times Names$ is a tuple such that $ga=(id, GenArg, name)$ means
 \begin{itemize}
 \item $id\in \mathbb{N}$ is the identifier of the generic argument,
+\item $GenArg$ states that the tuple is a generic argument,
 \item $name\in Names$ is a string description of its name.
 \end{itemize}
 We may refer to the argument with id $i$ simply with $ga_i$. A set of arguments is denoted by $GA$.
 \end{definition}
 
-\paragraph{Rationale and example} A generic counterargument is simply an argument that can be used to attack any previous argument, or an IE. It is different from a belief element, since a generic counterargument is used in the computation to determine whether a RationalGRL element is accepted or rejected. Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link:contrib},~\ref{def:link:decomp}, and~\ref{def:link:dependency}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is correct, since generic arguments are not part of GRL, so they should also not occur in links. 
+\paragraph{Rationale and example} A generic counterargument is simply an argument that can be used to attack any previous argument, or an IE. Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is desired, since generic arguments are not part of GRL, so they should also not be connected using GRL links. 
 
-In Fig.~\ref{fig:example-small3}, there are two generic counterargument which can be formalized as $(19, \text{Redundant})$ and $(20, \text{Necessary})$.
+In Fig.~\ref{fig:example-small3}, there are two generic counterargument which can be formalized as $(18,GenArg, \text{Redundant})$ and $(19, GenArg, \text{Necessary})$.
 
 \begin{definition}[Argument]
 \label{def:argument}
-An argument $A=(elem,type)$ is a pair such that:
+An argument $A$ is on of the following tuples:
 \begin{itemize}
-\item $elem$ is either an intentional element $ie$ (Def.~\ref{def:ie}), an actor $act$ (Def.~\ref{def:actor}), an Actor-IE relation $r_{ActIE}$ (Def.~\ref{def:act-ie-relation}),  a contribution link $contr$, a decomposition link $decomp$ (Def.~\ref{def:link:decomp}), a dependency link $dep$ (Def.~\ref{def:link:dependency}), or a generic argument $ga$ (Def.~\ref{def:generic-argument}).
-\item $type\in Type$ (Def.~\ref{def:set-definitions}) is the type of the argument.
+\item An intentional element (Def.~\ref{def:ie}), 
+\item An actor $act$ (Def.~\ref{def:actor}),
+\item An Actor-IE relation $r_{ActIE}$ (Def.~\ref{def:act-ie-relation}), 
+\item A link $link$ (Def.~\ref{def:link}),
+\item A generic argument $ga$ (Def.~\ref{def:generic-argument}).
 \end{itemize}
 \end{definition}
 
@@ -338,22 +299,22 @@ Given a set of arguments $Arg$, an attack link $att\in Arg\times Arg$ is a relat
 Intuitively, $att=(A_i,A_j)$ means that argument $A_i$ is attacking argument $A_j$. A set of attack links is denoted by $Att$.
 \end{definition}
 
-\paragraph{Rationale and example} The attack link is the only link that RationalGRL adds to GRL. In Fig~\ref{fig:example-small3}, there are three attack links. The first two attack links originate from generic counterarguments and involve the following three elements:
+\paragraph{Rationale and example} The attack link is the only link that RationalGRL adds to GRL. In Fig~\ref{fig:example-small3}, there are three attack links. The first two attack links originate from generic counterarguments and involve the following three arguments:
 \begin{itemize}
-\item $A_1 = ((1, Resource, \text{Car objects}, AND), Resource)$
-\item $A_{19} = ((19, \text{Necessary}), GenArg)$
-\item $A_{20} = ((20, \text{Redundant}), GenArg)$
+\item $A_1 = (1, Resource, \text{Car objects}, AND)$
+\item $A_{18} = (18, GenArg, \text{Redundant})$
+\item $A_{19} = (19, GenArg, \text{Necessary})$
 \end{itemize}
 
-These two attack links are formalized as $(A_{20},A_{19})$ and $(A_{19}, A_1)$.
+These two attack links are formalized as $(A_{18},A_{1})$ and $(A_{19}, A_{18})$.
 
 The third attack link is an attack link created by \emph{replacing} and existing argument (we will discuss this process in more detail in Sect.~\ref{sect:algorithms}). It involves two version of the same IE:
 \begin{itemize}
-\item $A_{4} = ((5, goal, \text{Generate traffic}, AND), Goal)$
-\item $A_{18} = ((5, goal, \text{Generate traffic}, XOR), Goal)$
+\item $A_{4} = ((4, Goal, \text{Generate traffic}, AND), Goal)$
+\item $A_{20} = ((4, Goal, \text{Generate traffic}, XOR), Goal)$
 \end{itemize}
 
-This attack link is formalized at $(A_{18},A_4)$.
+This attack link is formalized at $(A_{20},A_4)$.
 
 The last example shows an important difference between RationalGRL models and valid GRL models: While a valid GRL model disallows multiple elements with the same identifier (Def.~\ref{def:valid-grl-model}, condition 1), RationalGRL models do not enforce this restriction. This is because it is possible to create multiple arguments for the same element, where argument contains different content for the same element. This is what the example above also shows. However, the set of \emph{accepted} elements in a RationalGRL should all have unique identifier (see Def.~\ref{def:valid-rationalgrl-model}).
 
@@ -364,31 +325,31 @@ A \emph{RationalGRL model} $RatGRL=(Arg, Att)$ consists of a set of arguments $A
 
 \paragraph{Rationale and example} The definition of a RationalGRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small3}. Let us first enumerate all the arguments used in this example:
 \begin{flalign*}
-A_0 = &((0, Actor, \text{Traffic simulator}), Actor)&\\
-A_1 = &((1, task, \text{Car objects}, AND), Task),&\\
-A_2 = &((2, softgoal, \text{Real. sim.}, AND), Softgoal),&\\
-A_3 = &((3, softgoal, \text{Simple des.}, AND), Softgoal),&\\
-A_4 = &((4, goal, \text{Generate traffic}, AND), Goal),&\\
-A_5 = &((5, task, \text{Create new cars}, AND), Task),&\\
-A_6 = &((6, task, \text{Keep same cars}, AND)\}, Task),&\\
-A_7 = &((7, 4, 1), Dep),&\\
-A_8 = &((8, 5, 2, \text{Help}), Contr),&\\
-A_9 = &((9, 5, 3, \text{Hurt}), Contr),&\\
-A_{10} = &((10, 5, 4), Decomp),&\\
-A_{11} = &((11, 6, 4), Decomp),&\\
-A_i = &((0,i-11),ActIE), \text{for } 12\le i\le 17&\\
-A_{18} = &((4, goal, \text{Generate traffic}, XOR), Goal),&\\
-A_{19} = &((18, \text{Redundant}), GenArg),&\\
-A_{20} = &((19, \text{Necessary}), GenArg),&
+A_0 = &(0, Actor, \text{Traffic simulator})&\\
+A_1 = &(1, Task, \text{Car objects}, AND),&\\
+A_2 = &(2, Softgoal, \text{Real. sim.}, AND),&\\
+A_3 = &(3, Softgoal, \text{Simple des.}, AND),&\\
+A_4 = &(4, Goal, \text{Generate traffic}, AND),&\\
+A_5 = &(5, Task, \text{Create new cars}, AND),&\\
+A_6 = &(6, Task, \text{Keep same cars}, AND),&\\
+A_7 = &(7, Dep, 4, 1),&\\
+A_8 = &(8, PosContr, 5, 2),&\\
+A_9 = &(9, NegContr, 5, 3),&\\
+A_{10} = &(10, Decomp, 5, 4),&\\
+A_{11} = &(11, Decomp, 6, 4),&\\
+A_i = &(i, ActIE, 0,i+11),ActIE), \text{for } 1\le i\le 6&\\
+A_{18} = &(18, GenArg, \text{Redundant}),&\\
+A_{19} = &(19, GenArg, \text{Necessary}),&\\
+A_{20} = &(4, Goal, \text{Generate traffic}, XOR),&\\
 \end{flalign*}
 
 This model is then formalized as $RationalGRL=(Arg, Att)$ where:
 \begin{flalign*}
 Arg = &\{A_0,A_1,\ldots,A_{20}\}\\
-Att=&\{(A_{18},A_4), (A_{19},A_1), (A_{20},A_{19})\}
+Att=&\{(A_{18},A_1), (A_{19},A_{18}), (A_{20},A_{4})\}
 \end{flalign*}
 
-All the arguments and the attack relations of this RationalGRL model are shown in Figure~\ref{fig:example-small4}. Note the arguments for Actor-IE containment (arguments $A_{12}$ to $A_{20}$) have been omitted from this figure for readability. It can be read from the figure that two arguments are currently rejected, namely $A_4$ and $A_{19}$. However, we did not yet make precise how exactly this is computed. We will do so in the following definitions.
+All the arguments and the attack relations of this RationalGRL model are shown in Figure~\ref{fig:example-small4}. Note the arguments for Actor-IE containment (arguments $A_{12}$ to $A_{17}$) have been omitted from this figure for readability. It can be read from the figure that two arguments are currently rejected, namely $A_4$ and $A_{19}$. However, we did not yet make precise how exactly this is computed. We will do so in the following definitions.
 
 \begin{figure}[ht]
 \centering
@@ -420,20 +381,20 @@ We see that the definition of an argumentation framework is very close to that o
 \begin{figure}[ht!]
 \centering
 \begin{tikzpicture}
-        \node[minimum size=1cm] (a20) [argNodeIN] at (-3,0) {$A_{20}$};
-        \node[minimum size=1cm] (a19) [argNodeIN] at (0,0) {$A_{19}$};
+        \node[minimum size=1cm] (a19) [argNodeIN] at (-3,0) {$A_{19}$};
+        \node[minimum size=1cm] (a18) [argNodeIN] at (0,0) {$A_{18}$};
         \node[minimum size=1cm] (a1) [argNodeIN] at (3,0) {$A_1$};
              
          \path
-    (a20) edge [attackLink] (a19)
-    (a19) edge [attackLink] (a1);
+    (a19) edge [attackLink] (a18)
+    (a18) edge [attackLink] (a1);
     
 \end{tikzpicture}
 \caption{Example argumentation framework, subset of Fig.~\ref{fig:example-small4}.}
 \label{fig:goalmodeling:arg2}
 \end{figure}
 
-Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}, which is a subset of Figure~\ref{fig:example-small4} containing only arguments $A_1, A_{19}$, and $A_{20}$. In this example, there are two admissible sets: $\{A_{20}\}$ and $\{A_1, A_{20}\}$. In the last admissible set, $A_{20}$ defends $A_1$ against its attacker $A_{19}$. Sets containing both $A_{19}$ and either $A_1$ or $A_{20}$ are not conflict free, and the sets $\{A_1\}$ and $\{A_{19}\}$ do not defend themselves against $A_{19}$ and $A_{20}$, respectively. 
+Let us explain these definitions using the example argumentation framework in Figure~\ref{fig:goalmodeling:arg2}, which is a subset of Figure~\ref{fig:example-small4} containing only arguments $A_1, A_{18}$, and $A_{19}$. In this example, there are two admissible sets: $\{A_{19}\}$ and $\{A_1, A_{19}\}$. In the last admissible set, $A_{19}$ defends $A_1$ against its attacker $A_{18}$. Sets containing both $A_{18}$ and either $A_1$ or $A_{19}$ are not conflict free, and the sets $\{A_1\}$ and $\{A_{18}\}$ do not defend themselves against $A_{18}$ and $A_{19}$, respectively. 
 
 Given the notion of admissible sets, we can then define our argumentation semantics. There are a large number of different semantics to determine which arguments are acceptable; in this article, we focused on the preferred semantics.
 
@@ -442,91 +403,16 @@ Given the notion of admissible sets, we can then define our argumentation semant
 A preferred extension of an argumentation framework $(Arg,Att)$ is a maximal (w.r.t. set inclusion) admissible set of $R$.
 \end{definition}
 
-In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_{20},A_1\}$. Returning to our running example of Figure~\ref{fig:example-small3}, this means that the intentional elements \text{Car objects} (task) and the generic counerargument \emph{Necessary} are both \emph{accepted}, while the generic counter argument ``Redundant'' is rejected.
+In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_{19},A_1\}$. Returning to our running example of Figure~\ref{fig:example-small3}, this means that the intentional elements \text{Car objects} (task) and the generic counerargument \emph{Necessary} are both \emph{accepted}, while the generic counter argument ``Redundant'' is rejected.
 
-\subsection{Translation algorithms}
-
-Now that we have formalized both a GRL model and a RationalGRL model, we develop algorithm in order to translate between these two models. Both of these two translation algorithms are straightforward. Their main task is to ensure that in RationalGRL models, the GRL elements and links are wrapped in an argument with the corresponding type. For each algorithm, we provide an explanation an an example of a translation.
-
-\paragraph{GRL to RationalGRL Translation} We start with the translation algorithm from GRL to RationalGRL, which is shown in Algorithm~\ref{alg:translation:to-rationalgrl}.  The translation algorithm translates all of the GRL elements and links into arguments. It takes a GRL model as input. Recall that a GRL model is defined as $GRL=(IE, Bel, Act, R_{ActIE}, Bellink, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-model}). Then, on line~\ref{alg:translation:to-rationalgrl:init}, the set of arguments is initialized with the empty set. Each of the five for loops in the algorithm translates a different GRL component into an argument. For instance, in the for loop starting at line~\ref{alg:translation:to-rationalgrl:ie}, all IEs are added as pairs consisting of the IE itself, and its corresponding type. This is in line with the definition of an argument~\ref{def:argument}). Since the other for loops are very similar, we do not explain them here. At line~\ref{alg:translation:to-rationalgrl:return}, the algorithm returns a RationalGRL model $(Arg,\emptyset)$ containing all arguments in $Arg$, and an empty set of attack relations. 
-
-\begin{algorithm}[h]
-  \caption{GRL to RationalGRL Translation}
-  \label{alg:translation:to-rationalgrl}
-  \begin{algorithmic}[1]
-    \Procedure{$ToRationalGRL$}{$GRL$}
-    \State $Arg \leftarrow \emptyset$\label{alg:translation:to-rationalgrl:init}
-    \For{$ie\in IE$}\label{alg:translation:to-rationalgrl:ie}
-      \State $Arg \leftarrow Arg \cup \{(ie,ie.type)\}$
-    \EndFor
-    \For{$act\in Act$}
-      \State $Arg \leftarrow Arg \cup \{(act, Actor)\}$
-    \EndFor
-    \For{$actIE\in ActIE$}
-      \State $Arg \leftarrow Arg \cup \{(actIE, ActIE)\}$
-    \EndFor
-    \For{$contr\in Contr$}
-      \State $Arg \leftarrow Arg \cup \{(contr, Contr)\}$
-    \EndFor
-    \For{$dep\in Dep$}
-      \State $Arg \leftarrow Arg \cup \{(dep, Dep)\}$
-    \EndFor
-    \For{$decomp\in Decomp$}
-      \State $Arg \leftarrow Arg \cup \{(decomp, Decomp)\}$
-    \EndFor
-    \State \Return $(Arg, \emptyset)$\label{alg:translation:to-rationalgrl:return}
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\paragraph{RationalGRL to GRL translation} The translation from a RationalGRL model to a GRL model is given in Algorithm~\ref{alg:translation:to-grl}. It is very similar to the previous algorithm, but then works in the other direction. In this case, arguments are unpacked and put in the corresponding IE components. The most important difference between the previous algorithm and this one is that in the RationalGRL to GRL translation, argumentation semantics is used to determine the \emph{preferred extension} (Def.~\ref{def:preferred-semantics}). This is a set containing all accepted arguments. The GRL is then generated from all the accepted arguments. This is done by iterating over all arguments in the extension in line~\ref{alg:translation:to-grl:extension-iter}. The switch statement on line~\ref{alg:translation:to-grl:switch} then does a case distinction on the type of the arguments, and each case ensures the argument is put in the right GRL component. Finally, the algorithm returns a GRL model on line~\ref{alg:translation:to-grl:return}.
-
-\begin{algorithm}[h]
-  \caption{RationalGRL to GRL Translation}
-  \label{alg:translation:to-grl}
-  \begin{algorithmic}[1]
-    \Procedure{$ToGRL$}{$RatGRL$}
-    \State $E \leftarrow ComputeExtension(Arg,Att)$
-    \State $IE\leftarrow\emptyset$, $Act\leftarrow\emptyset$, $R_{ActIE}\leftarrow\emptyset$, $Contr\leftarrow\emptyset$
-    \State $Decomp\leftarrow\emptyset$, $Dep\leftarrow\emptyset$
-    \For{$(Elem, T)\in E$}\label{alg:translation:to-grl:extension-iter}
-      \Switch{$T$}\label{alg:translation:to-grl:switch}
-          \Case{$T\in Type$}
-            \State $IE\leftarrow IE\cup \{Elem\}$
-          \EndCase
-          \Case{$T = Actor$}
-            \State $Act\leftarrow Act \cup\{Elem\}$
-          \EndCase
-          \Case{$T=Contr$}
-            \State $Contr\leftarrow Contr\cup \{Elem\}$
-          \EndCase
-          \Case{$T=Dep$}
-            \State $Dep\leftarrow Dep\cup \{Elem\}$
-          \EndCase
-          \Case{$T=Decomp$}
-            \State $Decomp\leftarrow Decomp\cup\{Elem\}$
-          \EndCase
-      \EndSwitch
-    \EndFor
-    \State \Return $(IE,Act,R_{ActIE}, Contr, Decomp, Dep)$\label{alg:translation:to-grl:return}
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\paragraph{Valid RationalGRL model} While we have defined a notion of a \emph{valid GRL model} (Def.~\ref{def:valid-grl-model}), we have not done so for a RationalGRL model yet. This is because it depends on the translation procedure. We define a RationalGRL model as valid if and only if the RationalGRL to GRL translation results in a valid GRL model. In this way, we do not have to reiterate all conditions on a GRL model, but use the translation algorithm.
+Now that we have defined the semantics for RationalGRL, we can use this to define the notion of a valid RationalGRL model.
 
 \begin{definition}[Valid RationalGRL Model]
 \label{def:valid-rationalgrl-model}
-A RationalGRL model $RatGRL = (Arg, Att)$ with preferred extension $E=(A_1,\ldots,A_n)$ is a \emph{valid RationalGRL model} iff $TranslateToGRL(RatGRL)$ (Alg.~\ref{alg:translation:to-grl}) is a valid GRL model (Def.~\ref{def:valid-grl-model}).
+A RationalGRL model $RatGRL = (Arg, Att)$ with preferred extension $E=(A_1,\ldots,A_n)$ is a \emph{valid RationalGRL model} iff the GRL model constructed from $E$ is a valid GRL model (Def.~\ref{def:valid-grl-model}).
 \end{definition}
 
-The following theorem follows directly from the translation algorithms.
-
-\begin{theorem}[Translation correctness]
-\label{th:translation-correctness}
-Given some valid GRL model (Def.~\ref{def:valid-grl-model}, translating it to RationalGRL and then back to GRL results in the same valid GRL mode, i.e.
-$$ToGRL(ToRationalGRL(GRL)) = GRL.$$
-\end{theorem}
+\todo{Marc}{Marc}{Perhaps say something about how to construct it. It is very trivial: Just remove the generic arguments and attack links, only keep the other arguments which directly translate to GRL elements and links.}
 
 \subsection{Algorithms for argument schemes and critical questions}
 \label{sect:algorithms}
@@ -562,13 +448,13 @@ These type of algorithms are short, and consist simply of adding an argument for
   \caption{AS0: $a$ is an actor}\label{alg:add-actor}
   \begin{algorithmic}[1]
     \Procedure{$AS_0$}{$n$}
-    \State $actor \leftarrow (mintId(), a)$ \label{alg:as0:1}
-    \State $Arg\leftarrow Arg \cup \{(actor,Actor)\}$\label{alg:as0:2}
+    \State $A \leftarrow (mintId(), Actor, a)$ \label{alg:as0:1}
+    \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:as0:2}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} Algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2} the pair $(actor,Actor)$ is added as a new argument, indicating that an argument of type $Actor$ is added.
+\paragraph{Rationale and example} Algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2} the actor is added as a new argument.
 
 Consider for instance...\todo{Marc}{Marc}{Add example}
 
@@ -577,34 +463,36 @@ Consider for instance...\todo{Marc}{Marc}{Add example}
   \begin{algorithmic}[1]
     \Procedure{$AS_1$}{$i, R$}
     \State $res\_id\gets mintId()$\label{alg:add-actor:id}
-    \State $res\leftarrow (res\_id, Resource, R, AND)$\label{alg:add-actor:res}
-    \State $Arg\gets Arg\cup \{(res, Resource),(i,res\_id)\}$\label{alg:add-actor:arg}
+    \State $A_1\leftarrow (res\_id, Resource, R, AND)$\label{alg:add-actor:arg1}
+    \State $A_2\leftarrow (mintId(),ActIE, i, res\_id)$\label{alg:add-actor:arg2}
+    \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-actor:add-arg}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
 \paragraph{Rationale and example} The original argument schemes AS1 is phrased as ``Actor $a$ has resource $R$''. We have slightly reworded this in Algorithm~\ref{alg:add-actor} to ``Actor with id $i$ has resource $R$''. The reason is that in GRL, actors have identifiers, so since we assume actor $a$ exists already, we also assume an identifier for it exists. It would be straightforward to introduce a mapping from actor names to identifiers, but we have no done so here for simplicity. 
 
-The algorithm itself runs as follows: on line~\ref{alg:add-actor:id}, a unique id is assigned to variabel $res\_id$ (``resource identifier''). On line~\ref{alg:add-actor:res}, an argument for a resource with name $R$ and identifier $res\_id$ is assigned to $A$. Finally, on line~\ref{alg:add-actor:arg}, two arguments are added to the set of arguments $Arg$: one for the resource, and one for the containment relations between the actor and the resource (Def.~\ref{def:act-ie-relation}.
+The algorithm itself runs as follows: on line~\ref{alg:add-actor:id}, a unique id is assigned to variable $res\_id$ (``resource identifier''). On line~\ref{alg:add-actor:arg1}, an argument for a resource with name $R$ and identifier $res\_id$ is assigned to $A_1$. On line~\ref{alg:add-actor:arg2}, a second argument $A_2$ is created, which is an argument for an Actor-IE relation (Def.~\ref{def:act-ie-relation}) between the input actor $i$ and the newly created element $res\_id$. Finally, on line~\ref{alg:add-actor:add-arg}, the arguments are added to the set of arguments $Arg$.
 
-Since arguments schemes AS2-AS4 are very similar to AS1, we have omitted it here.
+Since arguments schemes AS2-AS4 are very similar to AS1, we have omitted algorithms for them here.
 
 \begin{algorithm}[h]
-  \caption{AS5: Goal with id $i$ decomposes into task $t$}\label{alg:add-decomp}
+  \caption{AS5: Goal with id $i$ decomposes into task $T$}\label{alg:add-decomp}
   \begin{algorithmic}[1]
-    \Procedure{$AS_5$}{$i, t$}
+    \Procedure{$AS_5$}{$i, T$}
     \State $task\_id\gets mintId()$\label{alg:add-decomp:task-id}
-    \State $task\leftarrow (task\_id, Task, t, AND)$\label{alg:add-decomp:task}
-    \State $Arg\gets Arg\cup \{(task, Task),((mintId(),i,task\_id), Decomp)\}$\label{alg:add-decomp:arg}
+    \State $A_1\leftarrow (task\_id, Task, t, AND)$\label{alg:add-decomp:arg1}
+    \State $A_2\leftarrow (mintId(), Decomp, i, task\_id)$\label{alg:add-decomp:arg2}
+    \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-decomp:add-arg}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} Similar to the previous algorithm, we have slightly reworded critical question AS5. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $t$ is a decomposition of $G$. 
+\paragraph{Rationale and example} Similar to the previous algorithm, we have slightly reworded critical question AS5. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $T$ is a decomposition of $G$. 
 
-In Algorithm~\ref{alg:add-decomp}, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:task}. Finally, on line~\ref{alg:add-decomp:arg}, two arguments are added to the set of arguments $Arg$. The first argument $(task,Task)$ is simply an argument for the task that is added. The second argument $((mintId(),i,task\_id),Decomp)$ is an argument for the decomposition link $(mintId(), i, task\_id)$ (Def.~\ref{def:link:decomp}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$.
+In Algorithm~\ref{alg:add-decomp}, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:arg1}. On line~\ref{alg:add-decomp:arg2} an argument is created for the decomposition link $(mintId(), Decomp, i, task\_id)$ (Def.~\ref{def:link}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$. On line~\ref{alg:add-decomp:add-arg} the two arguments are added to the set of arguments $Arg$.
 
-The remaining argument schemes AS6-AS-12 are all very similar to the previous algorithms and have been omitted here.
+The remaining argument schemes AS6-AS12 are all very similar to the previous algorithms and have been omitted here.
 
 The critical questions of type \emph{INTRO} are very similar as well, with one exception: the require an answer. For instance, suppose CQ5b: ``Does goal $G$ decompose into other tasks?'' is answered with: ``Yes, namely into task $T$''. In this case, we simply obtain an instantiation of argument scheme AS5: ``Goal $G$ decomposes into task $T$'', which can be executed with Algorithm~\ref{alg:add-decomp}. This is the same for all the other critical questions of type \emph{INTRO} as well. Therefore, we have omitted them here as well.
 
@@ -618,16 +506,16 @@ In all of these algorithms, we assume the critical question is answered affirmat
   \caption{CQ0: Is actor with id $i$ relevant? No}\label{alg:actor-not-relevant}
   \begin{algorithmic}[1]
     \Procedure{$CQ_0$}{$i$}
-    \State $A \leftarrow ((mintId(),CQ0),GenArg)$\label{alg:actor-not-relevant:genarg}
+    \State $A \leftarrow (mintId(),GenArg,CQ0)$\label{alg:actor-not-relevant:genarg}
     \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:actor-not-relevant:genarg2}
-    \For{$A_i\in \{(actor_i,Actor)\in Arg\}$}\label{alg:actor-not-relevant:for}
-      \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:actor-not-relevant:att}
+    \For{$A_j\in \{A=(i,Actor,n)\mid A\in Arg\}$}\label{alg:actor-not-relevant:for}
+      \State $Att \leftarrow Att \cup \{(A,A_j)\}$\label{alg:actor-not-relevant:att}
     \EndFor
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} Algorithm~\ref{alg:actor-not-relevant} is executed when critical question CQ0 is answered affirmatively (i.e., with ``No''). First, on lines~\ref{alg:actor-not-relevant:genarg} and~\ref{alg:actor-not-relevant:genarg2}, an argument is created for the critical question and added to the set of arguments $Arg$. Since this argument is not an argument for a GRL element or link, it is formalized as a \emph{generic counterargument} $((mintId(), CQ0), GenArg)$ (Def.~\ref{def:generic-argument}). The for loop starting at line~\ref{alg:actor-not-relevant:for} then iterates over ll arguments $(actor_i,Actor)$, where $i$ is the id of the actor that is no longer relevant. Recall from Def.~\ref{def:notation} that we denote with $actor_i$ an actor with identifier $i$. Thus, this for loop iterates over all arguments for actors with identifier $i$. The reason why there could be multiple of such actors is that the actor can be refined by an algorithm of type \emph{REPLACE}. We will explain this in more detail in the example below. Then, on line~\ref{alg:actor-not-relevant:att}, an attack link is created from the generic argument $A$ that is created to the argument for the actor $A_i$. After executing the algorithm, all existing arguments for the actor with identifier $i$ are attacked by a newly created argument $A$.
+\paragraph{Rationale and example} Algorithm~\ref{alg:actor-not-relevant} is executed when critical question CQ0 is answered affirmatively (i.e., with ``No''). First, on lines~\ref{alg:actor-not-relevant:genarg} and~\ref{alg:actor-not-relevant:genarg2}, an argument is created for the critical question and added to the set of arguments $Arg$. Since this argument is not an argument for a GRL element or link, it is formalized as a \emph{generic counterargument} $(mintId(), GenArg, CQ0)$ (Def.~\ref{def:generic-argument}). The for loop starting at line~\ref{alg:actor-not-relevant:for} then iterates over all arguments for actors, where $i$ is the id of the actor that is no longer relevant. The reason why there could be multiple of such actors is that the actor can be refined by an algorithm of type \emph{REPLACE}. We will explain this in more detail in the example below. Then, on line~\ref{alg:actor-not-relevant:att}, an attack link is created from the generic argument $A$ that is created to the argument for the actor $A_j$. After executing the algorithm, all existing arguments for the actor with identifier $i$ are attacked by a newly created argument $A$.
 
 Consider for example...\todo{Marc}{Marc}{Add example here}
 
@@ -637,28 +525,27 @@ Critical questions C1-CQ3 are all very similar to CQ0 and have therefore been om
   \caption{CQ5a: Does the goal with id $g\_id$ decompose into task with id $t\_id$? No}\label{alg:no-decomp}
   \begin{algorithmic}[1]
     \Procedure{$CQ5a$}{$g\_id,t\_id$}
-    \State $A \leftarrow ((mintId(),CQ5a),GenArg)$\label{alg:no-decomp:genarg}
+    \State $A \leftarrow (mintId(),GenArg,CQ5a)$\label{alg:no-decomp:genarg}
     \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:no-decomp:genarg2}
-    \For{$A_i\in \{((k,m,n),Decomp)\in Arg\mid $\\
-    \qquad\qquad\qquad $m=g\_id, n=t\_id\}$}\label{alg:no-decomp:for}
-      \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:no-decomp:att}
+    \For{$A_j\in \{(k,Decomp,g\_id,t\_id)\in Arg\}$}\label{alg:no-decomp:for}
+      \State $Att \leftarrow Att \cup \{(A,A_j)\}$\label{alg:no-decomp:att}
     \EndFor
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} Algorithm~\ref{alg:no-decomp} is structurally very similar to Algorithm~\ref{alg:actor-not-relevant}, with the only difference that instead of iterating over actors, we now iterate over decomposition links. This is done in line~\ref{alg:no-decomp:for}, where we iterate over all decomposition links $(k,m,n)$ (Def.~\ref{def:link:decomp}) such that $m$ equals the goal identifier $g\_id$, and $n$ equals the task identifier $t\_id$. This means we iterate over all decomposition links from the goal to the task, and we attack all arguments for these links on line~\ref{alg:no-decomp:att}.
+\paragraph{Rationale and example} Algorithm~\ref{alg:no-decomp} is structurally very similar to Algorithm~\ref{alg:actor-not-relevant}, with the only difference that instead of iterating over actors, we now iterate over decomposition links. This is done in line~\ref{alg:no-decomp:for}, where we iterate over all decomposition links with source id $g\_id$ and target id $t\_id$ (Def.~\ref{def:link}). This means we iterate over all decomposition links from the goal to the task, and we attack all arguments for these links on line~\ref{alg:no-decomp:att} with the newly created argument.
 
-Almost all of the remaining critical questions are similar in structure. CQ11 (``Is the element relevant/useful'') is slightly different since the attack element is not of a specific type, but is simply any GRL element. However, the resulting algorithm is very similar to the previous two and has therefore been omitted. The only algorithm of type \emph{DISABLE} that we still discuss is $Att$.
+Almost all of the remaining critical questions of type DISABLE are similar in structure. CQ11 (``Is the element relevant/useful'') is slightly different since the attack element is not of a specific type, but is simply any GRL element. However, the resulting algorithm is very similar to the previous two and has therefore been omitted. The only algorithm of type \emph{DISABLE} that we still discuss is $Att$.
 
 \begin{algorithm}[h]
-  \caption{Att: Generic counter-argument on arguments $A_1,\ldots,A_n$}\label{alg:generic}
+  \caption{Att: Generic counter-argument on arguments $A_1,\ldots,A_n$ with name $N$}\label{alg:generic}
   \begin{algorithmic}[1]
-    \Procedure{$Att$}{$A_1,\ldots,A_n$}
-    \State $A \leftarrow ((mintId(),Att),GenArg)$\label{alg:generic:arg}
+    \Procedure{$Att$}{$A_1,\ldots,A_n$, $N$}
+    \State $A \leftarrow (mintId(),GenArg, N)$\label{alg:generic:arg}
     \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:generic:addarg}
-    \For{$A_i\in \{A_1,\ldots,A_n\}$}\label{alg:generic:for}
-      \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:generic:att}
+    \For{$A_j\in \{A_1,\ldots,A_n\}$}\label{alg:generic:for}
+      \State $Att \leftarrow Att \cup \{(A,A_j)\}$\label{alg:generic:att}
     \EndFor
     \EndProcedure
   \end{algorithmic}
@@ -670,16 +557,15 @@ Almost all of the remaining critical questions are similar in structure. CQ11 (`
 
 \subsubsection{REPLACE algorithms}
 
-Recall that the \emph{REPLACE} algorithms both attack all arguments for an existing element, and at the same time create a new argument that contains a different version of the element being attacked.
-
-We present two algorithms for replacing elements: the first one replaces the decomposition type (CQ5c, CQ10c), and the second one replaces the name. 
+Recall that the \emph{REPLACE} algorithms both attacks all arguments for an existing element, and at the same time create a new argument that contains a different version of the element being attacked.
 
 \begin{algorithm}[h]
   \caption{CQ5c: Is the decomposition type of element $ie_i$ correct? No, it should be $X$ }\label{alg:replace1}
   \begin{algorithmic}[1]
     \Procedure{$CQ5c$}{$ie_i, X$}
-    \State $A \leftarrow ((ie_i.id, ie_i.type, ie_i.name, X),ie_i.type)$\label{alg:replace1:arg}
-    \State $IEArgs\leftarrow \{(ie_i,ie_i.type)\in Arg\}$\label{alg:replace1:ieargs}
+    \State $A \leftarrow ie_i$\label{alg:replace1:arg}
+    \State $A.decomptype\leftarrow X$\label{alg:replace1:decompchange}
+    \State $IEArgs\leftarrow IE_i\subseteq  Arg$\label{alg:replace1:ieargs}
     \For{$A_i\in IEArgs$}\label{alg:replace1:for1}
       \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:replace1:att}
     \EndFor
@@ -694,9 +580,9 @@ We present two algorithms for replacing elements: the first one replaces the dec
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} While the original critical question CQ5c is specific to the decomposition between a goal and a task, Algorithm~\ref{alg:replace1} is more generally applicable to any IE, since all IEs have a decomposition type in their definition (Def.~\ref{def:ie}. 
+\paragraph{Rationale and example} While the original critical question CQ5c is specific to the decomposition between a goal and a task, Algorithm~\ref{alg:replace1} is more generally applicable to any IE, since all IEs have a decomposition type in their definition (Def.~\ref{def:ie}). 
 
-Let us go through this algorithm step by step. On line~\ref{alg:replace1:arg}, a new argument $((ie_i.id, ie_i.type, ie_i.name, X),ie_i.type)$ is created. Recall from Def.~\ref{def:notation} that we may refer to elements of an IE with the ``.'' notation. Thus, this argument is an argument for the IE that was input to the algorithm, except that the decomposition type is set to $X$. On line~\ref{alg:replace1:ieargs}, the set $IEArgs$ is assigned with all existing arguments for the input IE. Then, in the first for loop on line~\ref{alg:replace1:for1}, we add attack links from the argument that has just been created to all existing arguments for the IE. The next two for loops on respectively lines~\ref{alg:replace1:for2} and~\ref{alg:replace1:for3} ensure that all attack links that existing from and to the previous versions of the IE are also carried over to the new argument $A$. Finally, one line~\ref{alg:replace1:addarg}, the new argument is added to the set of arguments.
+Let us go through this algorithm step by step. On line~\ref{alg:replace1:arg}, a new argument $A$ is created which is identical to original IE. Recall from Def.~\ref{def:notation} that we may refer to elements of an IE with the ``.'' notation. This is what we do on line~\ref{alg:replace1:decompchange}, where the decomposition type of the argument is changed to $X$. On line~\ref{alg:replace1:ieargs}, the set $IEArgs$ is assigned with all existing arguments for the input IE (recall the notation of $IE_i$ as the set of all IEs with id $i$, see Def.~\ref{def:notation}). Then, in the first for loop on line~\ref{alg:replace1:for1}, we add attack links from the argument that has just been created to all existing arguments for the IE. The next two for loops on respectively lines~\ref{alg:replace1:for2} and~\ref{alg:replace1:for3} ensure that all attack links that existing from and to the previous versions of the IE are also carried over to the new argument $A$. Finally, one line~\ref{alg:replace1:addarg}, the new argument is added to the set of arguments.
 
 Let us explain this with an example. \todo{Marc}{Marc}{Add example}
 
