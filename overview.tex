@@ -3,9 +3,7 @@
 
 Having explored the types of arguments and questions in requirements discussions, we now turn to an overview of our RationalGRL framework. We will show through a language definition and informal examples from our case study that it is possible to trace elements of the goal model back to their underlying arguments (\textbf{requirement 2}), and that it is possible to determine the effect of changes in the underlying argumentation on the goal model, and vice versa (\textbf{requirement 3}). A more formal, logical rendition of this traceability can be found in Section~\ref{sect:formalframework}.
 
-The RationalGRL framework includes two parts: Argumentation and GRL goal modeling. The GRL part of RationalGRL allows for the creation of GRL goal models by analyzing the non-functional requirements in the requirements specification document and by refining the high-level goals into operationalized tasks. For the argumentation part, arguments and counterarguments can be put forward about various parts of this goal model. These two parts, GRL and argumentation, are developed iteratively and each side can impact the other side so that the models can be refined or new critical questions and argument schemes can be instantiated. For example, answering a critical question \emph{Is the task \emph{A} possible?} can result in removing or adding a task in the GRL model. Similarly,  if, for example, we add a new intentional element to the GRL model, it can lead to a new critical question relevant to this intentional element and its relationships.  
-
-Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL framework. At the bottom there are two activities: \emph{practical reasoning \& argumentation} and \emph{goal model construction}. As already explained, these two activities influence each other: adding elements to a goal model gives rise to new critical questions about these elements, and answering critical questions with arguments may add or delete elements from the GRL model. The activities give rise to two different models: a \emph{RationalGRL model} (left-hand side) and a \emph{GRL model} (right-hand side). In the RationalGRL model, we have the goal model elements (goals, tasks etc) and the arguments for and against these elements; the GRL model contains only the goal model elements. Thus, the class of GRL models is essentially a subset of the class of RationalGRL models. Given the framework, it then becomes possible to trace a goal model back to the original argumentative discussion about goals, tasks and requirements. 
+The RationalGRL framework includes two parts: Argumentation and GRL goal modeling. The GRL part of RationalGRL allows for the creation of goal models by analyzing the non-functional requirements and refining the high-level goals into operationalized tasks. For the argumentation part, arguments and counterarguments can be put forward about various parts of this goal model. These two parts, GRL and argumentation, can impact the other side so that the models can be refined or new critical questions and argument schemes can be instantiated. For example, answering a critical question \emph{Is the task \emph{A} possible?} can result in removing or adding a task in the GRL model. Similarly,  if, for example, we add a new intentional element to the GRL model, it can lead to a new critical question relevant to this intentional element and its relationships.  
 
 \begin{figure}[b]
 \centering
@@ -13,11 +11,6 @@ Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL frame
 \caption{The RationalGRL Framework}
 \label{fig:rationalgrl-framework}
 \end{figure}
-
-In the rest of this section, we discuss the individual parts of the GRL framework. In Section~\ref{sect:overview:as}, we continue our discussion of the argument schemes and critical questions for practical reasoning and argumentation, fitting these schemes and questions into our framework. In Section~\ref{sect:overview:lang}, we then discuss the language for RationalGRL models. In Section~\ref{sect:overview:examples}, we then provide extensive examples from our case study, illustrating the interplay between practical reasoning and argumentation on the one hand and RationalGRL models on the other hand.  
-
-\subsection{The RationalGRL Argument Schemes and Critical Questions for Practical Reasoning}
-\label{sect:overview:as}
 
 \begin{table*}[t]
 \centering
@@ -68,11 +61,19 @@ Att & Generic counterargument & Att & Generic counterargument & \textsf{DISABLE}
 \label{table:argument-schemes}
 \end{table*}
 
+
+Figure~\ref{fig:rationalgrl-framework} presents an overview of RationalGRL framework. At the bottom there are two activities: \emph{practical reasoning \& argumentation} and \emph{goal model construction}. As already explained, these two activities influence each other: adding elements to a goal model gives rise to new critical questions about these elements, and answering critical questions with arguments may add or delete elements from the GRL model. The activities give rise to two different models: a \emph{RationalGRL model} (left-hand side) and a \emph{GRL model} (right-hand side). In the RationalGRL model, we have the goal model elements (goals, tasks etc) and the arguments for and against these elements; the GRL model contains only the goal model elements. Thus, the class of GRL models is essentially a subset of the class of RationalGRL models. Given the framework, it then becomes possible to trace a goal model back to the original argumentative discussion about goals, tasks and requirements. 
+
+In the rest of this section, we discuss the individual parts of the GRL framework. In Section~\ref{sect:overview:as}, we continue our discussion of the argument schemes and critical questions for practical reasoning and argumentation, fitting these schemes and questions into our framework. In Section~\ref{sect:overview:lang}, we then discuss the language for RationalGRL models. In Section~\ref{sect:overview:examples}, we then provide extensive examples from our case study, illustrating the interplay between practical reasoning and argumentation on the one hand and RationalGRL models on the other hand.  
+
+\subsection{The RationalGRL Argument Schemes and Critical Questions for Practical Reasoning}
+\label{sect:overview:as}
+
 A core aspect of the RationalGRL framework are the argument schemes, which should be close to the actual types of reasoning stakeholders or designers perform in the early requirements engineering phase (requirement 1 of our framework). Recall from section \ref{sect:gmas} that we ended up with a list of argument schemes and critical questions that were found in the transcripts (Table~\ref{table:transcripts:results:argumentschemes}). Using this list as a basis, we further refined our set of argument schemes and critical questions for RationalGRL into the list shown in Table~\ref{table:argument-schemes}. Note that this list of argument schemes and critical questions is not exhaustive. It is an initial list that we have obtained by coding transcripts. However, our framework is fully extensible, meaning that new argument schemes and critical questions can be added depending on the problem domain.
 
-Schemes AS0-AS4 and AS12-AS13 are arguments for an element of a goal model, and AS5-AS11 are related to links in a goal model. The last scheme (Att) is a scheme for a generic counterargument against any type of argument that has been put forward. Arguments based on these schemes can be used to discuss a GRL goal model. Making an argument based on one of the schemes effectively adds the corresponding GRL element to the model. See, for example, Table~\ref{table:transcripts:traffic-light} in Appendix~\ref{sect:transcripts:excerpts}: the participants argue for the addition of several tasks to the goal model using argument scheme AS2. 
+Schemes AS0-AS4 and AS12-AS13 are arguments for an element of a goal model, and AS5-AS11 are related to links in a goal model. The last scheme (Att) is a scheme for a generic counterargument against any type of argument that has been put forward. Arguments based on these schemes can be used to discuss a goal model. Making an argument based on one of the schemes effectively adds the corresponding GRL element to the model. See, for example, Table~\ref{table:transcripts:traffic-light} in Appendix~\ref{sect:transcripts:excerpts}: the participants argue for the addition of several tasks to the goal model using argument scheme AS2. 
 
-As we saw in Sections~\ref{sect:background:pras} and \ref{sect:gmas}, an important part of arguing about goal models is asking the right critical questions. The critical questions presented in Table~\ref{table:argument-schemes} are therefore related to their respective argument schemes. These questions can be answered with ``yes'' or ``no'', and the type of answer has an effect on the original argument (\textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}). This will be further explained in Section~\ref{sect:overview:examples}. 
+An important part of arguing about goal models is asking the right critical questions. The critical questions presented in Table~\ref{table:argument-schemes} are therefore related to their respective argument schemes. These questions can be answered with ``yes'' or ``no'', and the type of answer has an effect on the original argument (\textsf{INTRO}, \textsf{DISABLE}, \textsf{REPLACE}). This will be further explained in Section~\ref{sect:overview:examples}. 
 
 \subsection{The RationalGRL Modelling Language}
 \label{sect:overview:lang}\label{sect:metamodel}
@@ -84,7 +85,7 @@ The language used to construct RationalGRL models is an extension of GRL: it inc
 \item \emph{Attack Link}: An attack link can occur between an argument and another argument or GRL element. It means that the source argument attacks the target argument or GRL element.
 \end{itemize} 
 
-\begin{figure}[b]
+\begin{figure}[t]
 \centering
 \includegraphics{img/legend.pdf}
 \caption{The new elements and link of RationalGRL}
@@ -126,7 +127,7 @@ We start by showing how instantiating argument schemes leads to the introduction
 
 \paragraph{Example 2: Disabling GRL elements by answering critical questions (\textsf{DISABLE)}}
 
-\begin{figure}[t]
+\begin{figure}[b]
 \centering
 \includegraphics[]{img/fig_example_disable.pdf}
 \caption{Disabling GRL tasks with argumentation (\textsf{DISABLE)}.}
@@ -157,8 +158,6 @@ The transcript excerpt of this example is shown in Table~\ref{table:transcript:t
 \label{fig:examples:clarification}
 \end{figure}
 
-The discussion about the task then continues. Again, there is the question (CQ12) whether the new task \emph{Set car influx per road} is clear enough. This time the answer is positive, and participant P1 also gives a reason for this positive answer: setting car influx per road was in the original requirements (cf. requirement 4 in Appendix~\ref{sect:designprompt}). This reason is then introduced as a belief in the RationalGRL diagram, with a correlation link to the task it is about. Thus, beliefs can be used as they are intended, namely as rationales for certain choices.
-
 \paragraph{Example 5: Defending the addition of an actor (\textsf{DISABLE)}}
 
 \begin{figure}[t]
@@ -170,7 +169,7 @@ The discussion about the task then continues. Again, there is the question (CQ12
 
 The transcript excerpt of this example is shown in Table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. First participant \emph{P1} puts forth the suggestion to include actor \emph{Development team} in the model. This is, then, questioned by participant \emph{P2}, who argues that the professor will develop the software, so there will not be any development team. This is shown in Figure~\ref{fig:examples:relevant-actor}: first the actor \emph{Development Team} is introduced with an argument based on AS0. This argument is then attacked by answering critical question CQ0. 
 
-\begin{figure}[b!]
+\begin{figure}[t]
 \centering
 \includegraphics[]{img/reinstate2.pdf}
 \caption{Defending a GRL actor by attacking its disabling attacker (\textsf{DISABLE)}.}

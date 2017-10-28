@@ -1,4 +1,4 @@
-\documentclass[11.5pt,two column]{llncs}
+\documentclass[twocolumn]{svjour3}
 
 \setcounter{tocdepth}{3}
 \usepackage{algorithm}
@@ -14,7 +14,7 @@
 \usepackage{helvet}
 \usepackage{multicol}
 \usepackage{multirow}
-\usepackage{sectsty}
+%\usepackage{sectsty}
 \usepackage{subcaption}\captionsetup{compatibility=false}
 \usepackage{tabularx}
 \usepackage{tikz}\usetikzlibrary{arrows, backgrounds}
@@ -77,12 +77,12 @@
 \newcommand{\rationale}{\emph{Rationale and example:}}
 
 
-\addtolength{\oddsidemargin}{-0.85in}
-\addtolength{\evensidemargin}{-0.85in}
-\addtolength{\textwidth}{1.7in}
-\addtolength{\topmargin}{-.7in}
-\addtolength{\textheight}{1.3in}
-\setlength{\columnsep}{0.3in}
+%\addtolength{\oddsidemargin}{-0.85in}
+%\addtolength{\evensidemargin}{-0.85in}
+%\addtolength{\textwidth}{1.7in}
+%\addtolength{\topmargin}{-.7in}
+%\addtolength{\textheight}{1.3in}
+%\setlength{\columnsep}{0.3in}
 \newcommand{\Mark}[1]{\textsuperscript{#1}}
 
 % TODO command
@@ -116,10 +116,10 @@
 \renewcommand\Authfont{\fontsize{10}{14.4}\selectfont}
 \renewcommand\Affilfont{\fontsize{9}{10.8}\selectfont}
 
-\sectionfont{\fontsize{12}{15}\selectfont}
-\subsectionfont{\fontsize{10}{15}\selectfont}
+%\sectionfont{\fontsize{12}{15}\selectfont}
+%\subsectionfont{\fontsize{10}{15}\selectfont}
 
-\begin{document}
+\begin{document}\sloppy
 \twocolumn[{%
  \centering
  \LARGE RationalGRL: A Framework for Argumentation and Goal Modeling \\[1.5em]
@@ -147,7 +147,7 @@
 %\input{examples}
 \input{methodology}
 \input{formalframework}
-\input{tool}
+%\input{tool}
 \input{discussion}
 
 \bibliographystyle{abbrv}
