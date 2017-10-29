@@ -63,7 +63,7 @@ We can also refer to intention elements of a specific type simply by $type_{id}$
 \end{itemize}
 \end{definition}
 
-\paragraph{Rationale and example} Throughout this section we use a slightly adapted version of the example from Figure~\ref{fig:example-small}, which is shown in Figure~\ref{fig:example-small2}. Our formalization of GRL is very much in line with the way in which GRL models are represented in the open-source Eclipse-based tool jUCMNav.\footnote{See \url{http://jucmnav.softwareengineering.ca/foswiki/ProjetSEG}} This tool is actively developed and has a rich number of features for the analysis of both GRL and URN models. By keeping our formalization in line with this tool, we simplify the translation step from models in the RationalGRL tool to models in the jUCMNav tool.
+\paragraph{Rationale and example} Throughout this section we use the example in Figure~\ref{fig:example-small}, which is shown in Figure~\ref{fig:example-small2} as well. Our formalization of GRL is very much in line with the way in which GRL models are represented in the open-source Eclipse-based tool jUCMNav.\footnote{See \url{http://jucmnav.softwareengineering.ca/foswiki/ProjetSEG}} This tool is actively developed and has a rich number of features for the analysis of both GRL and URN models. By keeping our formalization in line with this tool, we simplify the translation step from models in the RationalGRL tool to models in the jUCMNav tool.
 
 Some of the IEs in Figure~\ref{fig:example-small2} can be formalized using Def.~\ref{def:ie} as follows:
 \begin{itemize}
@@ -81,7 +81,7 @@ Using the short-hand notation defined in Def.~\ref{def:notation}, we can make th
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/Example1-new.pdf}
-\caption{Example GRL model}
+\caption{Example GRL model (reprint of Fig.~\ref{fig:example-small})}
 \label{fig:example-small2}
 \end{figure} 
 
@@ -405,21 +405,68 @@ A preferred extension of an argumentation framework $(Arg,Att)$ is a maximal (w.
 
 In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_{19},A_1\}$. Returning to our running example of Figure~\ref{fig:example-small3}, this means that the intentional elements \text{Car objects} (task) and the generic counerargument \emph{Necessary} are both \emph{accepted}, while the generic counter argument ``Redundant'' is rejected.
 
-Now that we have defined the semantics for RationalGRL, we can use this to define the notion of a valid RationalGRL model.
+\subsection{Translation algorithms}
+
+Now that we have formalized both a GRL model and a RationalGRL model, we develop algorithm in order to translate between these two models. Both of these two translation algorithms are straightforward, which is result of the fact that the two models are formalized in a very similar way.
+
+\paragraph{GRL to RationalGRL Translation} We start with the translation algorithm from GRL to RationalGRL, which is shown in Algorithm~\ref{alg:translation:to-rationalgrl}. The translation algorithm takes a GRL model $GR=(IE, Act, R_{ActIE}, Link)$ (Def.~\ref{def:grl-model}) as input. On line~\ref{alg:translation:to-rationalgrl:args}, it collects all the elements of the GRL model into a set $Arg$, which represents the set of arguments of the RationalGRL model. On line~\ref{alg:translation:to-rationalgrl:att}, the set of attack links is initialized with an empty set, and the new RationalGRL model $(Arg, Att)$ is returned on line~\ref{alg:translation:to-rationalgrl:return}.
+
+\begin{algorithm}[h]
+  \caption{GRL to RationalGRL Translation}
+  \label{alg:translation:to-rationalgrl}
+  \begin{algorithmic}[1]
+    \Procedure{$ToRationalGRL$}{$GRL$}
+    \State $Arg \leftarrow IE\cup Act \cup R_{ActIE}\cup Link$\label{alg:translation:to-rationalgrl:args}
+    \State $Att \leftarrow \emptyset$\label{alg:translation:to-rationalgrl:att}
+    \State \Return $(Arg, Att)$\label{alg:translation:to-rationalgrl:return}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\paragraph{RationalGRL to GRL translation} The translation from a RationalGRL model to a GRL model is given in Algorithm~\ref{alg:translation:to-grl}. It is very similar to the previous algorithm, but then works in the other direction. In this case, arguments are unpacked and put in the corresponding GRL components. On line~\ref{alg:translation:to-grl:extension}, argumentation semantics is used to determine the \emph{preferred extension} (Def.~\ref{def:preferred-semantics}). This is a set containing all accepted arguments. The GRL model is then generated from all the accepted arguments. This is done by iterating over all arguments in the extension in line~\ref{alg:translation:to-grl:for}. The switch statement on line~\ref{alg:translation:to-grl:switch} then does a case distinction on the type of the arguments, and each case ensures the argument is put in the right GRL component. Finally, the algorithm returns a GRL model on line~\ref{alg:translation:to-grl:return}.
+
+\begin{algorithm}[h]
+  \caption{RationalGRL to GRL Translation}
+  \label{alg:translation:to-grl}
+  \begin{algorithmic}[1]
+    \Procedure{$ToGRL$}{$RatGRL$}
+    \State $E \leftarrow ComputeExtension(Arg,Att)$\label{alg:translation:to-grl:extension}
+    \State $IE\leftarrow\emptyset$, $Act\leftarrow\emptyset$, $R_{ActIE}\leftarrow\emptyset$, $Link\leftarrow \emptyset$
+    \For{$A\in E$}\label{alg:translation:to-grl:for}
+      \Switch{$A.type$}\label{alg:translation:to-grl:switch}
+          \Case{$IETypes$}
+            \State $IE\leftarrow IE\cup \{A\}$
+          \EndCase
+          \Case{$Actor$}
+            \State $Actor\leftarrow Actor\cup \{A\}$
+          \EndCase
+          \Case{$ActIE$}
+            \State $ActIE\leftarrow ActIE\cup \{A\}$
+          \EndCase
+          \Case{$LinkTypes$}
+            \State $Link\leftarrow Link \cup\{A\}$
+          \EndCase
+      \EndSwitch
+    \EndFor
+    \State \Return $(IE,Act,R_{ActIE}, Link)$\label{alg:translation:to-grl:return}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Valid RationalGRL model} While we have defined a notion of a \emph{valid GRL model} (Def.~\ref{def:valid-grl-model}), we have no  done so for a RationalGRL model yet. This is because it depends on the translation procedure. We define a RationalGRL model as valid if and only if the RationalGRL to GRL translation results in a valid GRL model. In this way, we do not have to reiterate all conditions on a GRL model, but use the translation algorithm.
 
 \begin{definition}[Valid RationalGRL Model]
 \label{def:valid-rationalgrl-model}
-A RationalGRL model $RatGRL = (Arg, Att)$ with preferred extension $E=(A_1,\ldots,A_n)$ is a \emph{valid RationalGRL model} iff the GRL model constructed from $E$ is a valid GRL model (Def.~\ref{def:valid-grl-model}).
+A RationalGRL model $RatGRL = (Arg, Att)$ (Def.~\ref{def:rationalgrl-model})
+is a \emph{valid RationalGRL model} iff $ToGRL(RatGRL)$ (Algorithm~\ref{alg:translation:to-grl}) is a valid GRL model (Def.~\ref{def:valid-grl-model}).
 \end{definition}
-
-\todo{Marc}{Marc}{Perhaps say something about how to construct it. It is very trivial: Just remove the generic arguments and attack links, only keep the other arguments which directly translate to GRL elements and links.}
 
 \subsection{Algorithms for argument schemes and critical questions}
 \label{sect:algorithms}
 
-In the previous subsection we formalized a \emph{static} representation of the RationalGRL framework. In this section we formalize the \emph{dynamics}. We do so by developing algorithms for applying argument schemes and critical questions in the context of a RationalGRL model (Def.~\ref{def:rationalgrl-model}). These algorithms are applied to RationalGRL models and produce new arguments and attack relations. We can then use argumentation semantics (Def.~\ref{def:semantics}) to compute sets of accepted arguments. The content of these arguments is then used to compute the resulting RationalGRL model, together with enabled and disabled GRL elements and their underlying arguments.
+In the previous subsection we formalized a \emph{static} representation of the RationalGRL framework. In this section we formalize the \emph{dynamics}. We do so by developing algorithms for applying argument schemes and critical questions in the context of a RationalGRL model (Def.~\ref{def:rationalgrl-model}). These algorithms are applied to RationalGRL models and produce new arguments and attack relations. We can then use argumentation semantics (Def.~\ref{def:preferred-semantics}) to compute sets of accepted arguments. The content of these arguments is then used to compute the resulting RationalGRL model, together with enabled and disabled GRL elements and their underlying arguments.
 
-As discussion in Section~\ref{sect:overview}, ll the argument schemes and critical questions of Table~\ref{table:argument-schemes} fall into one of the following four categories:
+As discussed in Section~\ref{sect:overview}, the argument schemes and critical questions of Table~\ref{table:argument-schemes} fall into one of the following four categories:
 \begin{itemize}
 \item \emph{INTRO}: These algorithms add one or multiple new arguments to the RationalGRL model, without creating any attack links. The arguments are for new GRL elements or links.
 \item \emph{DISABLE}: These algorithms add a single argument to the RationalGRL model, which attacks one of multiple existing arguments. The counterargument that is added does not correspond to any GRL element, but instead disables an existing one by attacking all arguments for it.
@@ -454,25 +501,28 @@ These type of algorithms are short, and consist simply of adding an argument for
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} Algorithm takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2} the actor is added as a new argument.
+\paragraph{Rationale and example} Algorithm~\ref{alg:add-actor} takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2} the actor is added as a new argument.
 
-Consider for instance...\todo{Marc}{Marc}{Add example}
+As an example, we can formalize the addition of actor \emph{Traffic Simulator} in Figure~\ref{fig:example-small2} as executing the algorithm $AS_0($Traffic simulator), which results in a RationalGRL model $RatGRL=(Arg,Att)$ with argument $(i, Actor, \text{Traffic simulator})\in Arg$.
+
 
 \begin{algorithm}[h]
-  \caption{AS1: Actor with id $i$ has resource $R$}\label{alg:add-actor}
+  \caption{AS1: Actor with id $i$ has resource $R$}\label{alg:add-resource}
   \begin{algorithmic}[1]
     \Procedure{$AS_1$}{$i, R$}
-    \State $res\_id\gets mintId()$\label{alg:add-actor:id}
-    \State $A_1\leftarrow (res\_id, Resource, R, AND)$\label{alg:add-actor:arg1}
-    \State $A_2\leftarrow (mintId(),ActIE, i, res\_id)$\label{alg:add-actor:arg2}
-    \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-actor:add-arg}
+    \State $res\_id\gets mintId()$\label{alg:add-resource:id}
+    \State $A_1\leftarrow (res\_id, Resource, R, AND)$\label{alg:add-resource:arg1}
+    \State $A_2\leftarrow (mintId(),ActIE, i, res\_id)$\label{alg:add-resource:arg2}
+    \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-resource:add-arg}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
 \paragraph{Rationale and example} The original argument schemes AS1 is phrased as ``Actor $a$ has resource $R$''. We have slightly reworded this in Algorithm~\ref{alg:add-actor} to ``Actor with id $i$ has resource $R$''. The reason is that in GRL, actors have identifiers, so since we assume actor $a$ exists already, we also assume an identifier for it exists. It would be straightforward to introduce a mapping from actor names to identifiers, but we have no done so here for simplicity. 
 
-The algorithm itself runs as follows: on line~\ref{alg:add-actor:id}, a unique id is assigned to variable $res\_id$ (``resource identifier''). On line~\ref{alg:add-actor:arg1}, an argument for a resource with name $R$ and identifier $res\_id$ is assigned to $A_1$. On line~\ref{alg:add-actor:arg2}, a second argument $A_2$ is created, which is an argument for an Actor-IE relation (Def.~\ref{def:act-ie-relation}) between the input actor $i$ and the newly created element $res\_id$. Finally, on line~\ref{alg:add-actor:add-arg}, the arguments are added to the set of arguments $Arg$.
+The algorithm itself runs as follows: on line~\ref{alg:add-resource:id}, a unique id is assigned to variable $res\_id$ (``resource identifier''). On line~\ref{alg:add-resource:arg1}, an argument for a resource with name $R$ and identifier $res\_id$ is assigned to $A_1$. On line~\ref{alg:add-resource:arg2}, a second argument $A_2$ is created, which is an argument for an Actor-IE relation (Def.~\ref{def:act-ie-relation}) between the input actor $i$ and the newly created element $res\_id$. Finally, on line~\ref{alg:add-resource:add-arg}, the arguments are added to the set of arguments $Arg$.
+
+As an example, consider the addition of resource ``Car objects'' in Figure~\ref{fig:example-small2}, and suppose the actor is formalized as the argument $(i, Actor, \text{Traffic simulator})$. Adding the resource can then be formalized as executing $AS1(i, \text{Car objects})$, resulting in the addition of two arguments $(j, Resource, \text{Car object}, AND)$ and $(k, ActIE, i, j)$ which are added to the set of arguments $Arg$.
 
 Since arguments schemes AS2-AS4 are very similar to AS1, we have omitted algorithms for them here.
 
@@ -481,7 +531,7 @@ Since arguments schemes AS2-AS4 are very similar to AS1, we have omitted algorit
   \begin{algorithmic}[1]
     \Procedure{$AS_5$}{$i, T$}
     \State $task\_id\gets mintId()$\label{alg:add-decomp:task-id}
-    \State $A_1\leftarrow (task\_id, Task, t, AND)$\label{alg:add-decomp:arg1}
+    \State $A_1\leftarrow (task\_id, Task, T, AND)$\label{alg:add-decomp:arg1}
     \State $A_2\leftarrow (mintId(), Decomp, i, task\_id)$\label{alg:add-decomp:arg2}
     \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-decomp:add-arg}
     \EndProcedure
@@ -491,6 +541,8 @@ Since arguments schemes AS2-AS4 are very similar to AS1, we have omitted algorit
 \paragraph{Rationale and example} Similar to the previous algorithm, we have slightly reworded critical question AS5. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $T$ is a decomposition of $G$. 
 
 In Algorithm~\ref{alg:add-decomp}, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:arg1}. On line~\ref{alg:add-decomp:arg2} an argument is created for the decomposition link $(mintId(), Decomp, i, task\_id)$ (Def.~\ref{def:link}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$. On line~\ref{alg:add-decomp:add-arg} the two arguments are added to the set of arguments $Arg$.
+
+As an example, suppose we are adding the fact that goal ``Generate traffic'' is decomposing into task ``Keep same cars'' (Figure~\ref{fig:example-small2}), and suppose the following argument for the goal exists already: $(i, Goal,\text{Generate traffic}, AND)$. Adding the decomposition can be formalized as executing $AS_5(i, \text{Keep same cars})$, and results in two new arguments: $(task\_id, Task, \text{Keep same cars}, AND)$ and $(k, Decomp, i, task\_id)$, which are both added to the set of arguments $Arg$.
 
 The remaining argument schemes AS6-AS12 are all very similar to the previous algorithms and have been omitted here.
 
@@ -517,7 +569,7 @@ In all of these algorithms, we assume the critical question is answered affirmat
 
 \paragraph{Rationale and example} Algorithm~\ref{alg:actor-not-relevant} is executed when critical question CQ0 is answered affirmatively (i.e., with ``No''). First, on lines~\ref{alg:actor-not-relevant:genarg} and~\ref{alg:actor-not-relevant:genarg2}, an argument is created for the critical question and added to the set of arguments $Arg$. Since this argument is not an argument for a GRL element or link, it is formalized as a \emph{generic counterargument} $(mintId(), GenArg, CQ0)$ (Def.~\ref{def:generic-argument}). The for loop starting at line~\ref{alg:actor-not-relevant:for} then iterates over all arguments for actors, where $i$ is the id of the actor that is no longer relevant. The reason why there could be multiple of such actors is that the actor can be refined by an algorithm of type \emph{REPLACE}. We will explain this in more detail in the example below. Then, on line~\ref{alg:actor-not-relevant:att}, an attack link is created from the generic argument $A$ that is created to the argument for the actor $A_j$. After executing the algorithm, all existing arguments for the actor with identifier $i$ are attacked by a newly created argument $A$.
 
-Consider for example...\todo{Marc}{Marc}{Add example here}
+Consider for example the RationalGRL model in Figures~\ref{fig:examples:relevant-actor}, which consists of an actor and a generic counterargument. Let us reconstruct this model using the application of argument schemes and critical questions. Initially, the RationalGRL model $(Arg,Att)$ is empty, i.e. $Arg=Att=\emptyset$. Next, the algorithm $AS_0(\text{Development team})$ is executed, which results in $A_1=\{(0,Actor,\text{Development team}\})$. After this, critical question CQ0: ``Is the actor Development team relevant?'' is answered with ``No, because the professor develops the software''. We can formalize this as executing algorithm $CQ_0(0)$ (Algorithm~\ref{alg:actor-not-relevant}), which results in adding a generic counter argument $A_2=(1, GenArg, \text{CQ0: Professor develops software})$ and an attack link $(A_2,A_1)$. Note that the RationalGRL model now consists of two arguments, and that the preferred extension is $\{A_2\}$, which means that the resulting GRL model is empty, because generic arguments are not translated to GRL.
 
 Critical questions C1-CQ3 are all very similar to CQ0 and have therefore been omitted here.
 
@@ -553,7 +605,7 @@ Almost all of the remaining critical questions of type DISABLE are similar in st
 
 \paragraph{Rationale and example} Algorithm~\ref{alg:generic} can be regarded as the most general way of providing counter-arguments to arguments. In all of the previous \emph{DISABLE} algorithm, the attack was on a specific type of argument, for instance an argument for an actor or an argument for a decomposition. In this algorithm, however, \emph{any} set of arguments can be attacked by a new argument.
 
-\todo{Marc}{Marc}{Give example}
+Let us reconsider Figure~\ref{fig:examples:relevant-actor}, which we previously formalized as $RatGRL=(Arg,Att)$, where $Arg=\{A_1,A_2\}$, $A_1=\{(0,Actor,\text{Development team}\}), A_2=(1, GenArg, \text{CQ0: Professor develops software})$, and $Att=(A_2,A_1)$. Suppose we execute algorithm $Att(\{A_2\}, \text{Professor does not develop software})$. This results in $A_3=(2, GenArg, \text{CQ0: Professor does not develop software})$ and a new attack link $(A_3,A_2)$ (Figure~\ref{fig:examples:relevant-actor2}). Since the argument for the goal is now part of the preferred extension, it does show up in the resulting GRL model after the translation of Algorithm~\ref{alg:translation:to-grl}.
 
 \subsubsection{REPLACE algorithms}
 
@@ -562,28 +614,37 @@ Recall that the \emph{REPLACE} algorithms both attacks all arguments for an exis
 \begin{algorithm}[h]
   \caption{CQ5c: Is the decomposition type of element $ie_i$ correct? No, it should be $X$ }\label{alg:replace1}
   \begin{algorithmic}[1]
-    \Procedure{$CQ5c$}{$ie_i, X$}
+    \Procedure{$CQ_{Decomp}$}{$ie_i, X$}
     \State $A \leftarrow ie_i$\label{alg:replace1:arg}
     \State $A.decomptype\leftarrow X$\label{alg:replace1:decompchange}
     \State $IEArgs\leftarrow IE_i\subseteq  Arg$\label{alg:replace1:ieargs}
-    \For{$A_i\in IEArgs$}\label{alg:replace1:for1}
-      \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:replace1:att}
-    \EndFor
-    \For{$\{(A_i,A_j)\in Att\mid A_j\in IEArgs\}$}\label{alg:replace1:for2}
+    \For{$\{(A_i,A_j)\in Att\mid A_j\in IEArgs\}$}\label{alg:replace1:for1}
       \State $Att\leftarrow (A_i,A)$
     \EndFor
-    \For{$\{(A_i,A_j)\in Att\mid A_i\in IEArgs\}$}\label{alg:replace1:for3}
+    \For{$\{(A_i,A_j)\in Att\mid A_i\in IEArgs\}$}\label{alg:replace1:for2}
       \State $Att\leftarrow (A,A_j)$
+    \For{$A_i\in IEArgs$}\label{alg:replace1:for3}
+      \State $Att \leftarrow Att \cup \{(A,A_i)\}$\label{alg:replace1:att}
+    \EndFor
     \EndFor
     \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:replace1:addarg}
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Rationale and example} While the original critical question CQ5c is specific to the decomposition between a goal and a task, Algorithm~\ref{alg:replace1} is more generally applicable to any IE, since all IEs have a decomposition type in their definition (Def.~\ref{def:ie}). 
+\paragraph{Rationale and example} While the original critical question CQ5c is specific to the decomposition between a goal and a task, Algorithm $CQ_{Decomp}$~\ref{alg:replace1} is more generally applicable to the decomposition type of any IE, since all IEs have a decomposition type in their definition (Def.~\ref{def:ie}). 
 
-Let us go through this algorithm step by step. On line~\ref{alg:replace1:arg}, a new argument $A$ is created which is identical to original IE. Recall from Def.~\ref{def:notation} that we may refer to elements of an IE with the ``.'' notation. This is what we do on line~\ref{alg:replace1:decompchange}, where the decomposition type of the argument is changed to $X$. On line~\ref{alg:replace1:ieargs}, the set $IEArgs$ is assigned with all existing arguments for the input IE (recall the notation of $IE_i$ as the set of all IEs with id $i$, see Def.~\ref{def:notation}). Then, in the first for loop on line~\ref{alg:replace1:for1}, we add attack links from the argument that has just been created to all existing arguments for the IE. The next two for loops on respectively lines~\ref{alg:replace1:for2} and~\ref{alg:replace1:for3} ensure that all attack links that existing from and to the previous versions of the IE are also carried over to the new argument $A$. Finally, one line~\ref{alg:replace1:addarg}, the new argument is added to the set of arguments.
+Let us go through this algorithm step by step. On line~\ref{alg:replace1:arg}, a new argument $A$ is created which is identical to original IE. Recall from Def.~\ref{def:notation} that we may refer to elements of an IE with the ``.'' notation. This is what we do on line~\ref{alg:replace1:decompchange}, where the decomposition type of the argument is changed to $X$. On line~\ref{alg:replace1:ieargs}, the set $IEArgs$ is assigned with all existing arguments for the input IE (recall the notation of $IE_i$ as the set of all IEs with id $i$, see Def.~\ref{def:notation}). The first two for loops on respectively lines~\ref{alg:replace1:for1} and~\ref{alg:replace1:for2} ensure that all attack links that existing from and to the previous versions of the IE are also carried over to the new argument $A$. Then, in the third for loop on line~\ref{alg:replace1:for3}, we add attack links from the argument that has just been created to all existing arguments for the IE. This ensures that all previous version of the IE are not part of the preferred extension, and as a result do not show up in the resulting GRL model. Finally, one line~\ref{alg:replace1:addarg}, the new argument is added to the set of arguments.
 
-Let us explain this with an example. \todo{Marc}{Marc}{Add example}
+Let us explain this algorithm with the example in Figure~\ref{fig:examples:decomposition}. The initial RationalGRL model (before applying CQ10b), can be formalized as follows: $RatGRL=(Arg,Att)$, with $Arg=\{A_1,A_2,A_3,A_4,A_5\}$ and $Att=\emptyset$, where:
+\begin{itemize}
+\item $A_1=(0,Goal,\text{Simulate traffic},AND)$
+\item $A_2=(1,Task,\text{Dynamic simulation},AND)$
+\item $A_3=(2,Task,\text{Static simulation},AND)$
+\item $A_4=(3,Decomp,0,1)$
+\item $A_5=(4,Decomp,0,2)$
+\end{itemize}
+
+Suppose algorithm $CQ_{Decomp}(0, OR)$ is executing for this RationalGRL model. On lines~\ref{alg:replace1:arg} and \ref{alg:replace1:decompchange} a new argument $A_6=(0,Goal,\text{Simulate traffic},OR)$ is created. On line~\ref{alg:replace1:ieargs}, $IEArgs$ contains all arguments for element 0, which is $\{A_1\}$ (note this does not yet include argument $A_6$, since it is not yet added to the RationalGRL model). The first two for loops on lines~\ref{alg:replace1:for1} and~\ref{alg:replace1:for2} do not do anything in the case of our example, since $A_1$ is itself not attack or does not attack any other argument. The for loop on line~\ref{alg:replace1:for3} ensures all previous versions of the element with id 0 are now attacked, which means in our case the $(A_6,A_1)$ is added to $Att$. Finally, on line~\ref{alg:replace1:addarg} the new argument $A_6$ is added to $Arg$.
 
 The other \emph{REPLACE} algorithms are very similar to Algorithm~\ref{alg:replace1}. It can be used directly for CQ10c, but for CQ12 we should make a small modification. Instead of replacing the decomposition type of the IE, we should replace its name. Since this is a very minor modification we have omitted it here.
