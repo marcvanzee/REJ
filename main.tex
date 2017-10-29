@@ -105,49 +105,31 @@
 \algtext*{EndCase}%
 
 
-% TO TURN OFF TODOS UNCOMMENT THE FOLLOWING:
-% \renewcommand\todo[4][]{}
-
-% use like this:
-% \todo{floris}{marc}{Can you please update figure 2?} - Floris is asking Marc to update figure 2, this will show in red in the PDF
-% \todo[resolved]{floris}{marc}{done} - Marc has updated fig 2 (or gives a reason why he doesn't want to uppdate the figure. This will show only in the tex
-
-
-\renewcommand\Authfont{\fontsize{10}{14.4}\selectfont}
-\renewcommand\Affilfont{\fontsize{9}{10.8}\selectfont}
+%\renewcommand\Authfont{\fontsize{10}{14.4}\selectfont}
+%\renewcommand\Affilfont{\fontsize{9}{10.8}\selectfont}
 
 %\sectionfont{\fontsize{12}{15}\selectfont}
 %\subsectionfont{\fontsize{10}{15}\selectfont}
 
 \begin{document}\sloppy
-\twocolumn[{%
- \centering
- \LARGE RationalGRL: A Framework for Argumentation and Goal Modeling \\[1.5em]
- \large Marc van Zee\Mark{1},
-        Floris Bex\Mark{2}
-        and Sepideh Ghanavati\Mark{3}\\[1em]
- \normalsize
- \begin{tabular}{*{3}{>{\centering}p{.33\textwidth}}}
-  \Mark{1}Computer Science and Communication (CSC) & \Mark{2}Department of Information and Computing Sciences & \Mark{3}Department of Computer Science  \tabularnewline
-  University of Luxembourg & Utrecht University & Texas Tech University \tabularnewline
-  \url{marcvanzee@gmail.com} & \url{f.j.bex@uu.nl} & \url{sepideh.ghanavati@ttu.edu}
- \end{tabular}\\[3em] % some more space after the title part
-}]
+
+\title{RationalGRL: A Framework for Argumentation and Goal Modeling}
+\author{Marc van Zee \and Floris J. Bex \and Sepideh Ghanavati}
+\institute{Marc van Zee \at Google Research, Z\"urich, Switzerland \\\email{marcvanzee@gmail.com} \and Floris Bex \at Department of Information and Computing Sciences, Utrecht University, Utrecht, The Netherlands \\\email{f.j.bex@uu.nl} \and Sepideh Ghanavati \at Department of Computer Science, Texas Tech University, Lubbock TX, USA \\\email{sepideh.ghanavati@ttu.edu}}
+
+\maketitle
 
 \input{abstract}
 
-\newpage
-
-\paragraph{Keywords} Goal modeling $\cdot$ Argumentation $\cdot$ Practical Reasoning $\cdot$ Goal-oriented requirements engineering
 
 \input{introduction}
 \input{background}
 \input{gmas}
 \input{overview}
 %\input{examples}
-\input{methodology}
 \input{formalframework}
-\input{tool}
+\input{methodology}
+%\input{tool}
 \input{discussion}
 
 \bibliographystyle{abbrv}

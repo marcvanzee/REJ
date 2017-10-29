@@ -16,99 +16,91 @@ In the fourth and final subsection we turn to the dynamics of our framework. We 
 
 In this subsection we formalize a GRL model based on the GRL metamodel and the jUCMNav implementation. We first formalize elements of GRL (intentional elements and actors), and then formalize the links.
 
-\subsubsection{Intentional Element, beliefs and actors}
+\subsubsection{Intentional Element, Beliefs and Actors}
 
-We start with some general definition that we use in subsequent definitions.
+Throughout this section, we adopt the convention that variables start with a lowercase letter (e.g, $id, i, j, name, ie, goal$), and sets and constants start with an uppercase letter (e.g., $Type, AND, Goal$). We start by defining a few general elements of our language that we use in subsequent definitions.
 
 \begin{definition}[General definitions]
 \label{def:set-definitions}
-Throughout this section, we adopt the convention that variables start with a lowercase letter (e.g, $id, i, j, name, ie, goal$), and sets and constants start with an uppercase letter (e.g., $Type, AND, Goal$).
-
 We define the following sets:
 \begin{itemize}
 \item $IETypes = \{Softgoal, Goal, Task, Resource\}$,
-\item $LinkTypes = \{PosContr, NegContr, Dep, Decomp\}$\footnote{Note that for decomposition links, we only distinguish between a positive contribution ($PosContr$) and a negative contribution ($NegContr$). The GRL metamodel specifies a total of seven contribution values. We instead have chosen only two here to simplify some of the notation, but it is straightforward to extend this to seven values.},
+\item $LinkTypes = \{PosContr, NegContr, Dep, Decomp\}$\footnote{Recall that for decomposition links we only distinguish between positive and negative contribution. Extending the formalization model to include more values is straightforward.},
 \item $Types = IETypes \cup LinkTypes\cup\{Actor, GenArg, ActIE\}$,
 \item $Names$ is a finite set of strings,
 \item $DecompTypes = \{AND,OR,XOR\}$.
 \end{itemize}
 \end{definition}
-
-Next we define an intentional element.
+Next, we define an intentional element.
 
 \begin{definition}[Intentional Element]
 \label{def:ie}
-An intentional element $ie\in \mathbb{N}\times IETypes\times Names\times DecompType$ is a tuple, where $ie = (id, type, name, decomptype)$ means:
+An intentional element is a tuple $ie = (id, type, name, decomptype)$, where:
 \begin{itemize}
 \item $id\in \mathbb{N}$ is a unique identifier for the element,
 \item $type\in IETypes$ specifies the type of the element,
 \item $name \in Names$ is a string description of the element,
-\item $decomptype\in DecompType$ refers to the type of decomposition.\footnote{Note that the decomposition type is relevant only if the element is in fact decomposed into other elements, but since the jUCMNav implementation defines the decomposition type on the element, we do the same here.}
+\item $decomptype\in DecompType$ refers to the type of decomposition.\footnote{Note that, like in the metamodel, the decomposition type is defined on the element.}
 \end{itemize}
-A set of intentional elements is denoted by $IE$.
+The set of intentional elements is denoted by $IE$.
 \end{definition}
 
-The definition above is sufficient to capture all intentional elements used in GRL. However, we present some syntactic sugar in the next definition by abbreviating the definition above in various ways. This does not add anything new to the previous definition, but it simplifies some of the notation.
-
-\begin{definition}[Notation]
-\label{def:notation}
-We adopt three conventions simplifying our notation:
+The definition above is sufficient to capture all intentional elements used in GRL. %In the next definition, we present some simplifying notational conventions.
+%\begin{definition}[Notation]
+%\label{def:notation}
+%We adopt three conventions simplifying our notation:
+%\begin{itemize}
+%\item
+%We refer to the element of a tuple using the dot (".") notation. That is, we may for instance refer to the id, type, name and decomposition type of an $IE$ with respectively $ie.id$, $ie.type$, $ie.name$, and $ie.decomptype$.
+%\item 
+%We refer to a set of elements with the same id $i$  using the $i$ subscript on the set. For instance a set of IEs with id $i$ is denoted by $IE_i$, and if this is a single element, we denote it by $ie_i$\footnote{In GRL, there always exists at most one element for every id (see Def.~\ref{def:grl-model}), in RationalGRL, however, this condition does not hold (see Def.~\ref{def:rationalgrl-model}).} For instance, we may refer to the intentional element $ie = (0, Goal, \text{Make profit}, AND)$ with $ie_0$ and write $ie_0.type = Goal$, $ie_0.name = \text{Make profit}$, and $ie_0.decompositiontype = AND$. 
+%\item
+%We can also refer to intentional elements of a specific type simply by $type_{id}$. For instance, we can abbreviate the element in the previous item with $goal_0$ and write $goal_0.name = \text{Make profit}$, and $goal_0.decomptype = AND$.
+%\end{itemize}
+%\end{definition}
+Throughout this section we use the example in Figure~\ref{fig:example-small}. The IEs in this example can be formalized using Def.~\ref{def:ie} as follows:
 \begin{itemize}
-\item
-We refer to the element of a tuple using the dot (".") notation. That is, we may for instance refer to the id, type, name and decomposition type of an $IE$ with respectively $ie.id$, $ie.type$, $ie.name$, and $ie.decomptype$.
-\item 
-We refer to a set of elements with the same id $i$  using the $i$ subscript on the set. For instance a set of IEs with id $i$ is denoted by $IE_i$, and if this is a single element, we denote it by $ie_i$\footnote{In GRL, there always exists at most one element for every id (see Def.~\ref{def:grl-model}), in RationalGRL, however, this condition does not hold (see Def.~\ref{def:rationalgrl-model}).} For instance, we may refer to the intentional element $ie = (0, Goal, \text{Make profit}, AND)$ with $ie_0$ and write $ie_0.type = Goal$, $ie_0.name = \text{Make profit}$, and $ie_0.decompositiontype = AND$. 
-\item
-We can also refer to intention elements of a specific type simply by $type_{id}$. For instance, we can abbreviate the element in the previous item with $goal_0$ and write $goal_0.name = \text{Make profit}$, and $goal_0.decomptype = AND$.
+\item (1, Resource, \text{Car objects}, AND),
+\item (2, Softgoal, \text{Realistic simulation}, AND),
+\item (3, Softgoal, \text{Simple design}, AND),
+\item (4, Goal, \text{Generate traffic}, XOR),
+\item (5, Task, \text{Create new cars}, AND),
+\item (6, Task, \text{Keep same cars}, AND).
 \end{itemize}
-\end{definition}
-
-\paragraph{Rationale and example} Throughout this section we use the example in Figure~\ref{fig:example-small}, which is shown in Figure~\ref{fig:example-small2} as well. Our formalization of GRL is very much in line with the way in which GRL models are represented in the open-source Eclipse-based tool jUCMNav.\footnote{See \url{http://jucmnav.softwareengineering.ca/foswiki/ProjetSEG}} This tool is actively developed and has a rich number of features for the analysis of both GRL and URN models. By keeping our formalization in line with this tool, we simplify the translation step from models in the RationalGRL tool to models in the jUCMNav tool.
-
-Some of the IEs in Figure~\ref{fig:example-small2} can be formalized using Def.~\ref{def:ie} as follows:
-\begin{itemize}
-\item $(4, Goal, \text{Generate traffic}, XOR)$: This represents the goal ``Generate traffic'', which is XOR-decomposed. Note the identifier ``2'' is not shown in the GRL model, but it is stored internally.
-\item $(1, Resource, \text{Car objects}, AND)$: Although this element does not decompose into any other elements, it still contains an AND-decomposition. Our motivation for this choice is that it simplifies the formalization of decomposition links. It is in line with with GRL metamodel and the jUCMNav implementation.
-\end{itemize}
-
-Using the short-hand notation defined in Def.~\ref{def:notation}, we can make the following statements:
-\begin{itemize}
-\item $goal_4.name = \text{Generate traffic}$
-\item $goal_4.decomptype = XOR$
-\item $resource_1.name = \text{Car objects}$
-\end{itemize}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\columnwidth]{img/Example1-new.pdf}
-\caption{Example GRL model (reprint of Fig.~\ref{fig:example-small})}
-\label{fig:example-small2}
-\end{figure} 
+%Using the short-hand notation defined in Def.~\ref{def:notation}, we can make the following statements:
+%\begin{itemize}
+%\item $goal_4.name = \text{Generate traffic}$
+%\item $goal_4.decomptype = XOR$
+%\item $resource_1.name = \text{Car objects}$
+%\end{itemize}
+%\begin{figure}[ht]
+%\centering
+%\includegraphics[width=\columnwidth]{img/Example1-new.pdf}
+%\caption{Example GRL model (reprint of Fig.~\ref{fig:example-small})}
+%\label{fig:example-small2}
+%\end{figure} 
+We now define actors.
 
 \begin{definition}[Actor]
 \label{def:actor}
-An actor $act \in \mathbb{N}\times {Actor}\times Names$ is a tuple where $act=(id,Actor, name)$ means:
+An actor is a tuple $act=(id,type, name)$, where:
 \begin{itemize}
 \item $id\in\mathbb{N}$ is the identifier of the actor, 
-\item $Actor$ states that this tuple is an actor,\footnote{While this element may look redundant in this tuple, it will become important when translating between RationalGRL models and GRL models. Otherwise it would not be possible to identify this tuple as an actor.}
+\item $type = Actor$ states that this tuple is an actor.
 \item $name\in Names$ is a string description of its name.
 \end{itemize}
-
-Similar to intentional elements, we may refer to $act = (id,name)$ with $act_{id}$ and write $act_{id}.name$ to refer to its name.
-
 A set of actors is denoted by $Act$.
 \end{definition}
+An actor is simply a pair consisting of its identifier and its name. Similar to intentional elements, we may refer to $act = (id,name)$ with $act_{id}$ and write $act_{id}.name$ to refer to its name. We can formalize the actor of Figure~\ref{fig:example-small} as $act=(0,Actor,\text{Traffic Simulator})$.%, and we can for instance state $act_0.name = \text{Traffic Simulator}$.
 
-\paragraph{Rationale and example} An actor is simply a pair consisting of its identifier and its name. The relation between actors and their intentional element is formalized in the next definition. 
-
-We can formalize the actor of Figure~\ref{fig:example-small2} as $act=(0,Actor,\text{Traffic Simulator})$, and we can for instance state $act_0.name = \text{Traffic Simulator}$.
+The relation between actors and their intentional element is formalized as follows. 
 
 \begin{definition}[Actor-IE Relations]
 \label{def:act-ie-relation}
-An \emph{Actor-IE relation} $r_{ActIE}\in\mathbb{N}\times\{ActIE\}\times\mathbb{N}\times\mathbb{N}$ is a tuple where $r_{ActIE}=(id,ActIE, i, j)$ means:
+An \emph{Actor-IE relation} is a tuple $(i, j)$, where:
 \begin{itemize}
-\item $id\in\mathbb{N}$ is the identifier of the relation, 
-\item $ActIE$ states that this tuple is an Actor-IE relation,
+%\item $id\in\mathbb{N}$ is the identifier of the relation, 
+%\item $ActIE$ states that this tuple is an Actor-IE relation,
 \item $i\in\mathbb{N}$ is an id of an actor,
 \item $j\in\mathbb{N}$ is an id of an IE.
 \end{itemize}
@@ -116,20 +108,7 @@ An \emph{Actor-IE relation} $r_{ActIE}\in\mathbb{N}\times\{ActIE\}\times\mathbb{
 A set of Actor-IE relations is denoted by $R_{ActIE}$.
 \end{definition}
 
-\paragraph{Rationale and example} The previous definition specifies relations between actors and intentional elements. Each actor can own one or multiple intentional elements, but each intentional element can only be owned by at most one actor (we will make these assumptions explicit in Def.~\ref{def:valid-grl-model}).
-
-In Figure~\ref{fig:example-small2}, recall we formalized two IEs and the actor as follows:
-\begin{itemize}
-\item $(1, Resource, \text{Car objects}, AND)$
-\item $(4, Goal, \text{Generate traffic}, XOR)$
-\item $(0, \text{Traffic Simulator})$
-\end{itemize}
-
-We can then formalize the Actor-IE relationships for these elements as:
-\begin{itemize}
-\item $(12, ActIE, 0, 1)$
-\item $(15, ActIE, 0, 4)$
-\end{itemize}
+Note that Actor-IE relations do not have an $id$, as they signify relations between elements of a GRL model (i.e., intentional elements and actors) and are themselves not elements of a GRL model. The relation between the \emph{Traffic Simulator} actor ($id = 0$) and the \emph{Car objects} resource, for example, can be formalized as $(0, 1)$.
 
 \subsubsection{Links}
 
@@ -137,7 +116,7 @@ At this point we have defined all intentional elements in GRL and a containment 
 
 \begin{definition}[GRL Link]
 \label{def:link}
-A \emph{GRL link}: $link\in \mathbb{N}\times LinkTypes\times \mathbb{N}\times\mathbb{N}$ is a tuple such that $link = (id,type,src,dest)$ means
+A \emph{GRL link} is a tuple $link = (id,type,src,dest)$, where:
 \begin{itemize}
 \item $id\in \mathbb{N}$ is the unique identifier of the link,
 \item $type\in LinkTypes$ specifies the type of the link, 
@@ -148,31 +127,22 @@ A \emph{GRL link}: $link\in \mathbb{N}\times LinkTypes\times \mathbb{N}\times\ma
 A set of links is denoted by $Link$.
 \end{definition}
 
-We also introduce some simplified notation for the links.
+%We also introduce some simplified notation for the links.
 
-\begin{definition}[Notation]
-\label{def:notation2}
-\begin{itemize}
-\item
-We can refer to links of a specific type simply by $type_{id}$. For instance, we can abbreviate the link $(0,PosContr,2,3)$ with $posContr_0$. 
-\item 
-We can refer to a set of positive contribution links, negative contribution links, dependency links, and decomposition link with respectively $PosContr, NegContr, Dep,$, and $Decomp$. 
-\item
-We can refer to a set of contribution links that can be either positive or negative simply with $Contr$.
-\end{itemize}
-\end{definition}
+%\begin{definition}[Notation]
+%\label{def:notation2}
+%\begin{itemize}
+%\item
+%We can refer to links of a specific type simply by $type_{id}$. For instance, we can abbreviate the link $(0,PosContr,2,3)$ with $posContr_0$. 
+%\item 
+%We can refer to a set of positive contribution links, negative contribution links, dependency links, and decomposition link with respectively $PosContr, NegContr, Dep,$, and $Decomp$. 
+%\item
+%We can refer to a set of contribution links that can be either positive or negative simply with $Contr$.
+%\end{itemize}
+%\end{definition}
 
-\paragraph{Rationale and example} Similar to IEs, links have identifiers as well. In Fig.~\ref{fig:example-small2}, there are five links. First, let us formalize the related IEs:
-\begin{itemize}
-\item (1, Resource, \text{Car objects}, AND),
-\item (2, Softgoal, \text{Realistic simulation}, AND),
-\item (3, Softgoal, \text{Simple design}, AND),
-\item (4, Goal, \text{Generate traffic}, XOR),
-\item (5, Task, \text{Create new cars}, AND),
-\item (6, Task, \text{Keep same cars}, AND).
-\end{itemize}
+Similar to IEs, links have identifiers as well. In Fig.~\ref{fig:example-small}, there are five links:
 
-We can formalize the links as follows:
 \begin{itemize}
 \item $(7, Dep, 4, 1)$
 \item $(8, PosContr, 5, 2)$
@@ -181,13 +151,15 @@ We can formalize the links as follows:
 \item $(11, Decomp, 6, 4)$
 \end{itemize}
 
-Let us next provide some examples of the notation of Definition~\ref{def:notation2}:
-\begin{itemize}
-\item $dep_7 = (7, Dep, 4, 1)$
-\item $Decomp = \{(10, Decomp, 5, 4), (11, Decomp, 6, 4)\}$
-\item $PosContr = \{(8, PosContr, 5, 2)\}$
-\item $Contr = \{(8, PosContr, 5, 2), (9, NegContr, 5, 3)\}$
-\end{itemize}
+%Let us next provide some examples of the notation of Definition~\ref{def:notation2}:
+%\begin{itemize}
+%\item $dep_7 = (7, Dep, 4, 1)$
+%\item $Decomp = \{(10, Decomp, 5, 4), (11, Decomp, 6, 4)\}$
+%\item $PosContr = \{(8, PosContr, 5, 2)\}$
+%\item $Contr = \{(8, PosContr, 5, 2), (9, NegContr, 5, 3)\}$
+%\end{itemize}
+
+\subsubsection{GRL models}
 
 \begin{definition}[GRL Model]
 \label{def:grl-model}
@@ -200,7 +172,7 @@ A \emph{GRL model} $GRL=(IE, Act, R_{ActIE}, Link)$ consists of:
 \end{itemize}
 \end{definition}
 
-\paragraph{Rationale and example} The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small2}. This model is formalized as $GRL=(IE, Act, R_{ActIE}, Link)$, where:
+The definition of a GRL model collects all the previously defined tuples into a single definition. For completeness, we now provide the full specification of Figure~\ref{fig:example-small}. This model is formalized as $GRL=(IE, Act, R_{ActIE}, Link)$, where:
 \begin{flalign*}
 &IE=&\{&(1, Resource, \text{Car objects}, AND),&\\
 &   &  &(2, Softgoal, \text{Realistic simulation}, AND),&\\
@@ -209,13 +181,15 @@ A \emph{GRL model} $GRL=(IE, Act, R_{ActIE}, Link)$ consists of:
 &   &  &(5, Task, \text{Create new cars}, AND),&\\
 &   &  &(6, Task, \text{Keep same cars}, AND)\}&\\
 &Act=& &\{(0, Actor, \text{Traffic Simulator})\}&\\
-&R_{ActIE}=& &\{(i+11, ActIE, 0,i)\mid 1\le i\le 6\}&\\
+&R_{ActIE}=& &\{(0, 1), (0,2), (0,3), (0, 4), (0,5),(0,6)\}&\\
 &Link=&\{&(7, Dep, 4, 1)&\\
 &     & &(8, PosContr, 5, 2)&\\
 &     & &(9, NegContr, 5, 3)&\\
 &     & &(10, Decomp, 5, 4)&\\
 &     & &(11, Decomp, 6, 4)\}&\\
 \end{flalign*}
+
+The definition of a GRL model (Def.~\ref{def:grl-model}) only sums up the elements of the model and not the constraints that make a \emph{valid} GRL model, viz. 
 
 \begin{definition}[Valid GRL Model]
 \label{def:valid-grl-model}
@@ -228,9 +202,7 @@ A GRL model $GRL=(IE, Act, R_{ActIE}, Contr, Decomp, Dep)$ (Def.~\ref{def:grl-mo
 \end{enumerate}
 \end{definition}
 
-\paragraph{Rationale and example} The definition of a GRL model (Def.~\ref{def:grl-model}) comes with various implicit assumptions in order to form a valid GRL model. We make these assumptions explicit in the definition above.
-
-Let us briefly verify that our previous formalization of Figure~\ref{fig:example-small2} satisfies all the constraints of Def.~\ref{def:valid-grl-model}:
+Let us briefly verify that our previous formalization of Figure~\ref{fig:example-small} satisfies all the constraints of Def.~\ref{def:valid-grl-model}:
 \begin{enumerate}
 \item All elements in the formalization have different ids, so this constraint is satisfied.
 \item $R_{ActIE}$ contains one element for each IE with id $i$, so this constraint is satisfied as well. Note that links are not related to actors. This is in line with the GRL metamodel.
@@ -269,7 +241,7 @@ A generic argument $ga \in \mathbb{N}\times \{GenArg\}\times Names$ is a tuple s
 We may refer to the argument with id $i$ simply with $ga_i$. A set of arguments is denoted by $GA$.
 \end{definition}
 
-\paragraph{Rationale and example} A generic counterargument is simply an argument that can be used to attack any previous argument, or an IE. Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is desired, since generic arguments are not part of GRL, so they should also not be connected using GRL links. 
+A generic counterargument is simply an argument that can be used to attack any previous argument, or an IE. Note that one of the constraints of a GRL model (Def.~\ref{def:grl-model}) is that GRL links (Def.~\ref{def:link}) should connect IEs, which means that in GRL generic arguments cannot be connected with GRL links. This is desired, since generic arguments are not part of GRL, so they should also not be connected using GRL links. 
 
 In Fig.~\ref{fig:example-small3}, there are two generic counterargument which can be formalized as $(18,GenArg, \text{Redundant})$ and $(19, GenArg, \text{Necessary})$.
 
@@ -406,6 +378,7 @@ A preferred extension of an argumentation framework $(Arg,Att)$ is a maximal (w.
 In our example from Figure~\ref{fig:goalmodeling:arg2}, there is one preferred extension, namely $\{A_{19},A_1\}$. Returning to our running example of Figure~\ref{fig:example-small3}, this means that the intentional elements \text{Car objects} (task) and the generic counerargument \emph{Necessary} are both \emph{accepted}, while the generic counter argument ``Redundant'' is rejected.
 
 \subsection{Translation algorithms}
+\label{sect:formalframework:translation}
 
 Now that we have formalized both a GRL model and a RationalGRL model, we develop algorithm in order to translate between these two models. Both of these two translation algorithms are straightforward, which is result of the fact that the two models are formalized in a very similar way.
 
