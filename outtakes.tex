@@ -1,3 +1,76 @@
+
+
+\subsubsection*{Architecture principles} 
+One aspect of enterprise architecture that we did not touch upon in this article are \emph{(enterprise) architecture principles}. Architecture principles are general rules and guidelines, intended to be enduring and seldom amended, that inform and support the way in which an organization sets about fulfilling its mission~\cite{Lankhorst2005,OptLand2007a,OG2009}. They reflect a level of consensus among the various elements of the enterprise, and form the basis for making future IT decisions. Two characteristics of architecture principles are:
+\begin{itemize}
+\item There are usually a small number of principles (around 10) for an entire organization. These principles are developed by enterprise architecture, through discussions with stakeholders or the executive board. Such a small list is intended to be understood \emph{throughout the entire organization}. All employees should keep these principles in the back of their hard when making a decision.
+\item Principles are meant to guide decision making, and if someone decides to deviate from them, he or she should have a good reason for this and explain why this is the case. As such, they play a normative role in the organization.
+\end{itemize}
+
+Looking at these two characteristics, we see that argumentation, or justification, plays an important role in both forming the principles and adhering to them:
+\begin{itemize}
+\item Architecture principles are \emph{formed} based on underlying arguments, which can be the goals and values of the organization, preferences of stakeholders, environmental constraints, etc.
+\item If architecture principles are \emph{violated}, this violation has to be explained by underlying arguments, which can be project-specific details or lead to a change in the principle.
+\end{itemize}
+
+In a previous paper, we~\cite{marosin-etal:caise2016} propose an extension to GRL based on enterprise architecture principles. We present a set of requirements for improving the clarity of definitions and develop a framework to formalize architecture principles in GRL. We introduce an extension of the language with the required constructs and establish modeling rules and constraints. This allows one to automatically reason about the soundness, completeness and consistency of a set of architecture principles. Moreover, principles can be traced back to high-level goals.
+
+It would be very interesting future work to combine the architecture principles extension with the argumentation extension. This would lead to a framework in which principles cannot only be traced back to goals, but also to underlying arguments by the stakeholders.
+
+\subsubsection*{Extensions for argumentation}
+
+The amount of argumentation theory we used in this article has been rather small. Our intention was to create a bridge between the formal theories in argumentation and the rather practical tools in requirements engineering. Now that the initial framework has been developed, is it worth exploring what tools and variations formal argumentation has to offer in more detail.
+
+For instance, until now we have assumed that every argument put forward by a critical questions always defeats the argument it questions, but this is a rather strong assumption.  In some cases, it is more difficult to determine whether or not an argument is defeated. Take, for example, the argumentation framework in Figure~\ref{fig:goalmodeling:futureargs} with just A1 and A2. These two arguments attack each other, they are alternatives and without any explicit preference, and it is impossible to choose between the two. It is, however, possible to include explicit preferences between arguments when determining argument acceptability \cite{amgoud2002reasoning}. If we say that we prefer the action  \texttt{Create new cars} (A2) over the action  \texttt{Keep same cars} (A1), we remove the attack from A1 to A2. This makes A2 the only undefeated argument, whereas A1 is now defeated. It is also possible to give explicit arguments for preferences~\cite{modgil2009}. These arguments are then essentially attacks on attacks. For example, say we prefer A3 over A1 because `it is important to have realistic traffic flows' (A4). This can be rendered as a separate argument that attacks the attack from A1 to A3, removing this attack and making $\{$A3, A4$\}$ the undefeated set of arguments.
+
+Allowing undefeated attacks also make the question of which semantics to choose more interested. In our current (a-cyclic) setting, all semantics coincide, and we always have the same set of accepted arguments. However, once we allow for cycles, we may choose accepted arguments based on semantics which, for instance, try to accept/reject as many arguments as possible (preferred semantics), or just do not make any choice once there are multiple choices (grounded). Another interesting element of having cycles is that one can have multiple extensions. This corresponds to various \emph{positions} are possible, representing various sets of possibly accepted arguments. Such sets can then be shown to the user, who can then argue about which one they deem most appropriate.
+
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+        \node[minimum size=1cm] (a1) [argNodeIN] at (0,0) {$A_1$};
+        \node[minimum size=1cm] (a2) [argNodeIN] at (3,0) {$A_2$};
+        
+         \path
+    (a2) edge [attackLink] (a1)
+    (a1) edge [attackLink] (a2);
+\end{tikzpicture}
+\caption{Preferences between arguments}
+\label{fig:goalmodeling:futureargs}
+\end{figure}  
+
+Finally, in this article we have only explored one single argument scheme, but there are many other around. In his famous book ``Argumentation schemes'', Walton describes a total of 96 schemes. Murukannaiah \emph{et al.}~\cite{murukannaiah2015} already explain how some of these schemes may be use for resolving goal conflicts, and it is worth studying what this would look like in our framework as well.
+
+One idea is to capture requirements engineering and software design processes as explicit dialogues between parties~\cite{finkelstein1989multiparty}. Software design discussions Black et al., Prakken and Wierenga.
+
+\subsubsection*{Empirical study}
+
+Although we develop our argument schemes and critical questions with some empirical data, we did not yet validate the outcome. This is an important part, because it will allow us to understand whether adding arguments to goal modeling is actually useful. We have developed an experimental setup for our experiment, which we intend to do during courses at various universities. However, we cannot carry out this experiment until the tool is finished.
+
+\subsubsection*{Formal framework}
+
+The formal framework we present in this article is very simple, and does not provide a lot of detail. We believe it would be interesting to develop a more robust characterization of a GRL model using logical formulas. Right now, we have no way to verify whether the goal models we obtain through out algorithms are actually valid GRL models. This is because we allow any set of atoms to be a GRL model, which is clearly very permissive and incorrect. Once we develop a number of such constraints, we can ensure (and even proof) our algorithms do not generate invalid GRL models. 
+
+For instance, suppose we assert that an \emph{intentional element} is a goal, softgoal, task, or resource: \begin{align*}
+(softgoal(i)\vee goal(i)\vee task(i)\\
+\vee resource(i)\rightarrow IE(i).
+\end{align*}
+We can then formalize an intuition such as: ``Only intentional elements can be used in contribution relations'' as follows
+\begin{align*}
+contrib(k,i,j,ctype)\rightarrow \\
+(IE(i)\wedge IE(j)\wedge IE(j).
+\end{align*}
+
+Interestingly, such constraints are very comparable to \emph{logic programming} rules. We therefore see it as interesting future research to explore this further, specifically in the following two ways:
+\begin{itemize}
+\item Develop a set of constraints on sets of atoms of our language, which correctly describe a GRL model. Show formally that using our algorithms, each extension of the resulting argumentation framework corresponds to a valid GRL model, i.e., a GRL model that does not violate any of the constraints.
+\item Implement the constraints as a logic program, and use a logic programming language to compute the resulting GRL model.
+\end{itemize}
+
+
+
+
 %I wasn't really sure what to do with the below section, so I commented it out. 
 \iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{RationalGRL Language}
