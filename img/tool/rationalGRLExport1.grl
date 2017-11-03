@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<grl-catalog catalog-name="URNspec" description="Automatic export generated using RationalGRL" author="RationalGRL (www.rationalgrl.com)">
+  <element-def>
+    <intentional-element id="8e4e7b20-fda2-47ac-8759-9a4fac8d71e5" name="Easy to use" description="" type="Softgoal" decompositiontype="And"/>
+    <intentional-element id="ac5806a6-3c0c-429d-889b-080bd86a7c9d" name="Keep same cars" description="" type="Task" decompositiontype="And"/>
+    <intentional-element id="2c46c9e9-dd80-4f5b-8094-33c59bfae21c" name="Create new cars" description="" type="Task" decompositiontype="And"/>
+    <intentional-element id="ee0fd61c-5023-4dba-b3f4-7fe3a090f02f" name="Generate cars" description="" type="Goal" decompositiontype="Xor"/>
+    <intentional-element id="b73010f4-7961-4560-8ebb-15b4816e49f6" name="Simple design" description="" type="Softgoal" decompositiontype="And"/>
+    <intentional-element id="dc0fd237-bd95-4292-b2e1-92a44b76211b" name="Realistic simulation" description="" type="Softgoal" decompositiontype="And"/>
+    <intentional-element id="c3980dce-35d9-438c-a46b-6bdac5c791f4" name="Car objects" description="" type="Resource" decompositiontype="And"/>
+  </element-def>
+  <link-def>
+    <decomposition name="596da206-b9ea-4b49-8fbb-4fbe543b2f67" description="" srcid="ac5806a6-3c0c-429d-889b-080bd86a7c9d" destid="ee0fd61c-5023-4dba-b3f4-7fe3a090f02f"/>
+    <decomposition name="aaa69c17-219f-439f-8f00-d6df3877f474" description="" srcid="2c46c9e9-dd80-4f5b-8094-33c59bfae21c" destid="ee0fd61c-5023-4dba-b3f4-7fe3a090f02f"/>
+    <contribution name="db56a623-fe22-400e-8ff4-d6efa0b464bd" description="" srcid="2c46c9e9-dd80-4f5b-8094-33c59bfae21c" destid="dc0fd237-bd95-4292-b2e1-92a44b76211b" contributiontype="Help" quantitativeContribution="25" correlation="false"/>
+    <contribution name="82476014-f5cf-43e0-add8-e45fde354873" description="" srcid="2c46c9e9-dd80-4f5b-8094-33c59bfae21c" destid="b73010f4-7961-4560-8ebb-15b4816e49f6" contributiontype="Hurt" quantitativeContribution="-25" correlation="false"/>
+    <dependency name="Dependency" description="" dependerid="ee0fd61c-5023-4dba-b3f4-7fe3a090f02f" dependeeid="c3980dce-35d9-438c-a46b-6bdac5c791f4"/>
+  </link-def>
+  <actor-def></actor-def>
+  <actor-IE-link-def></actor-IE-link-def>
+</grl-catalog>
