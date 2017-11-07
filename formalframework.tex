@@ -51,11 +51,11 @@ The definition above is sufficient to capture all intentional elements (IEs) use
 %\end{itemize}
 %\end{definition}
 Throughout this section we use the example in Figure~\ref{fig:example-small}. This example contains various IEs which can be formalized using Definition~\ref{def:ie}, for example, 
-$(1, Resource, \text{Car objects}, AND)$, $(2, Softgoal,$ Realistic simulation$, AND)$ and $(5, Goal,$ Generate traffic$, XOR)$.
+$(1, Resource, \text{Car objects}, AND)$, $(2, Softgoal,$ Realistic simulation$, AND)$ and $(5, Goal,$ Generate cars$, XOR)$.
 
 %Using the short-hand notation defined in Def.~\ref{def:notation}, we can make the following statements:
 %\begin{itemize}
-%\item $goal_4.name = \text{Generate traffic}$
+%\item $goal_4.name = \text{Generate cars}$
 %\item $goal_4.decomptype = XOR$
 %\item $resource_1.name = \text{Car objects}$
 %\end{itemize}
@@ -153,7 +153,7 @@ The full specification of Figure~\ref{fig:example-small} is as follows.
 &   &  &(2, Softgoal, \text{Realistic simulation}, AND),&\\
 &   &  &(3, Softgoal, \text{Simple design}, AND),&\\
 &   &  &(4, Softgoal, \text{Easy to use}, AND),&\\
-&   &  &(5, Goal, \text{Generate traffic}, XOR),&\\
+&   &  &(5, Goal, \text{Generate cars}, XOR),&\\
 &   &  &(6, Task, \text{Create new cars}, AND),&\\
 &   &  &(7, Task, \text{Keep same cars}, AND)\}&\\
 &Act=& &\{(0, Actor, \text{Traffic Simulator})\}&\\
@@ -227,7 +227,7 @@ An argument $A$ is on of the following tuples:
 
 This definition captures the specification in the RationalGRL metamodel (Figure~\ref{fig:metamodel}) in which the class \textsf{Argument} is a superclass of \textsf{GenericArgument} and \textsf{GRLModelElement}. In sum, we define an argument simply as any one of the GRL elements or links, or a generic argument. 
 
-Examples of arguments in Figure~\ref{fig:example-small3} are $A_5 = (5,$ $Goal,$ Generate traffic$, AND)$, $A'_5 = (5, Goal,$ Generate traffic$, XOR)$, $A_4 = (4, Softgoal,$ Easy to use$, AND)$ and $A_{13}=(13,$ $ArgElem,$ Redundant$)$. Note that the two arguments $A_5$ and $A'_5$ show an important difference between RationalGRL models and valid GRL models: While a valid GRL model disallows multiple elements with the same identifier (Definition~\ref{def:valid-grl-model}, condition 1), RationalGRL models do not enforce this restriction. This is because it is possible to create multiple arguments for the same element, where each argument contains different content for the same element. However, the set of \emph{accepted} elements in a RationalGRL should all have unique identifier (see Definition~\ref{def:valid-rationalgrl-model}).
+Examples of arguments in Figure~\ref{fig:example-small3} are $A_5 = (5,$ $Goal,$ Generate cars$, AND)$, $A'_5 = (5, Goal,$ Generate cars$, XOR)$, $A_4 = (4, Softgoal,$ Easy to use$, AND)$ and $A_{13}=(13,$ $ArgElem,$ Redundant$)$. Note that the two arguments $A_5$ and $A'_5$ show an important difference between RationalGRL models and valid GRL models: While a valid GRL model disallows multiple elements with the same identifier (Definition~\ref{def:valid-grl-model}, condition 1), RationalGRL models do not enforce this restriction. This is because it is possible to create multiple arguments for the same element, where each argument contains different content for the same element. However, the set of \emph{accepted} elements in a RationalGRL should all have unique identifier (see Definition~\ref{def:valid-rationalgrl-model}).
 
 \begin{definition}[Attack Link]
 \label{def:link:attack}
@@ -239,7 +239,7 @@ Given a set of arguments $Arg$, an attack link $att=(A_i,A_j)$ means:
 A set of attack links is denoted by $Att$.
 \end{definition}
 
-As an example, take the arguments $A_5$ for the goal `Generate traffic' ($AND$ decomposition), $A'_5$ for the goal `Generate traffic' ($XOR$ decomposition), $A_4$ for the softgoal `Easy to use' and the generic argument $A_{13}$ (`Redundant') against the softgoal (`Easy to use'). Given these arguments there are two attack links (Figure~\ref{fig:example-small3}), namely $(A'_{5},A_{5})$ and $(A_{13}, A_{4})$.
+As an example, take the arguments $A_5$ for the goal `Generate cars' ($AND$ decomposition), $A'_5$ for the goal `Generate cars' ($XOR$ decomposition), $A_4$ for the softgoal `Easy to use' and the generic argument $A_{13}$ (`Redundant') against the softgoal (`Easy to use'). Given these arguments there are two attack links (Figure~\ref{fig:example-small3}), namely $(A'_{5},A_{5})$ and $(A_{13}, A_{4})$.
 
 We now define a RationalGRL model.
 
@@ -256,8 +256,8 @@ A_1 = &(1, Task, \text{Car objects}, AND),&\\
 A_2 = &(2, Softgoal, \text{Realistic simulation}, AND),&\\
 A_3 = &(3, Softgoal, \text{Simple design}, AND),&\\
 A_4 = &(4, Softgoal, \text{Easy to use}, AND),&\\
-A_5 = &(5, Goal, \text{Generate traffic}, AND),&\\
-A'_5 = &(5, Goal, \text{Generate traffic}, XOR),&\\
+A_5 = &(5, Goal, \text{Generate cars}, AND),&\\
+A'_5 = &(5, Goal, \text{Generate cars}, XOR),&\\
 A_6 = &(6, Task, \text{Create new cars}, AND),&\\
 A_7 = &(7, Task, \text{Wrap cars}, AND),&\\
 A'_7 = &(7, Task, \text{Keep same cars}, AND),&\\
@@ -468,7 +468,7 @@ Since arguments schemes AS2-AS4 are very similar to AS1, we omit these algorithm
 
 Similar to the previous algorithm, we have slightly reworded critical question AS5 in Algoritm~\ref{alg:add-decomp}. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $T$ is a decomposition of $G$. In the algorithm, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:arg1}. On line~\ref{alg:add-decomp:arg2} an argument is created for the decomposition link $(mintId(), Decomp, i, task\_id)$ (Def.~\ref{def:link}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$. On line~\ref{alg:add-decomp:add-arg} the two arguments are added to the set of arguments $Arg$.
 
-As an example, suppose we are adding the decomposition of goal ``Generate traffic'', expressed as argument $A_5 = (5,$ $Goal,$ Generate traffic$, AND)$, into task ``Keep same cars'', and suppose we have the following argument for the goal: . Adding the decomposition can be formalized as executing $AS_5(5, \text{Keep same cars})$, and results in two new arguments: $A_7 = (7, Task, \text{Keep same cars}, AND)$ and $A_{12} = (12, Decomp, 7, 5)$, which are both added to the set of arguments $Arg$.
+As an example, suppose we are adding the decomposition of goal ``Generate cars'', expressed as argument $A_5 = (5,$ $Goal,$ Generate cars$, AND)$, into task ``Keep same cars'', and suppose we have the following argument for the goal: . Adding the decomposition can be formalized as executing $AS_5(5, \text{Keep same cars})$, and results in two new arguments: $A_7 = (7, Task, \text{Keep same cars}, AND)$ and $A_{12} = (12, Decomp, 7, 5)$, which are both added to the set of arguments $Arg$.
 
 The remaining argument schemes AS6-AS12 are all similar to algorithms~\ref{alg:add-actor}-\ref{alg:add-decomp} and have been omitted here.
 
