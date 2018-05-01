@@ -1,0 +1,153 @@
+\documentclass[twocolumn]{svjour3}
+
+\usepackage{dblfloatfix}
+\setcounter{tocdepth}{3}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[fleqn]{amsmath} % flush equations left
+\usepackage{amssymb}
+\usepackage{array,url}
+\usepackage{authblk}
+\usepackage{caption}
+\usepackage{courier}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{helvet}
+\usepackage{multicol}
+\usepackage{multirow}
+%\usepackage{sectsty}
+\usepackage{subcaption}\captionsetup{compatibility=false}
+\usepackage{tabularx}
+\usepackage{tikz}\usetikzlibrary{arrows, backgrounds}
+\usepackage{times}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{changepage}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\newcommand{\var}[1]{{\ttfamily#1}}% variable
+
+% change the appearance of the tikz arrow for the argumentation networks
+% and some other settings to make all the graphs look similar
+\tikzset{>=latex,every node/.style={circle, minimum size=0.5cm, draw=black}}
+
+% Tikz stuff for arguments with GRL
+\tikzset{
+  argNodeIN/.style={shape=rectangle,draw,fill=white,align=center},
+  argNodeOUT/.style={shape=rectangle, draw=black!60, text=black!40,fill=white},
+  traceNodeRED/.style={circle,draw=black, fill=red, inner sep=0pt,minimum size=8pt},
+  traceNodeGREEN/.style={circle,draw=black, fill=green, inner sep=0pt,minimum size=8pt},
+  attackLink/.style={draw=black,->,line width=0.5mm},
+  traceLinkRED/.style={draw, densely dotted,-,line width=0.5mm, draw=red},
+  traceLinkGREEN/.style={draw, densely dotted,-,line width=0.5mm, draw=green},
+  CQLink/.style={line width=0.5mm, dotted,->},
+  ldots/.style={draw=none,rotate=90,font=\fontsize{20}{22.4}\selectfont},
+  grl/.style={draw=none},
+  disabled/.style={opacity=0.5}
+}
+\newcommand{\argtext}[2]{
+\begin{tabularx}{0.2\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
+\newcommand{\smallargtext}[2]{
+\begin{tabularx}{0.25\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
+\newcommand{\longargtext}[2]{
+\begin{tabularx}{0.5\textwidth}{X}
+\ifx&#1&%
+\else
+\textbf{(#1)}
+\fi
+#2
+\end{tabularx}
+}
+
+% rationale
+\newcommand{\rationale}{\emph{Rationale and example:}}
+
+
+%\addtolength{\oddsidemargin}{-0.85in}
+%\addtolength{\evensidemargin}{-0.85in}
+%\addtolength{\textwidth}{1.7in}
+%\addtolength{\topmargin}{-.7in}
+%\addtolength{\textheight}{1.3in}
+%\setlength{\columnsep}{0.3in}
+\newcommand{\Mark}[1]{\textsuperscript{#1}}
+
+% TODO command
+\newcommand\todo[4][]{%
+	\ifthenelse{\equal{#1}{resolved}}{%
+		% nothing
+	}{%
+		{\bf\color{red}TODO for #3\textcolor{gray}{(by #2)}: #4}%
+	}%
+}
+
+\algnewcommand\algorithmicswitch{\textbf{switch}}
+\algnewcommand\algorithmiccase{\textbf{case}}
+\algnewcommand\algorithmicassert{\texttt{assert}}
+\algnewcommand\Assert[1]{\State \algorithmicassert(#1)}%
+% New "environments"
+\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \algorithmicdo}{\algorithmicend\ \algorithmicswitch}%
+\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1}{\algorithmicend\ \algorithmiccase}%
+\algtext*{EndSwitch}%
+\algtext*{EndCase}%
+
+\newcommand{\rationalgrlurl}{\url{http://www.rationalgrl.com}}
+
+%\renewcommand\Authfont{\fontsize{10}{14.4}\selectfont}
+%\renewcommand\Affilfont{\fontsize{9}{10.8}\selectfont}
+
+%\sectionfont{\fontsize{12}{15}\selectfont}
+%\subsectionfont{\fontsize{10}{15}\selectfont}
+
+\begin{document}\sloppy
+
+\title{RationalGRL: A Framework for Argumentation and Goal Modeling}
+\author{Marc van Zee  \and Floris J. Bex\and Sepideh Ghanavati}
+\institute{Marc van Zee \at Google Research, Z\"urich, Switzerland \\\email{marcvanzee@gmail.com} 
+\and Floris Bex \at Department of Information and Computing Sciences, Utrecht University, Utrecht, The Netherlands \\\email{f.j.bex@uu.nl}
+\and Sepideh Ghanavati \at Department of Computer Science, Texas Tech University, Lubbock TX, USA \\\email{sepideh.ghanavati@ttu.edu} }
+
+\maketitle
+
+\input{abstract}
+
+
+\input{introduction}
+\input{background}
+\input{casestudy}
+\input{overview}
+%\input{examples}
+\input{formalframework}
+\input{methodology}
+%\input{tool}
+\input{discussion}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\newpage
+
+\onecolumn
+\appendix
+
+\input{designprompt}
+\newpage
+\input{transcripts}
+\newpage
+\input{tool-screenshots}
+
+\end{document}

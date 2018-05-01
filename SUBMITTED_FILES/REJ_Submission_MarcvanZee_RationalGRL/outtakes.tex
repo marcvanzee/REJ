@@ -1,0 +1,338 @@
+
+\begin{figure}[ht!]
+\centering
+\begin{tikzpicture}
+        \node[minimum size=1cm] (a19) [argNodeIN] at (-3,0) {$A_{19}$};
+        \node[minimum size=1cm] (a18) [argNodeIN] at (0,0) {$A_{18}$};
+        \node[minimum size=1cm] (a1) [argNodeIN] at (3,0) {$A_1$};
+             
+         \path
+    (a19) edge [attackLink] (a18)
+    (a18) edge [attackLink] (a1);
+    
+\end{tikzpicture}
+\caption{Example argumentation framework, subset of Fig.~\ref{fig:example-small4}.}
+\label{fig:goalmodeling:arg2}
+\end{figure}
+
+\subsubsection*{Architecture principles} 
+One aspect of enterprise architecture that we did not touch upon in this article are \emph{(enterprise) architecture principles}. Architecture principles are general rules and guidelines, intended to be enduring and seldom amended, that inform and support the way in which an organization sets about fulfilling its mission~\cite{Lankhorst2005,OptLand2007a,OG2009}. They reflect a level of consensus among the various elements of the enterprise, and form the basis for making future IT decisions. Two characteristics of architecture principles are:
+\begin{itemize}
+\item There are usually a small number of principles (around 10) for an entire organization. These principles are developed by enterprise architecture, through discussions with stakeholders or the executive board. Such a small list is intended to be understood \emph{throughout the entire organization}. All employees should keep these principles in the back of their hard when making a decision.
+\item Principles are meant to guide decision making, and if someone decides to deviate from them, he or she should have a good reason for this and explain why this is the case. As such, they play a normative role in the organization.
+\end{itemize}
+
+Looking at these two characteristics, we see that argumentation, or justification, plays an important role in both forming the principles and adhering to them:
+\begin{itemize}
+\item Architecture principles are \emph{formed} based on underlying arguments, which can be the goals and values of the organization, preferences of stakeholders, environmental constraints, etc.
+\item If architecture principles are \emph{violated}, this violation has to be explained by underlying arguments, which can be project-specific details or lead to a change in the principle.
+\end{itemize}
+
+In a previous paper, we~\cite{marosin-etal:caise2016} propose an extension to GRL based on enterprise architecture principles. We present a set of requirements for improving the clarity of definitions and develop a framework to formalize architecture principles in GRL. We introduce an extension of the language with the required constructs and establish modeling rules and constraints. This allows one to automatically reason about the soundness, completeness and consistency of a set of architecture principles. Moreover, principles can be traced back to high-level goals.
+
+It would be very interesting future work to combine the architecture principles extension with the argumentation extension. This would lead to a framework in which principles cannot only be traced back to goals, but also to underlying arguments by the stakeholders.
+
+\subsubsection*{Extensions for argumentation}
+
+The amount of argumentation theory we used in this article has been rather small. Our intention was to create a bridge between the formal theories in argumentation and the rather practical tools in requirements engineering. Now that the initial framework has been developed, is it worth exploring what tools and variations formal argumentation has to offer in more detail.
+
+For instance, until now we have assumed that every argument put forward by a critical questions always defeats the argument it questions, but this is a rather strong assumption.  In some cases, it is more difficult to determine whether or not an argument is defeated. Take, for example, the argumentation framework in Figure~\ref{fig:goalmodeling:futureargs} with just A1 and A2. These two arguments attack each other, they are alternatives and without any explicit preference, and it is impossible to choose between the two. It is, however, possible to include explicit preferences between arguments when determining argument acceptability \cite{amgoud2002reasoning}. If we say that we prefer the action  \texttt{Create new cars} (A2) over the action  \texttt{Keep same cars} (A1), we remove the attack from A1 to A2. This makes A2 the only undefeated argument, whereas A1 is now defeated. It is also possible to give explicit arguments for preferences~\cite{modgil2009}. These arguments are then essentially attacks on attacks. For example, say we prefer A3 over A1 because `it is important to have realistic traffic flows' (A4). This can be rendered as a separate argument that attacks the attack from A1 to A3, removing this attack and making $\{$A3, A4$\}$ the undefeated set of arguments.
+
+Allowing undefeated attacks also make the question of which semantics to choose more interested. In our current (a-cyclic) setting, all semantics coincide, and we always have the same set of accepted arguments. However, once we allow for cycles, we may choose accepted arguments based on semantics which, for instance, try to accept/reject as many arguments as possible (preferred semantics), or just do not make any choice once there are multiple choices (grounded). Another interesting element of having cycles is that one can have multiple extensions. This corresponds to various \emph{positions} are possible, representing various sets of possibly accepted arguments. Such sets can then be shown to the user, who can then argue about which one they deem most appropriate.
+
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+        \node[minimum size=1cm] (a1) [argNodeIN] at (0,0) {$A_1$};
+        \node[minimum size=1cm] (a2) [argNodeIN] at (3,0) {$A_2$};
+        
+         \path
+    (a2) edge [attackLink] (a1)
+    (a1) edge [attackLink] (a2);
+\end{tikzpicture}
+\caption{Preferences between arguments}
+\label{fig:goalmodeling:futureargs}
+\end{figure}  
+
+Finally, in this article we have only explored one single argument scheme, but there are many other around. In his famous book ``Argumentation schemes'', Walton describes a total of 96 schemes. Murukannaiah \emph{et al.}~\cite{murukannaiah2015} already explain how some of these schemes may be use for resolving goal conflicts, and it is worth studying what this would look like in our framework as well.
+
+One idea is to capture requirements engineering and software design processes as explicit dialogues between parties~\cite{finkelstein1989multiparty}. Software design discussions Black et al., Prakken and Wierenga.
+
+\subsubsection*{Empirical study}
+
+Although we develop our argument schemes and critical questions with some empirical data, we did not yet validate the outcome. This is an important part, because it will allow us to understand whether adding arguments to goal modeling is actually useful. We have developed an experimental setup for our experiment, which we intend to do during courses at various universities. However, we cannot carry out this experiment until the tool is finished.
+
+\subsubsection*{Formal framework}
+
+The formal framework we present in this article is very simple, and does not provide a lot of detail. We believe it would be interesting to develop a more robust characterization of a GRL model using logical formulas. Right now, we have no way to verify whether the goal models we obtain through out algorithms are actually valid GRL models. This is because we allow any set of atoms to be a GRL model, which is clearly very permissive and incorrect. Once we develop a number of such constraints, we can ensure (and even proof) our algorithms do not generate invalid GRL models. 
+
+For instance, suppose we assert that an \emph{intentional element} is a goal, softgoal, task, or resource: \begin{align*}
+(softgoal(i)\vee goal(i)\vee task(i)\\
+\vee resource(i)\rightarrow IE(i).
+\end{align*}
+We can then formalize an intuition such as: ``Only intentional elements can be used in contribution relations'' as follows
+\begin{align*}
+contrib(k,i,j,ctype)\rightarrow \\
+(IE(i)\wedge IE(j)\wedge IE(j).
+\end{align*}
+
+Interestingly, such constraints are very comparable to \emph{logic programming} rules. We therefore see it as interesting future research to explore this further, specifically in the following two ways:
+\begin{itemize}
+\item Develop a set of constraints on sets of atoms of our language, which correctly describe a GRL model. Show formally that using our algorithms, each extension of the resulting argumentation framework corresponds to a valid GRL model, i.e., a GRL model that does not violate any of the constraints.
+\item Implement the constraints as a logic program, and use a logic programming language to compute the resulting GRL model.
+\end{itemize}
+
+
+
+
+%I wasn't really sure what to do with the below section, so I commented it out. 
+\iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RationalGRL Language}
+The RationalGRL language is an extension of GRL, which means that it includes all the GRL elements shown in Figure~\ref{fig:grl_legend}. However, there are also new elements (Figure~\ref{fig:rationalgrllegend}):
+
+\begin{itemize}
+\item \emph{Argument}: This represents an argument that does not correspond to a GRL element. created by answering one of the critical questions which disables a GRL element, or counter-attacks a previous argument. 
+\item \emph{Rejected GRL element}: If an argument or GRL element is attacked by an argument, which itself is not attacked, then this GRL element will be rejected, meaning that it does not play a role in the analysis of the GRL model. The status of arguments and 
+\item \emph{Refined GRL Element}: Not all critical questions attack a GRL element. It is also possible that a critical question \emph{replaces} an existing element (for instance, by clarifying the name of the element), or that it leads to the \emph{introduction} of a new element. In these cases, the corresponding GRL element is shown with a striped background. \todo{F}{S,M}{Disabled and Refined GRL elements are not in the metamodel}
+\item \emph{Attack Link}: An attack link can occur between an argument and a GRL element, or between two elements. It means that the source argument or element attacks the target argument or element.
+\end{itemize} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.35\textwidth]{img/legend}
+\caption{The new elements and link of RationalGRL}
+\label{fig:rationalgrllegend}
+\end{figure}
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{itemize} 
+\item \textsf{INTRO}: Introduce a new goal element or relationship with a corresponding argument. This operation does not attack the original argument to which the question pertains, but rather creates a new argument. %In Figure~\ref{fig:transcripts:grl}, each GRL element can be seen as the instantiation of an argument scheme. For instance, the XOR-decomposition from ``Generate Cars'' is an instantiation of AS5 as follows: ``Goal \texttt{Generate cars} XOR-decomposes into tasks \texttt{Keep same cars} and \texttt{Create new cars}''. Suppose now that the modelers that created Figure~\ref{fig:transcripts:grl} would continue their analysis by discussing critical question CQ5b: ``Does the goal \texttt{Generate cars} decompose into other tasks?'', and that they would answer this with ``Yes, namely \texttt{Choose randomly}''. This then results in the introduction of another task with the name ``Choose randomly'', and the XOR-decomposes would go from ``Generate Cars'' into the three tasks \texttt{Keep same cars}, \texttt{Create new cars}, and \texttt{Choose randomly}.'' %SG: Very good example. But should we also show it in the model as a new element?
+\item \textsf{DISABLE:} Disable the element or relationship of an argument scheme to which critical questions pertains. This operation creates a new argument that disables (i.e., attacks) the original one. %In Figure~\ref{fig:transcripts:grl}, there are several examples of disabled GRL elements. The task ``Add traffic light'' (top-left in figure) is attacked by answering critical question CQ2: ``Is task Add traffic light possible?'' negatively, resulting in an argument that disables the GRL element. What we also see from Figure~\ref{fig:transcripts:grl} is that actor ``Teacher'' is disabled and thus all the elements that are bound to this actor are disabled as well. Furthermore, disabled task ``Dynamic Simulation'' also disables all incoming and outgoing links with this task.
+\item \textsf{REPLACE:} Replace the element of the argument scheme with a new element. %In Figure~\ref{fig:transcripts:grl}, task ``Show map editor'' has been replaced various times, and this is shown in the figure as a \emph{refined} element. In this case, participants were discussing the correct naming for this element (CQ13), leading to various replacements of the name. While the previous names are not shown in the figure, they show up in the details pane of the corresponding element. %SG: why generate car has a star but not this one?
+%\item \textsf{ATTACK:} Attack any argument with an argument that cannot be classified as a critical question. In Figure~\ref{fig:transcripts:grl}, we see one example of such a counter-attack. First, task ``Control car influx per road'' is attack by answering CQ2 (irrelevant task). However, after discussing this, participants found that this was not the case, since the problem description stated that it is important that students can control the simulation manually. Therefore, the argument that attacked the task is attacked by the counter-argument ``Important for students'', which re-enables the task ``Control car influx per road''. We provide a precise semantics for this in Section~\ref{sect:formalframework}.
+\end{itemize}
+
+%As an example of a RationalGRL model, consider Figure~\ref{fig:transcripts:grl}, which was created on the basis of transcript $t_1$. This figure shows a simplified version of the actual model in order to improve the presentation, but the full models can be found back in our repository. 
+
+%\begin{figure*}[h!]
+%\includegraphics[width=\textwidth]{img/Fig6}
+%\caption{The GRL model constructed from transcript $t_1$.} 
+%\label{fig:transcripts:grl}
+%\end{figure*} 
+
+\iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeIN] at (-2,0) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Save map}}
+        };
+        \node (a1) [argNodeIN] at (-2,-2) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Add road}}
+        };
+        \node (a2) [argNodeOUT] at (-2,-4) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Add traffic light}}
+        };
+        \node (a3) [argNodeIN] at (-2,-6){
+        	\argtext{}{\emph{Add traffic light} is not necessary (\emph{All intersections have traffic lights})}
+        };
+        \node[grl] (task1) at (2.3,0) { \includegraphics[scale=0.5]{img/task_save_map} };
+        \node[grl] (task2) at (2.3,-2) { \includegraphics[scale=0.5]{img/task_add_road} };
+        \node[grl, disabled] (task3) at (2.3,-4) { \includegraphics[scale=0.5]{img/task_add_traffic_light} };
+        \node[traceNodeGREEN] (trace1a) at (-.4,-.3) {};
+        \node[traceNodeGREEN] (trace1b) at (2.2,-.3) {};
+        \node[traceNodeGREEN] (trace2a) at (-.4,-2.3) {};
+        \node[traceNodeGREEN] (trace2b) at (2.2,-2.3) {};
+        \node[traceNodeRED] (trace3a) at (-.4,-4.3) {};
+        \node[traceNodeRED] (trace3b) at (2.2,-4.3) {};
+         \path
+    (a3) edge [attackLink] (a2)
+    (a2) edge [CQLink, bend right=50] node [left,draw=none] {CQ12} (a3)
+    (trace1a) edge[traceLinkGREEN] (trace1b)
+    (trace2a) edge[traceLinkGREEN] (trace2b)
+    (trace3a) edge[traceLinkRED] (trace3b);
+\end{tikzpicture}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted lines) for the Traffic Light Example.}
+\label{fig:examples:traffic-light}
+\end{figure}
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}[->]
+        \node (a0) [argNodeOUT] at (-2,0) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Create road}}
+        };
+        \node (a1) [argNodeOUT] at (-2,-2) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Choose a pattern}}
+        };
+        \node (a2) [argNodeOUT] at (-2,-4.2) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Choose a pattern preference}}
+        };
+        \node (a3) [argNodeIN] at (-2,-6.7) {
+        	\argtext{AS2}{Actor \emph{Student} has task \emph{Choose a road pattern}}
+        };
+        \node[grl] (actor) at (2.3,-4) { 
+        	\includegraphics[scale=0.5]{img/task_choose_road_pattern} 
+        };
+        \node[traceNodeGREEN] (trace1) at (-.5,-7.1) {};
+        \node[traceNodeGREEN] (trace2) at (2.2,-4.4) {};
+
+\begin{pgfonlayer}{background}
+         \path
+    (a1) edge[attackLink] (a0)
+    (a2) edge[attackLink] (a1)
+    (a2) edge[attackLink, bend right=20] (a0)
+    (a3) edge[attackLink] (a2)
+    (a3) edge[attackLink, bend right=20] (a1)
+    (a3) edge[attackLink, bend right=40] (a0);
+\end{pgfonlayer}
+
+	\path
+	(a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ12a} (a1)
+    (a1) edge [CQLink, bend right=50] node [left,draw=none] {CQ12a} (a2)
+    (a2) edge [CQLink, bend right=50] node [left,draw=none] {CQ12a} (a3)
+    (trace1) edge[traceLinkGREEN] (trace2);
+\end{tikzpicture}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) for the Road Pattern Example.}
+\label{fig:examples:clarification}
+\end{figure}
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iffalse%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[ht]
+\begin{adjustwidth}{-3em}{}
+        \begin{tikzpicture}[->]
+        \node (a0) [argNodeIN] at (-2,0.5) {
+        	\argtext{CQ3}{Task \emph{Dynamic simulation} is not relevant}
+        };
+        \node (a1) [argNodeIN] at (-2,-1.5) {
+        	\argtext{AS2}{Actor \emph{System} has task \emph{Dynamic simulation}}
+        };
+        \node (a2) [argNodeIN] at (-2,-3) {
+        	\argtext{AS2}{Actor \emph{System} has task \emph{Static simulation}}
+        };
+        \node (a3) [argNodeOUT] at (-2,-4.5) {
+        	\argtext{AS5}{Goal \emph{Simulate} AND-decomposes into \emph{Static simulation} and \emph{Dynamic simulation}}
+        };
+        \node (a4) [argNodeIN] at (-2,-7.5) {
+        	\argtext{AS5}{Goal \emph{Simulate} OR-decomposes into \emph{Static simulation} and \emph{Dynamic simulation}}
+        };
+        \node[grl] (actor) at (2.2,-4) { 
+        	\includegraphics[scale=0.5]{img/simulate_decomposition} 
+        };
+        \node[traceNodeRED] (trace2a) at (-.4,-1.8) {};
+        \node[traceNodeRED] (trace2b) at (3.2,-5.6) {};
+        \node[traceNodeGREEN] (trace3a) at (-.4,-3.3) {};
+        \node[traceNodeGREEN] (trace3b) at (1,-5.6) {};
+        \node[traceNodeGREEN] (trace4a) at (-.4,-8.2) {};
+        \node[traceNodeGREEN] (trace4b) at (2.2,-3.9) {};
+
+\begin{pgfonlayer}{background}
+         \path
+    (a1) edge[attackLink] (a0)
+    (a4) edge[attackLink] (a3);
+\end{pgfonlayer}
+
+	\path
+	(a3) edge [CQLink, bend right=50] node [left,draw=none] {CQ10b} (a4)
+	(a1) edge [CQLink, bend right=50] node [right,draw=none] {CQ3} (a0)
+    (trace2a) edge[traceLinkRED] (trace2b)
+    (trace3a) edge[traceLinkGREEN] (trace3b)
+    (trace4a) edge[traceLinkGREEN, bend right] (trace4b);
+\end{tikzpicture}
+\end{adjustwidth}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) of the example.} %TODO which example? 
+\label{fig:examples:decomposition}
+\end{figure}
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The transcript excerpt of this example is shown in Table~\ref{table:transcript:irrelevant-actor} in the appendix and comes from transcript $t_3$. It consists of two parts: first participant \texttt{P1} puts forth the suggestion to include actor \texttt{Development team} in the model. This is, then, questioned by participant \texttt{P2}, who argues that the professor will develop the software, so there will not be any development team. However, in the second part, participant \texttt{P2} argue that the development team should be considered, since the professor does not develop the software.
+
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeOUT] at (-2,0) {
+        	\argtext{AS0}{Development team is relevant}
+        } ;
+        \node (a1) [argNodeIN] at (-2,-2.5){
+        	\argtext{}{Development team is not relevant (\emph{The professor makes the software})}
+        };
+        \node[grl, disabled] (actor) at (2.3,-1) { \includegraphics[scale=0.5]{img/actor_development_team} };
+        \node[traceNodeRED] (trace1) at (-.5,-.3) {};
+        \node[traceNodeRED] (trace2) at (2.2,-0.1) {};
+
+         \path
+    (a1) edge[attackLink] (a0)
+    (a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ0} (a1)
+    (trace1) edge[traceLinkRED] (trace2);
+\end{tikzpicture}
+\caption{Argument schemes and critical questions (left), GRL model (right), and traceability link (dotted line) of a discussion about the relevance of actor Development team.}
+\label{fig:examples:relevant-actor}
+\end{figure}
+
+We formalize this using a \emph{generic counterargument}, attacking the critical question. The first part of the discussion is shown in Figure~\ref{fig:examples:relevant-actor}. We formalize the first statement as an instantiation of argument scheme AS0: ``Actor \texttt{development team} is relevant''. This argument is, then, attacked by answering critical question CQ0: ``Is actor \texttt{development team} relevant? with \emph{No}. This results in two arguments, AS0 and CQ0, where CQ0 attacks AS0.'' This is shown in Figure~\ref{fig:examples:relevant-actor}, left image.
+
+\begin{figure}[ht!]
+\centering
+        \begin{tikzpicture}
+        \node (a0) [argNodeIN] at (-2,0) {
+        	\argtext{AS0}{Development team is relevant}
+        };
+        \node (a1) [argNodeOUT] at (-2,-2.5){
+        	\argtext{}{Development team is not relevant (\emph{The professor makes the software})}
+        };
+        \node (a2) [argNodeIN] at (-2,-5) {
+        	\argtext{}{The professor doesn't develop the software}
+        } ;
+        \node[grl] (actor) at (2.3,-1) { \includegraphics[scale=0.5]{img/actor_development_team} };
+        \node[traceNodeGREEN] (trace1) at (-.5,-.3) {};
+        \node[traceNodeGREEN] (trace2) at (2.2,-0.1) {};
+
+         \path
+    (a1) edge[attackLink] (a0)
+    (a2) edge[attackLink] (a1)
+    (a0) edge [CQLink, bend right=50] node [left,draw=none] {CQ0} (a1)
+    (a1) edge [CQLink, bend right=50] node [left,draw=none] {Att} (a2)
+    (trace1) edge[traceLinkGREEN] (trace2);
+\end{tikzpicture}
+\caption{Argument Schemes and Critical Questions (left), GRL Model (right), and Traceability Link (dotted line) of a Discussion about the Relevance of Actor Development Team.}
+\label{fig:examples:relevant-actor2}
+\end{figure}
+
+Figure~\ref{fig:examples:relevant-actor2} shows the situation after the counter argument has been put forward. The argument ``Actor \texttt{Professor} does not develop the software'' now attacks the argument ``\texttt{Development team} is not relevant (\emph{The professor makes the software})'', which in turn attacks the original argument ``\texttt{Development team} is relevant''. As a result, the first argument is re-instantiated, which causes the actor in the GRL model to be enabled again.
+
+\begin{tabular}{|p{17mm}|p{63mm}|p{70mm}|}
+\hline
+\textit{Speaker} & \textit{Text} & \textit{Coding}\\
+\hline
+0:17:39 (P1) & And in that process there are activities like create a visual map, create a road& \textbf{[14 task (AS2)]} Student has task ``Create road'' \textsf{[INTRO]}\\
+\hline
+0:24:36 (P3)	& And, well interaction. Visualization sorry. Or interaction, I don't know. So create a visual map would have laying out roads and a pattern of their choosing. So this would be first, would be choose a pattern. & \textbf{[31 critical question CQ12 for 14]} Is Task ``Create road'' clear?\newline
+\textbf{[32a answer to 31]} no, according to the specification the student should choose a pattern. \newline
+\textbf{[32b answer to 31]} ``Create road'' becomes ``Choose a pattern'' \textsf{[REPLACE]}\\
+\hline
+0:24:55 (P1) &	How do you mean, choose a pattern	& \textbf{[33 critical question CQ12 for 32b]} Is ``Choose a pattern'' clear? \\
+\cline{1-2}
+0:24:57 (P3)	& Students must be able to create a visual map of an area, laying out roads in a pattern of their choosing	&\\
+\cline{1-2}
+0:25:07 (P1)	& Yeah I'm not sure if they mean that. I don't know what they mean by pattern in this case. I thought you could just pick roads, varying sizes and like, broads of roads. & 
+\textbf{[34a answer to 33]} No, not sure what they mean by a pattern.\\
+\cline{1-2}
+0:25:26 (P3) & No yeah exactly, but you would have them provide, it's a pattern, it's a different type of road but essentially you would select- how would you call them, selecting a- & \\
+\cline{1-2}
+0:25:36 (P1) & Yeah, selecting a- I don't know &\\
+\cline{1-2}
+0:25:38 (P3)	& Pattern preference maybe? As in, maybe we can explain this in the documentation & \textbf{[34b answer to 33]} ``Choose a pattern'' becomes ``Choose a pattern preference'' \textsf{[REPLACE]}\\
+\hline
+0:25:43 (P1) & What kind of patterns though. Would you be able to select & \textbf{[35 critical question CQ12 for 34b]} Is ``Choose a pattern preference'' clear?\\
+\cline{1-2}
+0:25:47 (P3) & Maybe, I don't know it's- & \textbf{[36a answer to 35]} No \\
+\cline{1-2}
+0:25:48 (P1)	& [inaudible] a road pattern& \textbf{[36b answer to 35]} ``Choose a pattern preference'' becomes ``Choose a road pattern'' \textsf{[REPLACE]}\\
+\hline
+\end{tabular}
+\caption{Clarifying the name of a task (transcript $t_3$)}
+\label{table:transcript:task-clarification}
