@@ -1,0 +1,36 @@
+RATIONALGRL
+# meeting 12/10
+# Sepideh, Diana, Marc
+
+1. What is the effect of arguments on a goal model?
+- In ER2016, we used argumentation extensions to set evaluation values of the arguments.
+- Jureta et al. use argumentation to formalize discussions between stakeholders about alternatives. A chosen alternative becomes an element of the goal model.
+- We agreed that the latter approach seems most useful, because in that way the argumentation graphs actually contains useful information that is not represented in the goal model.
+
+2. What can we offer compared to Jureta?
+- Sepideh: Jureta is mostly informal. If we make the translation between arguments and goal models more precise, we implement and validate it, then we have enough for a journal paper.
+- Sepideh: It is important we focus on traceability. Jureta does provide some links between arguments and goals, but it is not implemented, nor it is specified what happens when either an argument or a goal element changes. This is important. There is also traceability between GLR and UCM elements, and I propose we do the same here.
+- Marc: We have some issues to we have to figure out still:
+	2.1 What is our modeling methodology?
+	2.2 How to represent arguments?
+	2.3 How to translate arguments to goal models?
+
+3. Case studies
+- Sepideh: I will look around and ask for case studies.
+- Sepideh: Look at the work of the following researchers. They did case studies with students as well:
+	* Annie Anton (professor)
+	* Travis Breaux
+	* Aaron Massey (2013/2014)
+	* Jessica Schmit and Jeremy Maxwell
+- Sepideh: Do 2 or 3 case studies with 10 or 20 students. Have a base case study (without our framework), then improvement. Also measure how much time it took to model, etc.
+- Diana: We can also do a question-based survey with practitioners we know.
+- Sepideh: Yes, it is also possible to have a small case study and questionnaire with people we know.
+
+4. implementation
+- Marc: It would be best if arguments are modeled in a separate modeling language. So you have ARG, GRL, UCM. But this is a lot of work.
+- Sepideh: As a first step, add elements in a palette in GRL and do not allow links between ARG elements and GRL elements.
+
+5. TODO
+- Sepideh: Ask around for case studies
+- Marc: Read argument papers, think about question 2.1-2.3 and discuss with Floris
+

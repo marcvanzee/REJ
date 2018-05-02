@@ -1,74 +1,131 @@
-%*Editor: Please ensure also that your manuscript shows clearly how your work relates to relevant works as they may have been published in the Requirements Engineering or presented at the Requirements Engineering series of conferences.
+﻿######## EDITOR ########
 
-%FB: perhaps the editor would like us to add more references to RE and REJ? It is true that the majority of references is now outside of RE. **Marc, Sepideh**
+===== COMMENT #1
+Please ensure also that your manuscript shows clearly how your work relates to relevant works as they may have been published in the Requirements Engineering or presented at the Requirements Engineering series of conferences.
 
------------------------
-%R1: The integrated meta model looks reasonable but I have some doubts about the inclusion of "critical question" in the schema. Critical questions are something that are used to identify arguments and attack links, but  I don't see them as a concept to be included in the meta model. They are part of the methodology used to build the goal model rather concepts of the language.  
+===== REPLY #1
+Currently 6 of the 44 references in the article come from either REJ or the RE conference:
+- Y. Elrakaiby, A. Ferrari, P. Spoletini, S. Gnesi, and B. Nuseibeh. Using argumentation to explain ambiguity in requirements elici- tation interviews. In Proceedings of the 25th IEEE International Requirements Engineering Conference (RE 2017), pages 51–60. IEEE Press, 2017.
+- I. Jureta, S. Faulkner, and P. Schobbens. Clear justification of mod- eling decisions for goal-oriented requirements engineering. Re- quirements Engineering, 13(2):87–115, May 2008.
+- Y. Liu, Y. Su, X. Yin, and G. Mussbacher. Combined goal and feature model reasoning with the user requirements notation and jucmnav. In Requirements Engineering Conference (RE), 2014 IEEE 22nd International, pages 321–322. IEEE, 2014.
+- P. K. Murukannaiah, A. K. Kalia, P. R. Telangy, and M. P. Singh. Resolving goal conflicts via argumentation-based analysis of com- peting hypotheses. In Proceedings of the 23rd International Re- quirements Engineering Conference (RE 2015), pages 156–165. IEEE, 2015.
+- M. van Zee, F. Bex, and S. Ghanavati. Rationalization of Goal Models in GRL using Formal Argumentation. In Proceedings of the 23rd International Requirements Engineering Conference (RE’15), pages 220–225. IEEE Press, August 2015
+- E. S. K. Yu. Towards Modeling and Reasoning Support for Early-Phase Requirements Engineering. In Proceedings of the 3rd IEEE International Symposium on Requirements Engineering, pages 226–235, 1997.
 
-%FB: **Marc**
+We have searched through the journal and conference database for more references, and we found 4 more references that are closely related to our work:
+- S. R. Smith. Constructing and revising formal arguments in re- quirements engineering. Requir. Eng., 2(4):199–216, Dec. 1997.
+- J.Lockerbie,N.A.M.Maiden,J.Engmann,D.Randall,S.Jones, and D. Bush. Exploring the impact of software requirements on system-wide goals: a method using satisfaction arguments and i* goal modelling. Requirements Engineering, 17(3):227–254, 2012.
+- J. Horkoff and E. Yu. Interactive goal model analysis for early requirements engineering. Requirements Engineering, 21(1):29– 61, 2016.
+- J. Hassine and D. Amyot. A questionnaire-based survey method- ology for systematically validating goal-oriented models. Require- ments Engineering, 21(2):285–308, 2016.
 
------------------------
-%R1: The proposed algorithms are very simple and they do not add much to the overall presentation, I think they can be summarized in the section describing the tool. 
-%R2: I wonder about the formalization in propositional logic. Why is it not used for automated reasoning (at least partly instead of the specific algorithms)?
+This means we currently have 10 references from the Requirements Engineering Journal or presented at the Requirements Engineering series of conferences.
 
-Reviewer 1 argues that the algorithms are fairly simple. We agree that many algorithms are very much the same, and we have therefore shortened the sections containing these algorithms: sections 5.4.1 to 5.4.3 now all contain one example of the specific type of algorithm instead of two. Reviewer 2 asks whether the automated reasoning can be handled by propositional logic instead of the algorithms. The answer is that propositional logic in itself does not contain specific algorithms for, for example, INTRO, REPLACE and DISABLE. Furthermore, the algorithms also introduce arguments and attacks, formal notions of which are not in basic propositional logic. The idea is that the formalization is needed for the algorithms, but that just providing a formal semantics of GRL does not directly tell you how to compute/reason with GRL models.
+######## REVIEWER #1 ########
 
-%FB: **Marc, can you work on shortening sections 5.4.1-5.4.3?**
+We thank the reviewer for the insightful comments. Especially the comment about the missing validation was useful since it motivated us to perform an small-scale in-house user study, which allowed us to strengthen our claims for the usefulness and usability of our framework. We’ve replied to each separate comment below.
 
------------------------
-%R1: The methodology and the tools looks quite preliminary and without a real validation of the approach. I think this is the weakest part of the paper. Authors should demonstrate the applicability, scalability and usefulness of their approach in the real word. The tool and the modeling language should be used and evaluated by practitioners while they cope with real requirements engineering problems and complexity issues.
-%R2: I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. Connecting them with an existing approach for goal modeling is also a pro in this respect. 
+===== COMMENT #1
+The integrated meta model looks reasonable but I have some doubts about the inclusion of "critical question" in the schema. Critical questions are something that are used to identify arguments and attack links, but  I don't see them as a concept to be included in the meta model. They are part of the methodology used to build the goal model rather concepts of the language.  
 
-%FB: Depending on the editor's answer we can leave this as is in the paper. However, we do need to come up withy a satisfactory example in the response to reviewers. Also, I think we need to include some references on empirical work that has been done on goal modelling 
+===== REPLY #1
+We thank the reviewer for pointing this out. We indeed believe critical questions should not be part of the metamodel, and we have removed them accordingly. We initially had put them into the metamodel because they play an important part in the implementation, but they are by themselves not part of the RationalGRL language. We also have updated the text accordingly.
 
-I asked Fabiano and he gave me the following two references, we can discuss them.
+===== COMMENT #2
+The proposed algorithms are very simple and they do not add much to the overall presentation, I think they can be summarized in the section describing the tool. 
+
+===== REPLY #2
+We agree that many algorithms are very much the same, and we have therefore shortened the sections containing these algorithms: sections 5.4.1 to 5.4.3 now all contain one example of the specific type of algorithm instead of two or more.
+
+===== COMMENT #3
+The methodology and the tools looks quite preliminary and without a real validation of the approach. I think this is the weakest part of the paper. Authors should demonstrate the applicability, scalability and usefulness of their approach in the real word. The tool and the modeling language should be used and evaluated by practitioners while they cope with real requirements engineering problems and complexity issues.
+
+===== REPLY #3
+TODO: WRITE WHEN ANALYSIS IS DONE
+
+%FB: Marc to write on Enterprise Architects
+
+%FB: Marc/Floris to write on the below
+I think we need to include some references on empirical work that has been done on goal modelling. I asked Fabiano and he gave me the following two references, we can discuss them.
 
 Estrada, H., Rebollar, A. M., Pastor, O., & Mylopoulos, J. (2006, June). An empirical evaluation of the i* framework in a model-based software generation environment. In International Conference on Advanced Information Systems Engineering (pp. 513-527). Springer, Berlin, Heidelberg.
 
 Morandini, M., Marchetto, A., & Perini, A. (2011, August). Requirements comprehension: A controlled experiment on conceptual modeling methods. In Empirical Requirements Engineering (EmpiRE), 2011 First International Workshop on (pp. 53-60). IEEE
 
-***Sepideh***
 
------------------------
-%R2: the statement on actually using a reduced GRL should be made in the Abstract and Introduction already, not just in a footnote later.
+######## REVIEWER #2 ########
 
-Reviewer 2 comments that the connection to an existing approach, GRL is commendable, but that we should mention in the abstract and the introduction that we use a simplified version of GRL. We have included in the introduction that we use a simplified version. Note that all the core elements of GRL are included but, for example, we have included only one level of contribution strength, where GRL contains different levels of positive and negative contribution. This simplification does not in any way influence the case study or any of the other results. Furthermore, extending the GRL part of RationalGRL to include the full set of GRL elements would be trivial. 
+We thank the reviewer for reading our article in detail, and providing many insightful and useful comments. We’ve replied to each separate comment below.
 
-%R2:I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL.
-In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
+===== COMMENT #1
+I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. 
 
+===== REPLY #1
+TODO: WRITE WHEN ANALYSIS IS DONE
+
+===== COMMENT #2
+The statement on actually using a reduced GRL should be made in the Abstract and Introduction already, not just in a footnote later.
+
+===== REPLY #2
+We have included in the abstract and introduction that we use a simplified version. Note that all the core elements of GRL are included but, for example, we have included only one level of contribution strength, where GRL contains different levels of positive and negative contribution. This simplification does not in any way influence the case study or any of the other results. Furthermore, extending the GRL part of RationalGRL to include the full set of GRL elements would not change the essence of our formalism.
+
+===== COMMENT #3
+I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
+
+===== REPLY #3
 %FB: **Floris to write on GRL beliefs in 7.1**
 
------------------------
-%R2: How would you compare this specific approach with the old gIBIS?
+===== COMMENT #4
+How would you compare this specific approach with the old gIBIS?
+
+===== REPLY #4
 %FB: **Floris to write on gIBIS in 7.1**
 
------------------------
-%R2: Please discuss why you are trying to have detailed, while simple, rationale, although the recent trend in DR is otherwise?
+===== COMMENT #5
+Please discuss why you are trying to have detailed, while simple, rationale, although the recent trend in DR is otherwise?
+
+===== REPLY #5
 %FB: **Floris to write on this in 7.1**
 
------------------------
-%R2: I am also missing a discussion about the consequences of this binary "nature" of argumentation with respect to argumentation in reality.
+===== COMMENT #6
+I wonder about the formalization in propositional logic. Why is it not used for automated reasoning (at least partly instead of the specific algorithms)?
+
+===== REPLY #6
+Propositional logic in itself does not contain specific algorithms for, for example, INTRO, REPLACE and DISABLE. Furthermore, the algorithms also introduce arguments and attacks, formal notions of which are not in basic propositional logic. The idea is that the formalization is needed for the algorithms, but that just providing a formal semantics of GRL does not directly tell you how to compute/reason with GRL models.
+
+===== COMMENT #7
+I am also missing a discussion about the consequences of this binary "nature" of argumentation with respect to argumentation in reality.
+
+===== REPLY #7
 %FB: **Floris to write on this in 5.2**
 
------------------------
-%R2: Regarding terminology, I wonder about "valid" GRL models here, which seem to mean that certain criteria are fulfilled. Validation would mean that a goal model makes sense in the real world as having the "right" goals and relationships between them.
+===== COMMENT #8
+Regarding terminology, I wonder about "valid" GRL models here, which seem to mean that certain criteria are fulfilled. Validation would mean that a goal model makes sense in the real world as having the "right" goals and relationships between them.
+
+===== REPLY #8
+We agree that the term “valid” is confusing in this respect, since we do not want to express that the goal model makes sense in the real world. Instead, we’d like to express that certain criteria are fulfilled. Therefore, we’ve renamed “valid” to “consistent”. 
+TODO(marcvanzee): Implement this renaming in the article.
+
+===== COMMENT #9
 "Verification" in 6.2 appears to stand for evaluation. This cannot be "verified".
 
-%FB: **Marc**
+===== REPLY #9
+We’ve renamed “verification” to “demonstration” and slightly reworded the sentence.
 
------------------------
-%R2: I also do not think that Figure 16 shows a "methodology". It does not even look like a "method".
 
-%FB: **Sepideh, Marc**
+===== COMMENT #10
+I also do not think that Figure 16 shows a "methodology". It does not even look like a "method".
 
------------------------
-%R2: please reconsider the very first sentences in the Abstract and Introduction each, especially the latter statement on RE. 
+===== REPLY #10
+**Sepideh**
 
-%FB: who originally wrote these sentences? **Marc, Sepideh**
+===== COMMENT #11
+please reconsider the very first sentences in the Abstract and Introduction each, especially the latter statement on RE
 
------------------------
-%R2: Finally, you should run a spell checker, have a careful proof reading of grammar, and make sure that there is no unresolved reference to a figure in a submitted manuscript.
+===== REPLY #11
+**Sepideh**
 
-%FB: Reference to figure is line 56 p. 19 **Marc**
-%FB: A quick scan in my TeX environment with UK spelling shows me no spelling mistakes, and I believe gramatically there's not too much wrong with the paper either, but let's check **Marc, Floris, Sepideh**
+===== COMMENT #12
+Finally, you should run a spell checker, have a careful proof reading of grammar, and make sure that there is no unresolved reference to a figure in a submitted manuscript.
+
+===== REPLY #11
+We’ve ran a spell-checker and proof-read the paper carefully. There was one unresolved reference to a figure, which a corrected. Thank you for pointing this out.

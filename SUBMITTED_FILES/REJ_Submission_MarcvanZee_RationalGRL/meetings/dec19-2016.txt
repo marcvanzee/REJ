@@ -1,0 +1,63 @@
+Agenda:
+
+1. Diana: said she won't be able to contribute anymore
+
+2. Division of tasks:
+- Floris: PRAS, argumentation
+- Sepideh: positioning in RE, "critical reader for the formal stuff"
+- Marc: write the rest, implement
+
+3. Planning:
+
+December:
+- Week 2 (5-9, DONE): analyze transcripts and try to extract arguments
+- Week 3 (12-30, NOW): write formal part of paper
+
+January:
+- Week 1 (2-6): finish implementation
+- Week 4 (9-27): finish journal: Sepideh and Floris provide input
+
+February:
+- Week 1 (jan30-3): last changes + submission
+
+Sepideh: goal modeling is still quite popular, they have their own conferneces and workshops. There has been some recent work on making i* more standardized. Quite some groups are still working on it, both in the US and Europe.
+
+possible journals:
+
+TR 2.73
+TSE 2.64  -- very software engineering.
+EMSE 2.08 -- too empirical
+> IST 2.02 
+JSS 1.77
+TOSEM 1.67
+STVR 1.6
+ASE 1.59
+> RE 1.55
+SOSYM 1.5
+
+RE is probably best.
+
+If not accepted: We can send it to IJIS with possible empirical evaluation, from both Sepideh and Floris.
+
+Make clear what the distinction is between GRL analysis and argumentation. GRl analysis is about the satisfiability of elements, and argumentation is about determining the values.
+
+Make explicit the relation between the argumentation part and the anaylsis. This should become clear in the methodology, something like:
+1. Start with arguments
+2. Extensions based on semantics
+3. Then you have a goal model
+4. Then you can do analysis
+
+This is a back and forth process.
+
+Add export functionality to GRL.
+
+Sepideh: show an example of how the whole cycle can work. Maybe we should have the methodology section with an example before so people know what it is about.
+
+Floris is rewriting section 2. It's currently confusing, too many concepts.
+
+Sepideh also wants to be included into the discussions about the formal stuff.
+
+Floris will have his version ready when Sepideh comes back
+
+Sepideh's classes start around the 20th of January
+Floris doesn't have classes until April

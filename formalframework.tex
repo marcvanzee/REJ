@@ -370,37 +370,7 @@ The following arguments schemes and critical questions of Table~\ref{table:argum
 \item CQ5b, CQ6b, CQ6c, CQ7b, CQ9, CQ10b
 \end{itemize}
 
-These type of algorithms are short, and consist simply of adding an argument for the element that is being added. 
-
-\begin{algorithm}[h]
-  \caption{AS0: $a$ is an actor}\label{alg:add-actor}
-  \begin{algorithmic}[1]
-    \Procedure{$AS_0$}{$n$}
-    \State $A \leftarrow (mintId(), Actor, a)$ \label{alg:as0:1}
-    \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:as0:2}
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-Algorithm~\ref{alg:add-actor} takes one argument, namely the name of the actor $a$. On line~\ref{alg:as0:1} of the algorithm, a new (unique) id is minted as the identifier of the new actor, which is assigned with its corresponding name to the variable $actor$. On line~\ref{alg:as0:2}, the actor is added as a new argument. As an example, we can formalize the addition of actor ``Traffic Simulator'' to an empty RationalGRL model (i.e. $Arg=\emptyset$ and $Att=\emptyset$) as executing the algorithm $AS_0$(Traffic simulator), which results in a RationalGRL model with argument $A_0 = (0, Actor, \text{Traffic simulator})\in Arg$.
-
-\begin{algorithm}[h]
-  \caption{AS1: Actor with id $i$ has resource $R$}\label{alg:add-resource}
-  \begin{algorithmic}[1]
-    \Procedure{$AS_1$}{$i, R$}
-    \State $res\_id\gets mintId()$\label{alg:add-resource:id}
-    \State $A_1\leftarrow (res\_id, Resource, R)$\label{alg:add-resource:arg1}
-    \State $A_2\leftarrow (ActIE, i, res\_id)$\label{alg:add-resource:arg2}
-    \State $Arg\gets Arg\cup \{A_1,A_2\}$\label{alg:add-resource:add-arg}
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-In Algorithm~\ref{alg:add-resource}, we have slightly reworded the original AS1 from Table~\ref{table:argument-schemes} to ``Actor with id $i$ has resource $R$''. Furthermore, we assume actor $a$ already exists when Algorithm~\ref{alg:add-actor} is run. The algorithm itself runs as follows: on line~\ref{alg:add-resource:id}, a unique id is assigned to variable $res\_id$ (``resource identifier''). On line~\ref{alg:add-resource:arg1}, an argument for a resource with name $R$ and identifier $res\_id$ is assigned to $A_1$. On line~\ref{alg:add-resource:arg2}, a second argument $A_2$ is created, which is an argument for an Actor-IE relation (Def.~\ref{def:act-ie-relation}) between the input actor $i$ and the newly created element $res\_id$. Finally, on line~\ref{alg:add-resource:add-arg}, the arguments are added to the set of arguments $Arg$.
-
-As an example, consider the addition of resource ``Car objects'' to the RationalGRL model we just discussed (where $A_0 = (0, Actor, \text{Traffic simulator})$). Adding the resource can then be formalized as executing $AS1(0, \text{Car objects})$, resulting in the addition of two arguments $(1, Resource, \text{Car object})$ and $(ActIE, 0, 1)$ which are added to the set of arguments $Arg$.
-
-Since arguments schemes AS2-AS4 are very similar to AS1, we don't show these algorithms here.
+These type of algorithms are short, and consist simply of adding an argument for the element that is being added. We illustrate this with a single example algorithm for AS5.
 
 \begin{algorithm}[h]
   \caption{AS5: Goal with id $i$ decomposes into task $T$}\label{alg:add-decomp}
@@ -414,19 +384,17 @@ Since arguments schemes AS2-AS4 are very similar to AS1, we don't show these alg
   \end{algorithmic}
 \end{algorithm}
 
-Similar to the previous algorithm, we have slightly reworded critical question AS5 in Algoritm~\ref{alg:add-decomp}. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $T$ is a decomposition of $G$. In the algorithm, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:arg1}. On line~\ref{alg:add-decomp:arg2} an argument is created for the decomposition link $(mintId(), Decomp, i, task\_id)$ (Def.~\ref{def:link}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$. On line~\ref{alg:add-decomp:add-arg} the two arguments are added to the set of arguments $Arg$.
+We have slightly reworded critical question AS5 in Algoritm~\ref{alg:add-decomp}. We assume that a goal $G$ exists already with identifier $i$, and that some new task with name $T$ is a decomposition of $G$. In the algorithm, on line~\ref{alg:add-decomp:task-id} a unique identifier is created for the task, which is created on line~\ref{alg:add-decomp:arg1}. On line~\ref{alg:add-decomp:arg2} an argument is created for the decomposition link $(mintId(), Decomp, i, task\_id)$ (Def.~\ref{def:link}, going from the existing goal with identifier $i$ to the new task with identifier $task\_id$. On line~\ref{alg:add-decomp:add-arg} the two arguments are added to the set of arguments $Arg$.
 
 As an example, suppose we are adding the decomposition of goal ``Generate cars'', expressed as argument $A_5 = (5,$ $Goal,$ Generate cars$, AND)$, into task ``Keep same cars'', and suppose we have the following argument for the goal: . Adding the decomposition can be formalized as executing $AS_5(5, \text{Keep same cars})$, and results in two new arguments: $A_7 = (7, Task, \text{Keep same cars})$ and $A_{12} = (12, Decomp, 7, 5)$, which are both added to the set of arguments $Arg$.
 
-The remaining argument schemes AS6-AS12 are all similar to algorithms~\ref{alg:add-actor}-\ref{alg:add-decomp} and are therefore not shown here.
-
-The critical questions of type \emph{INTRO} are very similar as well, with one exception: they require an answer. For instance, suppose CQ5b: ``Does goal $G$ decompose into other tasks?'' is answered with: ``Yes, namely into task $T$''. In this case, we simply obtain an instantiation of argument scheme AS5: ``Goal $G$ decomposes into task $T$'', which can be executed with Algorithm~\ref{alg:add-decomp}. This is the same for all the other critical questions of type \emph{INTRO}. Therefore, we are not shown here as well.
+The critical questions of type \emph{INTRO} are all very similar, with one exception: they require an answer. For instance, suppose CQ5b: ``Does goal $G$ decompose into other tasks?'' is answered with: ``Yes, namely into task $T$''. In this case, we simply obtain an instantiation of argument scheme AS5: ``Goal $G$ decomposes into task $T$'', which can be executed with Algorithm~\ref{alg:add-decomp}. This is the same for all the other critical questions of type \emph{INTRO}. Therefore, they are not shown here as well.
 
 \subsubsection{DISABLE algorithms}
 \label{sect:formalframework:disable}
 As discussed before, algorithms of type \emph{DISABLE} consist of adding a new argument attacking an existing argument. The argument that is added is not an argument for a GRL element or link, but it is rather a generic argument (Definition~\ref{def:generic-argument}).
 
-In all of these algorithms, we assume the critical question is answered affirmatively, as indicated in the right-most column of Table~\ref{table:argument-schemes}. For instance, for critical question CQ0 ``Is the actor relevant?'', we assume it is answered with ``No''. In this case, an action is required. In contrary, if the answer to the question is ``Yes'', no action is required.
+In the following algorithm, we assume the critical question is answered affirmatively, as indicated in the right-most column of Table~\ref{table:argument-schemes}. For instance, for critical question CQ0 ``Is the actor relevant?'', we assume it is answered with ``No''. In this case, an action is required. In contrary, if the answer to the question is ``Yes'', no action is required.
 
 \begin{algorithm}[h]
   \caption{CQ0: Is actor with id $i$ relevant? No}\label{alg:actor-not-relevant}
@@ -445,41 +413,7 @@ Algorithm~\ref{alg:actor-not-relevant} is executed when critical question CQ0 is
 
 Consider for example the RationalGRL model in Figures~\ref{fig:examples:relevant-actor}, which consists of an actor and a generic counterargument. Let us reconstruct this model using the application of argument schemes and critical questions to an initially empty RationalGRL model ($Arg=\emptyset$ and $Att=\emptyset$). The algorithm $AS_0(\text{Development team})$ is executed, which results in $A_1=\{(0,Actor,\text{Development team}\})$. After this, critical question CQ0: ``Is the actor Development team relevant?'' is answered with ``No, because the professor develops the software''. We can formalize this as executing algorithm $CQ_0(0)$ (Algorithm~\ref{alg:actor-not-relevant}), which results in adding a generic counter argument $A_2=(1, GenArg, \text{CQ0: Professor develops software})$ and an attack link $(A_2,A_1)$. The RationalGRL model now consists of two arguments, and that the preferred extension is $\{A_2\}$, which means that the resulting GRL model is empty, because generic arguments are not translated to GRL.
 
-Critical questions C1-CQ3 are all very similar to CQ0 and are therefore not shown here.
-
-\begin{algorithm}[h]
-  \caption{CQ5a: Does the goal with id $g\_id$ decompose into task with id $t\_id$? No}\label{alg:no-decomp}
-  \begin{algorithmic}[1]
-    \Procedure{$CQ5a$}{$g\_id,t\_id$}
-    \State $A \leftarrow (mintId(),GenArg,CQ5a)$\label{alg:no-decomp:genarg}
-    \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:no-decomp:genarg2}
-    \For{$A_j\in \{(k,Decomp,g\_id,t\_id)\in Arg\}$}\label{alg:no-decomp:for}
-      \State $Att \leftarrow Att \cup \{(A,A_j)\}$\label{alg:no-decomp:att}
-    \EndFor
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-Algorithm~\ref{alg:no-decomp} is structurally very similar to Algorithm~\ref{alg:actor-not-relevant}, with the only difference that instead of iterating over actors, we now iterate over decomposition links. This is done in line~\ref{alg:no-decomp:for}, where we iterate over all decomposition links with source id $g\_id$ and target id $t\_id$ (Definition~\ref{def:link}). This means we iterate over all decomposition links from the goal to the task, and we attack all arguments for these links on line~\ref{alg:no-decomp:att} with the newly created argument.
-
-Almost all of the remaining critical questions of type DISABLE are similar in structure. CQ11 (``Is the element relevant/useful'') is slightly different since the attack element is not of a specific type, but is simply any GRL element. However, the resulting algorithm is very similar to the previous two and is therefore now shown here. The only other algorithm of type \emph{DISABLE} that we discuss is $Att$.
-
-\begin{algorithm}[b]
-  \caption{Att: Generic counter-argument on arguments $A_1,\ldots,A_n$ with name $N$}\label{alg:generic}
-  \begin{algorithmic}[1]
-    \Procedure{$Att$}{$A_1,\ldots,A_n$, $N$}
-    \State $A \leftarrow (mintId(),GenArg, N)$\label{alg:generic:arg}
-    \State $Arg\leftarrow Arg \cup \{A\}$\label{alg:generic:addarg}
-    \For{$A_j\in \{A_1,\ldots,A_n\}$}\label{alg:generic:for}
-      \State $Att \leftarrow Att \cup \{(A,A_j)\}$\label{alg:generic:att}
-    \EndFor
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-Algorithm~\ref{alg:generic} can be regarded as the most general way of providing counterarguments to arguments. In all of the previous \emph{DISABLE} algorithms, the attack was on a specific type of argument, for instance an argument for an actor or an argument for a decomposition. In this algorithm, however, \emph{any} set of arguments can be attacked by a new argument.
-
-Let us reconsider Figure~\ref{fig:examples:relevant-actor}, which we previously formalized as a RationalGRL model where $Arg=\{A_1,A_2\}$, $A_1 = \{(0,Actor,\text{Development team}\})$, $A_2= (1,$ $GenArg,$ CQ0: Professor develops software$)$ and $Att=(A_2,A_1)$. Suppose we execute algorithm $Att(\{A_2\},$ Professor does not develop software$)$. This results in $A_3=(2, GenArg,$ CQ0: Professor does not develop software$)$ and a new attack link $(A_3,A_2)$ (Figure~\ref{fig:examples:relevant-actor2}). Since the argument for the goal is now part of the preferred extension, it does show up in the resulting GRL model after the translation of Algorithm~\ref{alg:translation:to-grl}.
+Algorithms for the remaining critical questions are omitted here since they are not very complex. 
 
 \begin{figure*}[b]
 \centering
@@ -518,7 +452,7 @@ While the original critical question CQ5c is specific to the decomposition betwe
 
 Let us go through this algorithm step by step. On line~\ref{alg:replace1:arg}, a new argument $A$ is created which is identical to original IE. On line~\ref{alg:replace1:decompchange} the decomposition type of the argument is changed to $X$ -- here, $Arg.decomptype$ refers to the $decomptype$ element in an argument tuple $Arg$. On line~\ref{alg:replace1:ieargs}, the set $IEArgs$ is assigned with all existing arguments for the input IE -- here $IE_i$ is the set of all IEs with id $i$. The first two for loops on respectively lines~\ref{alg:replace1:for1} and~\ref{alg:replace1:for2} ensure that all attack links that existing from and to the previous versions of the IE are also carried over to the new argument $A$. Then, in the third for loop on line~\ref{alg:replace1:for3}, we add attack links from the argument that has just been created to all existing arguments for the IE. This ensures that all previous version of the IE are not part of the preferred extension, and as a result do not show up in the resulting GRL model. Finally, one line~\ref{alg:replace1:addarg}, the new argument is added to the set of arguments.
 
-As an example, take Figure~\ref{fig:examples:decomposition}. The initial RationalGRL model (before applying CQ10b), can be formalized as follows: $RatGRL=(Arg,Att)$, with $Arg=\{A_1,A_2,A_3,A_4,A_5\}$ and $Att=\emptyset$, where:
+As an example, take Figure~\ref{fig:example_AS}. The initial RationalGRL model (before applying CQ10b), can be formalized as follows: $RatGRL=(Arg,Att)$, with $Arg=\{A_1,A_2,A_3,A_4,A_5\}$ and $Att=\emptyset$, where:
 \begin{itemize}
 \item $A_1=(0,Goal,\text{Simulate traffic},AND)$
 \item $A_2=(1,Task,\text{Dynamic simulation},AND)$
