@@ -4,21 +4,7 @@
 Please ensure also that your manuscript shows clearly how your work relates to relevant works as they may have been published in the Requirements Engineering or presented at the Requirements Engineering series of conferences.
 
 ===== REPLY #1
-Currently 6 of the 44 references in the article come from either REJ or the RE conference:
-- Y. Elrakaiby, A. Ferrari, P. Spoletini, S. Gnesi, and B. Nuseibeh. Using argumentation to explain ambiguity in requirements elici- tation interviews. In Proceedings of the 25th IEEE International Requirements Engineering Conference (RE 2017), pages 51–60. IEEE Press, 2017.
-- I. Jureta, S. Faulkner, and P. Schobbens. Clear justification of mod- eling decisions for goal-oriented requirements engineering. Re- quirements Engineering, 13(2):87–115, May 2008.
-- Y. Liu, Y. Su, X. Yin, and G. Mussbacher. Combined goal and feature model reasoning with the user requirements notation and jucmnav. In Requirements Engineering Conference (RE), 2014 IEEE 22nd International, pages 321–322. IEEE, 2014.
-- P. K. Murukannaiah, A. K. Kalia, P. R. Telangy, and M. P. Singh. Resolving goal conflicts via argumentation-based analysis of com- peting hypotheses. In Proceedings of the 23rd International Re- quirements Engineering Conference (RE 2015), pages 156–165. IEEE, 2015.
-- M. van Zee, F. Bex, and S. Ghanavati. Rationalization of Goal Models in GRL using Formal Argumentation. In Proceedings of the 23rd International Requirements Engineering Conference (RE’15), pages 220–225. IEEE Press, August 2015
-- E. S. K. Yu. Towards Modeling and Reasoning Support for Early-Phase Requirements Engineering. In Proceedings of the 3rd IEEE International Symposium on Requirements Engineering, pages 226–235, 1997.
-
-We have searched through the journal and conference database for more references, and we found 4 more references that are closely related to our work:
-- S. R. Smith. Constructing and revising formal arguments in re- quirements engineering. Requir. Eng., 2(4):199–216, Dec. 1997.
-- J.Lockerbie,N.A.M.Maiden,J.Engmann,D.Randall,S.Jones, and D. Bush. Exploring the impact of software requirements on system-wide goals: a method using satisfaction arguments and i* goal modelling. Requirements Engineering, 17(3):227–254, 2012.
-- J. Horkoff and E. Yu. Interactive goal model analysis for early requirements engineering. Requirements Engineering, 21(1):29– 61, 2016.
-- J. Hassine and D. Amyot. A questionnaire-based survey method- ology for systematically validating goal-oriented models. Require- ments Engineering, 21(2):285–308, 2016.
-
-This means we currently have 10 references from the Requirements Engineering Journal or presented at the Requirements Engineering series of conferences.
+Currently 6 of the 44 references in the article come from either REJ or the RE conference [1,2,3,4,5,6]. We have searched through the journal and conference database for more references, and we found 4 more references that are closely related to our work [7,8,9,10]. We have added a discussion of these articles to the related work section, at the end of the paragraph "Requirements Engineering". This means we currently have 10 references from the Requirements Engineering Journal or presented at the Requirements Engineering series of conferences.
 
 ######## REVIEWER #1 ########
 
@@ -28,19 +14,26 @@ We thank the reviewer for the insightful comments. Especially the comment about 
 The integrated meta model looks reasonable but I have some doubts about the inclusion of "critical question" in the schema. Critical questions are something that are used to identify arguments and attack links, but  I don't see them as a concept to be included in the meta model. They are part of the methodology used to build the goal model rather concepts of the language.  
 
 ===== REPLY #1
-We thank the reviewer for pointing this out. We indeed believe critical questions should not be part of the metamodel, and we have removed them accordingly. We initially had put them into the metamodel because they play an important part in the implementation, but they are by themselves not part of the RationalGRL language. We also have updated the text accordingly.
+We thank the reviewer for pointing this out. We agree critical questions should not be part of the metamodel, and we have removed them accordingly. We also have updated the text accordingly.
 
 ===== COMMENT #2
 The proposed algorithms are very simple and they do not add much to the overall presentation, I think they can be summarized in the section describing the tool. 
 
 ===== REPLY #2
-We agree that many algorithms are very much the same, and we have therefore shortened the sections containing these algorithms: sections 5.4.1 to 5.4.3 now all contain one example of the specific type of algorithm instead of two or more.
+We agree that many algorithms are similar, and we have therefore shortened the sections containing these algorithms: sections 5.4.1 to 5.4.3 now all contain one example of the specific type of algorithm instead of two or more.
 
 ===== COMMENT #3
 The methodology and the tools looks quite preliminary and without a real validation of the approach. I think this is the weakest part of the paper. Authors should demonstrate the applicability, scalability and usefulness of their approach in the real word. The tool and the modeling language should be used and evaluated by practitioners while they cope with real requirements engineering problems and complexity issues.
 
 ===== REPLY #3
-TODO: WRITE WHEN ANALYSIS IS DONE
+We agree with the reviewer that a real validation of the approach is a necessary next step. However, we also would like to point out that an industrial strength case study is a significant amount of work, and would most likely have enough new insights for a separate paper. To give an example, it took Estrada et al. [11] about 9 months to conduct the case study. 
+
+Since the main focus of our article is to explain the noval RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed two small-scale user studies in order to provide an initial validation of our framework. These two studies are as follows:
+1) We evaluated the RationalGRL tool with two Enterprise Architects from a large bank in the Netherlands. The architects found the RationalGRL models very useful in that they could visualize the arguments and were easier for them to understand the links between the rationale, and the resulting goal model elements.
+2) We performed an empirical study amongst ==> TODO(marcvanzee): ADD NUMBER HERE  <== participants, each with a computer science background. 
+
+We have added a section "Validation" (Section 7) where we describe the results of the validation.
+
 
 %FB: Marc to write on Enterprise Architects
 
@@ -60,7 +53,7 @@ We thank the reviewer for reading our article in detail, and providing many insi
 I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. 
 
 ===== REPLY #1
-TODO: WRITE WHEN ANALYSIS IS DONE
+We have added a section "Validation" (Section 7) where we describe the results of a validation. Please see REPLY #3 to REVIEWER #1 for more details.
 
 ===== COMMENT #2
 The statement on actually using a reduced GRL should be made in the Abstract and Introduction already, not just in a footnote later.
@@ -72,7 +65,9 @@ We have included in the abstract and introduction that we use a simplified versi
 I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
 
 ===== REPLY #3
-%FB: **Floris to write on GRL beliefs in 7.1**
+We have added a comparison between arguments in RationalGRL and beliefs in GRL at the end of the related work section, in the paragraph "Beliefs in GRL". 
+
+The comparison between argumentation and belief revision is interesting, especially from a theoretical point of view. In the area of knowledge representation, obtaining correspondences between beliefs revision and the dynamics of argumentation theory is a popular topic of research [12,13,14,15]. However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a theoretical point of view, we have left out the theoretical comparison. Instead, we chose to compare it with beliefs in GRL.
 
 ===== COMMENT #4
 How would you compare this specific approach with the old gIBIS?
@@ -109,23 +104,46 @@ TODO(marcvanzee): Implement this renaming in the article.
 "Verification" in 6.2 appears to stand for evaluation. This cannot be "verified".
 
 ===== REPLY #9
-We’ve renamed “verification” to “demonstration” and slightly reworded the sentence.
-
+We have renamed “verification” to “demonstration” and slightly reworded the sentence.
 
 ===== COMMENT #10
 I also do not think that Figure 16 shows a "methodology". It does not even look like a "method".
 
 ===== REPLY #10
-**Sepideh**
+We agree that the terminology is wrong. We have renamed the methodology to "The RationalGRL development process", since it defines the steps on how to create a RationalGRL model. We have renamed this throughout the entire article.
 
 ===== COMMENT #11
 please reconsider the very first sentences in the Abstract and Introduction each, especially the latter statement on RE
 
 ===== REPLY #11
-**Sepideh**
+We agree with the reviewer that the two mentioned sentences are confusing. We have improved this as follows:
+- We have rewritten the first sentence of the abstract as follows: "Goal-oriented requirements modeling approaches aim at capturing intentions of various stakeholders involved in the development of an information system and refining them into low level goals and tasks."
+- We have deleted the first sentence of the introduction, since we feel that it is not necessary to explain the definition of Requirements Engineering in the Requirements Engineering Journal.
 
 ===== COMMENT #12
 Finally, you should run a spell checker, have a careful proof reading of grammar, and make sure that there is no unresolved reference to a figure in a submitted manuscript.
 
 ===== REPLY #11
 We’ve ran a spell-checker and proof-read the paper carefully. There was one unresolved reference to a figure, which a corrected. Thank you for pointing this out.
+
+
+
+######## REFERENCES ########
+[1] Y. Elrakaiby, A. Ferrari, P. Spoletini, S. Gnesi, and B. Nuseibeh. Using argumentation to explain ambiguity in requirements elici- tation interviews. In Proceedings of the 25th IEEE International Requirements Engineering Conference (RE 2017), pages 51–60. IEEE Press, 2017.
+[2] I. Jureta, S. Faulkner, and P. Schobbens. Clear justification of mod- eling decisions for goal-oriented requirements engineering. Re- quirements Engineering, 13(2):87–115, May 2008.
+[3] Y. Liu, Y. Su, X. Yin, and G. Mussbacher. Combined goal and feature model reasoning with the user requirements notation and jucmnav. In Requirements Engineering Conference (RE), 2014 IEEE 22nd International, pages 321–322. IEEE, 2014.
+[4] P. K. Murukannaiah, A. K. Kalia, P. R. Telangy, and M. P. Singh. Resolving goal conflicts via argumentation-based analysis of com- peting hypotheses. In Proceedings of the 23rd International Re- quirements Engineering Conference (RE 2015), pages 156–165. IEEE, 2015.
+[5] M. van Zee, F. Bex, and S. Ghanavati. Rationalization of Goal Models in GRL using Formal Argumentation. In Proceedings of the 23rd International Requirements Engineering Conference (RE’15), pages 220–225. IEEE Press, August 2015
+[6] E. S. K. Yu. Towards Modeling and Reasoning Support for Early-Phase Requirements Engineering. In Proceedings of the 3rd IEEE International Symposium on Requirements Engineering, pages 226–235, 1997.
+
+[7] S. R. Smith. Constructing and revising formal arguments in re- quirements engineering. Requir. Eng., 2(4):199–216, Dec. 1997.
+[8] J.Lockerbie,N.A.M.Maiden,J.Engmann,D.Randall,S.Jones, and D. Bush. Exploring the impact of software requirements on system-wide goals: a method using satisfaction arguments and i* goal modelling. Requirements Engineering, 17(3):227–254, 2012.
+[9] J. Horkoff and E. Yu. Interactive goal model analysis for early requirements engineering. Requirements Engineering, 21(1):29– 61, 2016.
+[10] J. Hassine and D. Amyot. A questionnaire-based survey method- ology for systematically validating goal-oriented models. Require- ments Engineering, 21(2):285–308, 2016.
+
+[11] Estrada, H., Rebollar, A. M., Pastor, O., & Mylopoulos, J. (2006, June). An empirical evaluation of the i* framework in a model-based software generation environment. In International Conference on Advanced Information Systems Engineering (pp. 513-527). Springer, Berlin, Heidelberg.
+
+[12] Falappa, Marcelo Alejandro, Gabriele Kern-Isberner, and Guillermo Ricardo Simari. "Belief revision and argumentation theory." Argumentation in artificial intelligence. Springer, Boston, MA, 2009. 341-360.
+[13] Liao, Beishui, Li Jin, and Robert C. Koons. "Dynamics of argumentation systems: A division-based method." Artificial Intelligence 175.11 (2011): 1790-1814.
+[14] Dix, Jürgen, et al. "Belief change and argumentation in multi-agent scenarios (Dagstuhl seminar 13231)." Dagstuhl Reports. Vol. 3. No. 6. Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik, 2013.
+[15] Paglieri, Fabio, and Cristiano Castelfranchi. "Revising beliefs through arguments: Bridging the gap between argumentation and belief revision in MAS." International Workshop on Argumentation in Multi-Agent Systems. Springer, Berlin, Heidelberg, 2004.
