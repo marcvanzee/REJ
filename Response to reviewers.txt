@@ -19,7 +19,15 @@ Reviewer 1 argues that the algorithms are fairly simple. We agree that many algo
 %R1: The methodology and the tools looks quite preliminary and without a real validation of the approach. I think this is the weakest part of the paper. Authors should demonstrate the applicability, scalability and usefulness of their approach in the real word. The tool and the modeling language should be used and evaluated by practitioners while they cope with real requirements engineering problems and complexity issues.
 %R2: I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. Connecting them with an existing approach for goal modeling is also a pro in this respect. 
 
-%FB: Depending on the editor's answer we can leave this as is in the paper. However, we do need to come up withy a satisfactory example in the response to reviewers. Also, I think we need to include some references on empirical work that has been done on goal modelling ***Sepideh?***
+%FB: Depending on the editor's answer we can leave this as is in the paper. However, we do need to come up withy a satisfactory example in the response to reviewers. Also, I think we need to include some references on empirical work that has been done on goal modelling 
+
+I asked Fabiano and he gave me the following two references, we can discuss them.
+
+Estrada, H., Rebollar, A. M., Pastor, O., & Mylopoulos, J. (2006, June). An empirical evaluation of the i* framework in a model-based software generation environment. In International Conference on Advanced Information Systems Engineering (pp. 513-527). Springer, Berlin, Heidelberg.
+
+Morandini, M., Marchetto, A., & Perini, A. (2011, August). Requirements comprehension: A controlled experiment on conceptual modeling methods. In Empirical Requirements Engineering (EmpiRE), 2011 First International Workshop on (pp. 53-60). IEEE
+
+***Sepideh***
 
 -----------------------
 %R2: the statement on actually using a reduced GRL should be made in the Abstract and Introduction already, not just in a footnote later.
