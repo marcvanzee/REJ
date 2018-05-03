@@ -28,14 +28,9 @@ The methodology and the tools looks quite preliminary and without a real validat
 ===== REPLY #3
 We agree with the reviewer that a real validation of the approach is a necessary next step. However, we also would like to point out that an industrial strength case study is a significant amount of work, and would most likely have enough new insights for a separate paper. To give an example, it took Estrada et al. [11] about 9 months to conduct the case study. 
 
-Since the main focus of our article is to explain the noval RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed two small-scale user studies in order to provide an initial validation of our framework. These two studies are as follows:
-1) We evaluated the RationalGRL tool with two Enterprise Architects from a large bank in the Netherlands. The architects found the RationalGRL models very useful in that they could visualize the arguments and were easier for them to understand the links between the rationale, and the resulting goal model elements.
-2) We performed an empirical study amongst ==> TODO(marcvanzee): ADD NUMBER HERE  <== participants, each with a computer science background. 
+Since the main focus of our article is to explain the novel RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed a small-scale user study in order to provide an initial validation of our framework. This empirical study was performed amongst ==> TODO(marcvanzee): ADD NUMBER HERE  <== participants, each with a computer science background. 
 
 We have added a section "Validation" (Section 7) where we describe the results of the validation.
-
-
-%FB: Marc to write on Enterprise Architects
 
 %FB: Marc/Floris to write on the below
 I think we need to include some references on empirical work that has been done on goal modelling. I asked Fabiano and he gave me the following two references, we can discuss them.
@@ -65,9 +60,9 @@ We have included in the abstract and introduction that we use a simplified versi
 I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
 
 ===== REPLY #3
-We have added a comparison between arguments in RationalGRL and beliefs in GRL at the end of the related work section, in the paragraph "Beliefs in GRL". 
+We have added a comparison between arguments in RationalGRL and beliefs in GRL in the related work section, at the beginning of the paragraph "Goal Modelling". 
 
-The comparison between argumentation and belief revision is interesting, especially from a theoretical point of view. In the area of knowledge representation, obtaining correspondences between beliefs revision and the dynamics of argumentation theory is a popular topic of research [12,13,14,15]. However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a theoretical point of view, we have left out the theoretical comparison. Instead, we chose to compare it with beliefs in GRL.
+The comparison between argumentation and belief revision is interesting, especially from a theoretical point of view. In the area of knowledge representation, obtaining correspondences between beliefs revision and the dynamics of argumentation theory is a popular topic of research [12,13,14,15]. However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a formal logical point of view, we have left this out of the discussion in our paper, instead choosing to focus on beliefs in GRL.
 
 ===== COMMENT #4
 How would you compare this specific approach with the old gIBIS?
@@ -129,7 +124,7 @@ We’ve ran a spell-checker and proof-read the paper carefully. There was one un
 
 
 ######## REFERENCES ########
-[1] Y. Elrakaiby, A. Ferrari, P. Spoletini, S. Gnesi, and B. Nuseibeh. Using argumentation to explain ambiguity in requirements elici- tation interviews. In Proceedings of the 25th IEEE International Requirements Engineering Conference (RE 2017), pages 51–60. IEEE Press, 2017.
+[1] Y. Elrakaiby, A. Ferrari, P. Spoletini, S. Gnesi, and B. Nuseibeh. Using argumentation to explain ambiguity in requirements elicitation interviews. In Proceedings of the 25th IEEE International Requirements Engineering Conference (RE 2017), pages 51–60. IEEE Press, 2017.
 [2] I. Jureta, S. Faulkner, and P. Schobbens. Clear justification of mod- eling decisions for goal-oriented requirements engineering. Re- quirements Engineering, 13(2):87–115, May 2008.
 [3] Y. Liu, Y. Su, X. Yin, and G. Mussbacher. Combined goal and feature model reasoning with the user requirements notation and jucmnav. In Requirements Engineering Conference (RE), 2014 IEEE 22nd International, pages 321–322. IEEE, 2014.
 [4] P. K. Murukannaiah, A. K. Kalia, P. R. Telangy, and M. P. Singh. Resolving goal conflicts via argumentation-based analysis of com- peting hypotheses. In Proceedings of the 23rd International Re- quirements Engineering Conference (RE 2015), pages 156–165. IEEE, 2015.
