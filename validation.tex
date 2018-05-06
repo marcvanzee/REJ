@@ -1,32 +1,82 @@
-\section{Validation}
+\section{RationalGRL user evaluation}
 \label{sect:validation}
 
-\subsection{RationalGRL user evaluation}
+Since RationalGRL is targeted at practitioners and not just for academic end users, we performed a brief user evaluation with 16 users. In this evaluation, we asked participants to rate and comment the usability of the RationalGRL tool. In this section we first present the results of the evaluation in three subsections, and then provide a more high-level analysis in the last subsection.
 
-Since RationalGRL is targeted at practitioners and not just for academic end users, we performed a brief user evaluation with 20 users. In this evaluation, we asked participants to rate and comment the usability of the RationalGRL tool. The study consisted of three parts:
+\subsection{Experimental setup}
+The study consists of three parts:
 \begin{enumerate}
-\item Explanation: We explained the participants the basics of the RationalGRL methodology and the RationalGRL tool in a document we wrote.
-\item Modelling: We asked the participants to model a summarized discussion in the RationalGRL tool.
-\item Questionnaire: We asked some questions about the usability of the RationalGRL tool, and how it relates to GRL.
+\item Explanation: We explain the participants the basics of the RationalGRL development process and the RationalGRL tool.
+\item Modelling: We ask the participants to model a summarized discussion in the RationalGRL tool.
+\item Survey: We ask some questions about the usability of the RationalGRL tool, and how it relates to other goal modeling languages.
 \end{enumerate}
 
-The instructions for these three parts were contained in a single document that we sent out to the participants.\footnote{See \url{www.rationalgrl.com}, page ``Empirical Study''} At the end of the document we provided a link to the survey\footnote{https://goo.gl/forms/fDSMUnAV20wy7kbY2}.
+The instructions for these three parts are contained in a single document that we sent out to the participants.\footnote{See \url{www.rationalgrl.com}, page ``Empirical Study''} At the end of the document we provide a link to the survey.\footnote{https://goo.gl/forms/fDSMUnAV20wy7kbY2} The instructions we provide to the users for task 2 can be found in Appendix~\ref{sect:survey}, and some example RationalGRL models the users created can be found in Appendix~\ref{sect:survey-screenshots}.
 
-In the second task, the users were asked to visit rationalgrl.com, where they could start experimenting with the RationalGRL tool directly. We presented the users with summarized transcripts of the discussion about the development of the Traffic Controller, and then asked them to model this to the best of their abilities. ADD RESULTS HERE
+Two thirds of the participants had either a PhD or Master degree, 20\% a Bachelor degree, and one respondent responded with ``Other''. The participants turned out to have a relatively high level of experience with IT, with an average rating of 6 years, ranging from 0 to 25 years. They also judged themselves to be quite experienced with early-phase requirements engineering (average of rating 3.2 out of 5), but experience with goal modeling was less (rating 1.9 out of 5). Goal modeling languages the participants had experience with were GRL (2), i* (5), Tropos (1), and KAOS (1).
 
-For the third task, we asked the users to fill out a survey. The survey starts by asking about the users’ backgrounds. The participants turned out to have a relatively high level of experience with
-IT, with an average rating of.... Experience
-with goal modeling was less....
+\subsection{Usability of the RationalGRL tool}
 
-Explain rest of results here....
+There are four questions in the survey which ask users to rate various aspects of the RationalGRL tool on a scale of 1 to 5:
+\begin{itemize}
+\item[Q1] Was it easy or difficult to get started with the RationalGRL tool?
+\item[Q2] Was the details pane (containing details of an element, critical questions, etc) easy or difficult to use?
+\item[Q3] Was it easy or difficult to understand the way in which the status of arguments and other elements is determined?
+\item[Q4] Did you find it easy or difficult to model the example discussion using RationalGRL?
+\end{itemize}
 
-%FB: I'd leave this out
+\begin{table*}[t]
+\centering
+\begin{tabularx}{0.95\textwidth}{l|l|l|l|l|l|l|l}
+& very difficult & somewhat difficult & neither difficult nor easy & somewhat easy & very easy & avg. score (1-5) & std. dev.\\
+\hline
+Q1 & 2 (12.5\%) & 1 (6.3\%) & 6 (37.5\%) & 6 (37.5\% & 1 (6.3\%) & 3.2 & 1.1\\
+Q2 & 2 (12.5\%) & 2 (12.5\%) & 4 (25\%) & 8 (50\%) & 0 (0\%) & 3.1 & 1.1\\
+Q3 & 0 (0\%) & 3 (20\%) & 4 (26.7\%) & 5 (33.3\%) & 3 (20\%) & 3.3 & 1.4\\
+Q4 & 2 (12.5\%) & 5 (31.3\%) & 6 (37.5\%) & 3 (18.8\%) & 0 (0\%) & 2.6 & 1.0
+\end{tabularx}
+\caption{User scores for the usability of the RationalGRL tool}
+\label{table:survey:table1}
+\end{table*}
 
+\begin{table*}[t]
+\centering
+\begin{tabularx}{0.95\textwidth}{l|l|l|l|l|l|l|l}
+& very useful & somewhat useful & neither useful nor useless & somewhat useless & very useless & avg. score (1-5) & std. dev.\\
+\hline
+Q5 & 0 (0\%) & 0 (0.0\%) & 3 (21.4\%) & 8 (57.1\% & 3 (21.4\%) & 4.0 & 0.68\\
+Q6 & 0 (0.0\%) & 3 (21.4\%) & 3 (21.4\%) & 6 (42.9\%) & 2 (14.3\%) & 3.5 & 1.0\\
+Q7 & 0 (0\%) & 0 (0\%) & 2 (14.3\%) & 7 (50.0\%) & 5 (35.7\%) & 4.2 & 0.7
+\end{tabularx}
+\caption{User scores for the comparison between RationalGRL and other goal modeling languages}
+\label{table:survey:table2}
+\end{table*}
 
-%\subsection{Evaluation with Enterprise Architects}
-%
-%\todo{marcvanzee}{marcvanzee,floris,sepideh}{This is copied from the CAiSE paper where we did the original evaluation with two Enterprise Architects. I'm not sure if we can re-use it. The main problem is that at that time we developed GRL models specifically for the organization in which the Enterprise Architects were working, and we don't have such a model now. What do you think?}
-%
-%To ensure GRL models captured the essence of the EA principles correctly, we evaluated the models with two Enterprise Architects from eGovernment. The architects found the GRL models very useful in that they could visualize the principles and were easier for them to understand the links between the rationale, added value, actions and the goals of the principles. Furthermore, since the EA principles were linked to the high-level goals of the organization, it made them easier to justify and analyze. Also, we captured the traceability links between the related EA principles which helped the architects to document the links and verify the connections.
+Table~\ref{table:survey:table1} shows the respondents' answers, the average score, and the standard deviation for each answer. On average, the respondent found the tool relatively easy to use, but there was also a number of users that had some trouble getting started (in 3 out of the 4 questions, 12.\%5 rated ``very difficult''). We think this is not unexpected, as the cognitive burden for our framework is higher than for other goal modeling languages such as GRL and i*, simply because there are more elements in the language. Still, the majority of the users did not found the tool difficult to use.
 
-%The architects also informed us that assigning values for contribution links can be done at design time together with the architects. We aim to extend our models to more principles and provide analysis of the principles with high-level goals as well as low-level operationalized activities of the organization.
+We also asked the users three open questions related to usability. When asked about the strengths and weaknesses of RationalGRL, users where generally positive about RationalGRL's clear UI and the fact that arguments can be combined with goal models. For instance, one user stated that RationalGRL successfully ``tries to capture the rational behind the modeling process' and ``has a simple) way to compute the status of the arguments''. Users did found it challenging to decide when to use arguments, and to determine when an arguments attacks another argument. For instance, user mentioned ``it wasn't very easy because i didn't always know how to attack the elements'', and ``i dont think its necessary to include all the arguments because some of them are a bit trivial''. Other users were worried about the cognitive overload of the tool. One user mentioned ``I still believe in the value of arguments, but there should be less confusing ways to capture them''. 
+
+When asked about improvements in the RationalGRL tool, the users mentioned additional UI functionality such as the possibility to save models, having an ``undo'' function, and flipping the arrow after adding them. Users also suggested various language-related improvements. Some users mentioned they missed the possibility to attack links, while other mentioned that not all GRL elements are supported (for instance, it is currently not possible to add actors).
+
+When asked whether the users believe a more mature version of RationalGRL can be used to capture early-phase requirements in an actual software development project, most users responded positively. This was somewhat surprising, since our tool is still an early prototype. Users' responses include ``Yes, having the possibility to add arguments seems quite useful'', ``I think it can, but maybe try to find a way to combine it with more regular/mainstream requirements gathering such as user stories and customer journeys'', ``yes, because it creates a clear scope for the project, what the goals are'', and ``Generally I think its useful to explicitly document arguments of a discussion''. The worry that there may be a cognitive overhead did come back here as well: ``I think the overhead of inputting a (detailed) discussion in a structured manner into any system makes adoption difficult'', and ``the manual input is too complex and takes too much time. An automated process of parsing the conversation log would be much more helpful''. 
+
+\subsection{Comparison with other goal modeling languages}
+
+We asked the users three questions about the extension of RationalGRL on a scale of 1 to 5:
+\begin{itemize}
+\item[Q5] Do you think the arguments and counterarguments of RationalGRL are a useful extension to standard goal modelling?
+\item[Q6] Do you think the critical questions and answers in the details pane are a useful extension to standard goal modelling?
+\item[Q7] Do you think the automatic determination of the status of arguments and elements is a useful extension to standard goal modelling?
+\end{itemize}
+
+Table~\ref{table:survey:table2} shows the respondents' answers, the average score, and the standard deviation for each answer. On average, the users were positive about the usefulness of the RationalGRL extension. The rating for the usefulness of determining the status of arguments was particularly positive (rating 4.2 out of 5), which provides some indication to the fact that using argumentation semantics to be able to determine precisely which elements of a goal model are accepted could be useful in practice.
+
+We concluded with two open questions about the comparison between RationalGRL and other goal modeling languages. When asked about the advantages of RationalGRL over standard goal modeling languages, many users agreed that making arguments explicit may force end users to have a more structured discussion: ``	Clear communication about argumentation and forcing people to think in those clear terms.'', ``...you can add arguments and that you can answer questions that help you to develop arguments'', ``It's useful that discussion and explanation are close to the diagrams'', ``a way to see how decisions are being shaped.''. When asked about the weaknesses, users mentioned the complexity as the most important weakness: ``The apparent increase in complexity might lead to negative perceptions'', ``adding yet another layer of complexity scares me''. One user mentioned that this may be a problem with goal modeling in general: ``Goal models are already complex (...) I have worked for years on the effect of context on goal models, and my conclusion is that this was very interesting academic work but with close-to-zero practical implications, unfortunately.''.
+
+\subsection{Analysis}
+Although our empirical evaluation is relatively small-scale, and we cannot draw hard conclusions from it, we do believe that we can extract some interesting observations. We list the three most important ones:
+\begin{enumerate}
+\item \emph{High cognitive overload.} A worry that came back often in our empirical evaluation is that, in its current form, RationalGRL has a relatively high cognitive overload. Goal modeling is by itself already a relatively high-effort activity, and the fact that we add more elements to the language does not improve this. This may mean that in future work we should focus more on the RationalGRL development process. It seems users do like to be guided during modeling, and making arguments explicit in this process seems useful, but it could be integrated into the process of goal modeling in a more natural way. Critical questions seem to be a natural fit for this. They play a key role in the RationalGRL development process, but in its current form they are relatively difficult to access (in the details pane).
+\item \emph{Useful argumentation semantics.} Participants were enthusiastic about adding arguments to a goal modeling language with a clear formal underpinning, and they believed the argumentation semantics we use in the tool is very intuitive. This is a positive signal for our formal approach.
+\item \emph{Lightweight tool.} Respondents were positive about the fact that it was very easy to get started with the tool. Thus it seems that having a simple web-interface for goal modeling languages is something that could be done more in the future. Most comments on the tool were the type of comments that are expected from a prototype implementation.
+\end{enumerate}

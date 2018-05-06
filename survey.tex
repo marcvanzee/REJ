@@ -1,0 +1,56 @@
+$\ $\\
+\newpage
+\section{Modeling Task - Traffic Controller}
+\label{sect:survey}
+
+A group of three engineers (E1, E2, and E3) is tasked with designing a traffic flow simulation program. They receive a task specification, focusing on how the simulator will handle the generation of cars in the simulation. Below is an excerpt discussing the early requirements of the system. You are asked to model this discussion in as much detail as possible in the RationalGRL tool (http://www.rationalgrl.com), using all the tools RationalGRL puts at your disposal (GRL elements, critical questions, arguments). 
+
+As the RationalGRL prototype does not yet have a save functionality, please save a screenshot of your final model.\\
+
+\begin{tabular}{|p{10mm}|p{140mm}|}
+\hline
+\textbf{Person} & \textbf{Transcript}\\
+\hline
+E1 & Let's start by adding the actor "Traffic Simulator". Do you think we need to add more actors?\\
+\hline
+E2 & I don't think so. Let's start with the softgoals and derive the main goals and tasks from that.\\
+\hline
+E3 & The task description states that the simulator should be easy to use.\\
+\hline
+E2 & I'm not sure that we should include that. It seems to me this is redundant since any UI should be easy to use.\\
+\hline
+E1 & No I disagree, for some UI's it is more important than others, and the fact that they mention it explicitly in the task description means we should probably add it anyway.\\
+\hline
+E3 &I agree, let's keep it in, it seems necessary.\\
+\hline
+E1 & Ok so we have one softgoal 'easy to use'. Anything else?\\
+\hline
+E2 & Here it say the simulation should be realistic, and the design should be simple. I guess those are two softgoals as well.\\
+\hline
+E3 & Ok sounds good. So one goal of the simulation is to Generate cars. Shall we just add that as a goal?\\
+\hline
+E1 & Yes let's do that.\\
+\hline
+E2 & I think we then have two main tasks for that goal: The simulator should be able to create new cars in the simulation, and it should be able to wrap the cars when they go out of the screen.\\
+\hline
+E3 & So Generate cars AND-decomposes into those two tasks?\\
+\hline
+E1 & I don't think so actually. I think it is a XOR-decomposition. The simulation either creates new cars or wrap them when they are being reused.\\
+\hline
+E2 & Hmm makes sense. But then I think we should rename Wrap cars to Keep same cars.\\
+\hline
+E3 & Yes that is better, then Create new cars and Keep same cars are the two alternatives for the goal Generate cars.\\
+\hline
+E1 & Hmm what do you think about the contribution links? Should we add any?\\
+\hline
+E2 & Well I think if we create new cars, the simulation will be more realistic because it becomes less static. At the same time it will probably make the design less simple.\\
+\hline
+E3 & Yes so create new cars contributes positively to the realistic design, and negatively to simple design?\\
+\hline
+E2 & Hmm now I think about it, actually I think think creating new cars doesn't have much effect on the realism of the simulation.I don't think the user will notice the difference.\\
+\hline
+E1 & Why not? If you create new cars it changes the flow of the traffic, so I think the user will definitely notice this.\\
+\hline
+E2 & Okay well, ok maybe. Yes I think you are right. Let's keep the contribution link in then.\\
+\hline
+\end{tabular}
