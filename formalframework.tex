@@ -126,7 +126,7 @@ Definition \ref{def:grl-model} only sums up the elements of the model and not th
 
 \begin{definition}[Valid GRL Model]
 \label{def:valid-grl-model}
-A GRL model $GRL=(IE, Act, R_{ActIE}, Link)$ (Def.~\ref{def:grl-model}) is a \emph{valid GRL model} iff the following conditions are satisfied:
+A GRL model $GRL=(IE, Act, R_{ActIE}, Link)$ (Def.~\ref{def:grl-model}) is a \emph{valid GRL model}\footnote{Note that \emph{validity} is a bit of an overloaded term and has different meanings in different areas of research. In our setting, a valid model simply means that certain criteria are satisfied. It does not imply any real world ``validation'', in the sense that the model makes sense in the ``real world''.} iff the following conditions are satisfied:
 \begin{enumerate}
 \item ids are globally unique across IEs, Links, and Actors, i.e., let $X,Y\in \{IE,Act, Link\}$. For all $X_i$ and $Y_j$: if $i=j$ then $X=Y$ and $X_i=Y_j$.
 \item Intentional elements of actors exist: $\forall (ActIE, i,j)\in R_{ActIE}: \exists act_i \in Act \wedge \exists ie_j \in IE$.

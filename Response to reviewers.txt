@@ -4,11 +4,11 @@
 Please ensure also that your manuscript shows clearly how your work relates to relevant works as they may have been published in the Requirements Engineering or presented at the Requirements Engineering series of conferences.
 
 ===== REPLY #1
-Currently 6 of the 44 references in the article come from either REJ or the RE conference [11,24,26,32,43,47]. We have searched through the journal and conference database for more references, and we found 4 more articles that are related to our work [20,22,27,39]. We have added a discussion of these articles to the related work section, at the beginning of the paragraph "Requirements Engineering". This means we currently have 10 references from the Requirements Engineering Journal or presented at the Requirements Engineering series of conferences.
+In the first submission, 6 of the 44 references in the article came from either REJ or the RE conference [11,24,26,32,43,47]. We have searched through the journal and conference database for more references, and we found 4 more articles that are related to our work [20,22,27,39]. We have added a discussion of these articles to the related work section, at the beginning of the paragraph "Requirements Engineering". This means we currently have 10 references from the Requirements Engineering Journal or presented at the Requirements Engineering series of conferences.
 
 ######## REVIEWER #1 ########
 
-We thank the reviewer for the insightful comments. Especially the comment about the missing validation was useful since it motivated us to perform an small-scale in-house user study, which allowed us to strengthen our claims for the usefulness and usability of our framework. We’ve replied to each separate comment below.
+We thank the reviewer for the insightful comments. Especially the comment about the missing validation was useful since it motivated us to perform an small-scale in-house user study, which allowed us to make some useful observation regarding the usefulness and usability of our framework. We’ve replied to each separate comment below.
 
 ===== COMMENT #1
 The integrated meta model looks reasonable but I have some doubts about the inclusion of "critical question" in the schema. Critical questions are something that are used to identify arguments and attack links, but  I don't see them as a concept to be included in the meta model. They are part of the methodology used to build the goal model rather concepts of the language.  
@@ -26,11 +26,11 @@ We agree that many algorithms are similar, and we have therefore shortened the s
 The methodology and the tools looks quite preliminary and without a real validation of the approach. I think this is the weakest part of the paper. Authors should demonstrate the applicability, scalability and usefulness of their approach in the real word. The tool and the modeling language should be used and evaluated by practitioners while they cope with real requirements engineering problems and complexity issues.
 
 ===== REPLY #3
-We agree with the reviewer that a real validation of the approach is a necessary next step. However, we would like to point the reviewer to the case study in section 3, in which 153 pages of transcripts of requirements discussions were used (see also the original materials at www.rationalgrl.com). We do agree that further validation of the tool and method is necessary, preferably in an industrial setting. However, such an industrial strength case study is a significant amount of work (see for example Estrada et al. (2006 "An empirical evaluation of the i* framework in a model-based software generation environment". They took 9 months to conduct the case study.), and would most likely yield enough new insights for a separate paper. 
+We agree with the reviewer that a real validation of the approach is a necessary next step. However, we would like to point the reviewer to the case study in Section 3, in which 153 pages of transcripts of requirements discussions were used (see also the original materials at www.rationalgrl.com). We do agree that further validation of the tool and method is necessary, preferably in an industrial setting. However, such an industrial strength case study is a significant amount of work (see for example Estrada et al. (2006 "An empirical evaluation of the i* framework in a model-based software generation environment". They took 9 months to conduct the case study.), and would most likely yield enough new insights for a separate paper. 
 
-Since the main focus of our article is to explain the novel RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed a small-scale user study in order to provide an initial validation of our framework. This empirical study was performed amongst ==> TODO(marcvanzee): ADD NUMBER HERE  <== participants, each with a computer science background. 
+Since the main focus of our article is to explain the novel RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed a small-scale user study in order to provide an initial validation of our framework. This empirical study was performed amongst 16 participants, each with a computer science background.
 
-We have added a section "Validation" (Section 7) where we describe the results of the validation.
+We have added a section "RationalGRL user validation" (Section 7) where we describe our empirical study.
 
 ######## REVIEWER #2 ########
 
@@ -40,7 +40,7 @@ We thank the reviewer for reading our article in detail, and providing many insi
 I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. 
 
 ===== REPLY #1
-We have added a section "Validation" (Section 7) where we describe the results of a validation. Please see REPLY #3 to REVIEWER #1 for more details.
+We have added a section "RationalGRL user validation" (Section 7) where we describe the results of a validation. Please see REPLY #3 to REVIEWER #1 for more details.
 
 ===== COMMENT #2
 The statement on actually using a reduced GRL should be made in the Abstract and Introduction already, not just in a footnote later.
@@ -54,14 +54,14 @@ I think that the paper should compare the proposed argumentation structure at le
 ===== REPLY #3
 We have added a comparison between arguments in RationalGRL and beliefs in GRL in the related work section, at the beginning of the paragraph "Goal Modelling". 
 
-The connection between argumentation and belief revision is interesting, especially from a theoretical point of view, and in knowledge representation and reasoning this is a popular topic of research (see references 5-7 below). However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a formal logical point of view, we have left this out of the discussion in our paper, instead choosing to focus on beliefs in GRL.
+The connection between argumentation and belief revision is interesting, especially from a theoretical point of view, and in knowledge representation and reasoning this is a popular topic of research (see references 5-7 below). However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a formal logical point of view, we have left this out of the discussion in our paper, instead choosing to focus on a comparison with beliefs in GRL.
 
 ===== COMMENT #4 & #5
 How would you compare this specific approach with the old gIBIS?
 Please discuss why you are trying to have detailed, while simple, rationale, although the recent trend in DR is otherwise?
 
 ===== REPLY #4 & #5
-We have added some discussion in the 2nd paragraph of section 8.1-Design Rationale. A brief comparison with, for example gIBIS, is already in section 8.1-Design Rationale (reference [38] includes gIBIS). We felt that an extensive comparison between the ideas behind goal modelling, which we extend with RationalGRL, and design rationale diagramming methods like gIBIS is not within the extent of this paper, where the focus is more on the connection between "normal" goal modelling (GRL) and extended "argumentative" goal modelling (RationalGRL). 
+We have added some discussion in the 2nd paragraph of section 8.1-Design Rationale. A brief comparison with, for example gIBIS, is already in section 8.1-Design Rationale (reference [38] includes gIBIS). We felt that an extensive comparison between the ideas behind goal modelling, which we extend with RationalGRL, and design rationale diagramming methods like gIBIS is not within the extent of this paper, where the focus is more on the connection between "normal" goal modelling (GRL) and extended "argumentative" goal modelling (RationalGRL).
 
 ===== COMMENT #6
 I wonder about the formalization in propositional logic. Why is it not used for automated reasoning (at least partly instead of the specific algorithms)?
@@ -79,9 +79,7 @@ While there is extensive work on less "binary" frameworks for argumentation (see
 Regarding terminology, I wonder about "valid" GRL models here, which seem to mean that certain criteria are fulfilled. Validation would mean that a goal model makes sense in the real world as having the "right" goals and relationships between them.
 
 ===== REPLY #8
-We agree that the term “valid” is confusing in this respect, since we do not want to express that the goal model makes sense in the real world. Instead, we’d like to express that certain criteria are fulfilled. Therefore, we’ve renamed “valid” to “consistent”. 
-
-**TODO(marcvanzee): Implement this renaming in the article.
+We agree that the term “valid” is an overloaded term that has different meanings in different areas of research. In our case, we indeed want to express that certain criteria are fulfilled. In order to avoid confusion, we have added a footnote to Definition 7 (Valid GRL Model), clarifying what exactly we mean with a "valid model".
 
 ===== COMMENT #9
 "Verification" in 6.2 appears to stand for evaluation. This cannot be "verified".
@@ -93,7 +91,7 @@ We have renamed “verification” to “demonstration” and slightly reworded 
 I also do not think that Figure 16 shows a "methodology". It does not even look like a "method".
 
 ===== REPLY #10
-We agree that the terminology is wrong. We have renamed the methodology to "The RationalGRL development process", since it defines the steps on how to create a RationalGRL model. We have renamed this throughout the entire article.
+We agree that the terminology is inappropriate. We have renamed the methodology to "The RationalGRL development process", since it defines the steps on how to create a RationalGRL model. We have renamed this throughout the article.
 
 ===== COMMENT #11
 please reconsider the very first sentences in the Abstract and Introduction each, especially the latter statement on RE
