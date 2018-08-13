@@ -1,0 +1,76 @@
+﻿
+===== ORIGINAL COMMENT #3
+I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
+
+===== ORIGINAL REPLY #3
+
+
+The connection between argumentation and belief revision is interesting, especially from a theoretical point of view, and in knowledge representation and reasoning this is a popular topic of research (see references 5-7 below). However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a formal logical point of view, we have left this out of the discussion in our paper, instead choosing to focus on a comparison with beliefs in GRL.
+
+====== REPLY
+In our first revision, we already added a brief comparison between arguments in RationalGRL and beliefs in GRL in the related work section (under "Beliefs in GRL"). We have moved these paragraphs to "Goal Modeling" in section 8.1, and further extended and sharpened our discussion and comparison with GRL beliefs. Our main argument, which is now fully in the article, is that in GRL, beliefs are more of an afterthought: they have no formal semantics and it is not possible to further reason with them (i.e. given indicate conflicts between beliefs compute ways in which beliefs can be revised). Furthermore, we briefly discuss belief revision and the possibilities this may offer for future research. We still believe that discussing the relations between formal argumentation from AI and belief revision postulates from AI is not directly suited for the current (RE) audience. A more detailed comparison between RationalGRL and a framework based on belief revision would require us to develop a new belief revision framework connected to GRL and then model, for example, the case study or an extended example using this new belief revision framework for GRL. This would provide enough matrial for a new paper.  
+
+===== COMMENT #4 & #5
+How would you compare this specific approach with the old gIBIS?
+Please discuss why you are trying to have detailed, while simple, rationale, although the recent trend in DR is otherwise?
+
+===== REPLY #4 & #5
+We have added some discussion in the 2nd paragraph of section 8.1-Design Rationale. A brief comparison with, for example gIBIS, is already in section 8.1-Design Rationale (reference [38] includes gIBIS). We felt that an extensive comparison between the ideas behind goal modelling, which we extend with RationalGRL, and design rationale diagramming methods like gIBIS is not within the extent of this paper, where the focus is more on the connection between "normal" goal modelling (GRL) and extended "argumentative" goal modelling (RationalGRL).
+
+===== COMMENT #6
+I wonder about the formalization in propositional logic. Why is it not used for automated reasoning (at least partly instead of the specific algorithms)?
+
+===== REPLY #6
+Propositional logic in itself does not contain specific algorithms for, for example, INTRO, REPLACE and DISABLE. Furthermore, the algorithms also introduce arguments and attacks, formal notions of which are not in basic propositional logic. The idea is that the formalization is needed for the algorithms, but that just providing a formal semantics of GRL does not directly tell you how to compute/reason with GRL models.
+
+===== COMMENT #7
+I am also missing a discussion about the consequences of this binary "nature" of argumentation with respect to argumentation in reality.
+
+===== REPLY #7
+While there is extensive work on less "binary" frameworks for argumentation (see e.g below references 2 and 3), we feel that a discussion on this would not be suitable for the current paper (as it is more of an AI subject than relevant for RE). For an extensive discussion on the relation between the formal argumentation proposed in our article and argumentation in reality, we refer the reviewer to reference [4] below. Note that we have opted not to include these references in the paper, as we are already at 50 references and want to focus more on an RE/SE audience. If the reviewer desires, however, we can add the references to the article. 
+
+===== COMMENT #8
+Regarding terminology, I wonder about "valid" GRL models here, which seem to mean that certain criteria are fulfilled. Validation would mean that a goal model makes sense in the real world as having the "right" goals and relationships between them.
+
+===== REPLY #8
+We agree that the term “valid” is an overloaded term that has different meanings in different areas of research. In our case, we indeed want to express that certain criteria are fulfilled. In order to avoid confusion, we have added a footnote to Definition 7 (Valid GRL Model), clarifying what exactly we mean with a "valid model".
+
+===== COMMENT #9
+"Verification" in 6.2 appears to stand for evaluation. This cannot be "verified".
+
+===== REPLY #9
+We have renamed “verification” to “demonstration” and slightly reworded the sentence.
+
+===== COMMENT #10
+I also do not think that Figure 16 shows a "methodology". It does not even look like a "method".
+
+===== REPLY #10
+We agree that the terminology is inappropriate. We have renamed the methodology to "The RationalGRL development process", since it defines the steps on how to create a RationalGRL model. We have renamed this throughout the article.
+
+===== COMMENT #11
+please reconsider the very first sentences in the Abstract and Introduction each, especially the latter statement on RE
+
+===== REPLY #11
+We agree with the reviewer that the two mentioned sentences are confusing. We have improved this as follows:
+- We have rewritten the first sentence of the abstract as follows: "Goal-oriented requirements modeling approaches aim at capturing intentions of various stakeholders involved in the development of an information system and refining them into low level goals and tasks."
+- We have deleted the first sentence of the introduction, since we feel that it is not necessary to explain the definition of Requirements Engineering in the Requirements Engineering Journal.
+
+===== COMMENT #12
+Finally, you should run a spell checker, have a careful proof reading of grammar, and make sure that there is no unresolved reference to a figure in a submitted manuscript.
+
+===== REPLY #11
+We’ve ran a spell-checker and proof-read the paper carefully. There was one unresolved reference to a figure, which a corrected. Thank you for pointing this out.
+
+
+
+######## REFERENCES ########
+
+
+[1] Estrada, H., Rebollar, A. M., Pastor, O., & Mylopoulos, J. (2006, June). An empirical evaluation of the i* framework in a model-based software generation environment. In International Conference on Advanced Information Systems Engineering (pp. 513-527). Springer, Berlin, Heidelberg.
+[2] A. Hunter and M. Thimm (2017) Probabilistic Reasoning with Abstract Argumentation Frameworks, Journal of Artificial Intelligence Research, 59:565--611. 
+[3] Grossi, D., & Modgil, S. (2015, July). On the Graded Acceptability of Arguments. In IJCAI (pp. 868-874).
+[4] van Eemeren, F.H., & Verheij, B. (2017). Argumentation Theory in Formal and Computational Perspective. IFCoLog Journal of Logics and Their Applications 4 (8), 2099-2181. 
+
+[5] Falappa, Marcelo Alejandro, Gabriele Kern-Isberner, and Guillermo Ricardo Simari. "Belief revision and argumentation theory." Argumentation in artificial intelligence. Springer, Boston, MA, 2009. 341-360.
+[6] Dix, Jürgen, et al. "Belief change and argumentation in multi-agent scenarios (Dagstuhl seminar 13231)." Dagstuhl Reports. Vol. 3. No. 6. Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik, 2013.
+[7] Paglieri, Fabio, and Cristiano Castelfranchi. "Revising beliefs through arguments: Bridging the gap between argumentation and belief revision in MAS." International Workshop on Argumentation in Multi-Agent Systems. Springer, Berlin, Heidelberg, 2004.
