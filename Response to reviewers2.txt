@@ -3,12 +3,17 @@
 I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
 
 ===== ORIGINAL REPLY #3
-
-
 The connection between argumentation and belief revision is interesting, especially from a theoretical point of view, and in knowledge representation and reasoning this is a popular topic of research (see references 5-7 below). However, since studying relations between argumentation and belief revision does not seem directly related to our current framework and seems more interesting from a formal logical point of view, we have left this out of the discussion in our paper, instead choosing to focus on a comparison with beliefs in GRL.
 
 ====== REPLY
-In our first revision, we already added a brief comparison between arguments in RationalGRL and beliefs in GRL in the related work section (under "Beliefs in GRL"). We have moved these paragraphs to "Goal Modeling" in section 8.1, and further extended and sharpened our discussion and comparison with GRL beliefs. Our main argument, which is now fully in the article, is that in GRL, beliefs are more of an afterthought: they have no formal semantics and it is not possible to further reason with them (i.e. given indicate conflicts between beliefs compute ways in which beliefs can be revised). Furthermore, we briefly discuss belief revision and the possibilities this may offer for future research. We still believe that discussing the relations between formal argumentation from AI and belief revision postulates from AI is not directly suited for the current (RE) audience. A more detailed comparison between RationalGRL and a framework based on belief revision would require us to develop a new belief revision framework connected to GRL and then model, for example, the case study or an extended example using this new belief revision framework for GRL. This would provide enough matrial for a new paper.  
+In our first revision, we already added a brief comparison between arguments in RationalGRL and beliefs in GRL in the related work section (under "Beliefs in GRL"). We have moved these paragraphs to "Goal Modeling" in section 8.1, and further extended and sharpened our discussion and comparison with GRL beliefs. Our main argument, which is now fully in the article, is that in GRL, beliefs are more of an afterthought: they have no formal semantics and it is not possible to further reason with them (i.e. given indicated conflicts between beliefs compute ways in which beliefs can be revised). Furthermore, we briefly discuss belief revision and the possibilities this may offer for future research. We still believe that discussing the relations between formal argumentation from AI and belief revision postulates from AI is not directly suited for the current (RE) audience. A more detailed comparison between RationalGRL and a framework based on belief revision would require us to develop a new belief revision framework connected to GRL and then model, for example, the case study or an extended example using this new belief revision framework for GRL. This would provide enough material for a new paper.  
+
+
+
+
+
+
+
 
 ===== COMMENT #4 & #5
 How would you compare this specific approach with the old gIBIS?
