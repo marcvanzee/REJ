@@ -1,4 +1,4 @@
-﻿Thank you for your considerations.
+Thank you for your considerations.
 
 Reviewer 1 proposes to accept the paper. Reviewer 2 argues that the new section 7 should be revised - we agree with the second reviewer that the style and wording of the section was too informal and extended and sharpened the discussion (see also reply 2 below). Furthermore, reviewer 2 argues that they would like to see more concrete revisions based on some of the points raised in their first review. We have extended the paper, and below we discuss these points from the original review in more detail.
 
@@ -39,7 +39,7 @@ Since the main focus of our article is to explain the novel RationalGRL framewor
 I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
 
 ====== REPLY #3
-In our first revision, we already added a brief comparison between arguments in RationalGRL and beliefs in GRL in the related work section (under "Beliefs in GRL"). In this revision, we have done two things. First, we have moved the discussion on beliefs in GRL to "related work" under "goal modelling" and further extended and sharpened our discussion and comparison with GRL beliefs. Our main argument, which is now fully in the article, is that in GRL, beliefs are more of an afterthought: they have no formal semantics and it is not possible to further reason with them (i.e. given indicated conflicts between beliefs compute ways in which beliefs can be revised).
+In our first revision, we already added a brief comparison between arguments in RationalGRL and beliefs in GRL in the related work section (under "Beliefs in GRL"). In this revision, we have done two things. First, we have moved the discussion on beliefs in GRL to "related work" under "goal modeling" and further extended and sharpened our discussion and comparison with GRL beliefs. Our main argument, which is now fully in the article, is that in GRL, beliefs are more of an afterthought: they have no formal semantics and it is not possible to further reason with them (i.e. given indicated conflicts between beliefs compute ways in which beliefs can be revised).
 
 Second, we have added a new discussion under “Belief Revision“ in section 8.2 (Future work),  where we discuss belief revision and the possibilities this may offer for future research. A more detailed comparison between RationalGRL and a framework based on belief revision would require us to develop a new belief revision framework connected to GRL and then model, for example, the case study or an extended example using this new belief revision framework for GRL. This would be interesting material for a new paper
 
