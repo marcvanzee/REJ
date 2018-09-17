@@ -1,4 +1,9 @@
-﻿<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+﻿Thank you for your considerations.
+
+Reviewer 1 proposes to accept the paper. Reviewer 2 argues that the new section 7 should be revised - we agree with the second reviewer that the style and wording of the section was too informal and extended and sharpened the discussion (see also reply 2 below). Furthermore, reviewer 2 argues that they would like to see more concrete revisions based on some of the points raised in their first review. We have extended the paper, and below we discuss these points from the original review in more detail.
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< REPLIES FOR REVIEW #2 >>>>>><<<<>>>>>>>>>>>>>>>>>>>>>>
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -20,6 +25,15 @@ We have significantly reworked section 7, going through the usual steps for an e
 <<<<<<<<<<<<<<<<<<<<<<< REVISION OF REPLIES FOR REBUTTAL #1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+===== ORIGINAL COMMENT #1
+I think that the relatively simple argument structures are appealing in the sense that the overhead for practical application may be tolerable. However, this remains to be shown yet in an industrial environment. 
+
+===== REPLY #1
+Here, we reiterate our argument from the original response to reviewers.
+
+"We agree with the reviewer that a real validation of the approach is a necessary next step. However, we would like to point the reviewer to the case study in Section 3, in which 153 pages of transcripts of requirements discussions were used (see also the original materials at www.rationalgrl.com). We do agree that further validation of the tool and method is necessary, preferably in an industrial setting. However, such an industrial strength case study is a significant amount of work (see for example Estrada et al. (2006 "An empirical evaluation of the i* framework in a model-based software generation environment". They took 9 months to conduct the case study.), and would most likely yield enough new insights for a separate paper. 
+
+Since the main focus of our article is to explain the novel RationalGRL framework in detail, we feel that adding such an extensive study to the current article may be too much content. Still, we agree that having no validation at all is limiting, so we have performed a small-scale empirical study in order to provide an initial validation of our framework. This empirical study was performed amongst 16 participants, each with a computer science background." 
 
 ===== ORIGINAL COMMENT #3
 I think that the paper should compare the proposed argumentation structure at least with the beliefs in GRL. In general, how does this argumentation approach really differ from one based on beliefs and, in particular, belief revision? Assume that an argument is a belief of some stakeholder revised by another argument, which is a belief of some other stakeholder?
@@ -52,4 +66,4 @@ I am also missing a discussion about the consequences of this binary "nature" of
 ===== REPLY #7
 In our original reply, we gave references to less "binary" frameworks for argumentation but did not include them in the revised paper. In this revision, we have included a brief discussion on these frameworks (last paragraph of 5.2), and we also refer to work that discusses the relation between "binary" argumentation and argumentation in the real world in more detail (Rahwan et al. 2010, also see the added footnote X). 
 
-===== ALL OTHER ORIGINAL COMMENTS WERE SMALLER COMMENTS (STYLE, TYPO, NAMING) WHICH WE ADDRESSED IN THE ORIGINAL REVISION
+===== ALL OTHER ORIGINAL COMMENTS WERE SMALLER COMMENTS (STYLE, TYPO, WORDING) WHICH WE ADDRESSED IN THE ORIGINAL REVISION
