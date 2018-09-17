@@ -1,0 +1,15 @@
+Dear Professor Loucopoulos, 
+
+In this last major revision we have made significant revisions to the paper. Most importantly we have extended our user evaluation (Section 7). We agree with the second reviewer that the style and wording of the section was too informal and extended and sharpened the discussion.
+
+We were somewhat surprised by reviewer 2's comment that "several of my suggestions for improvement have simply been refused. Hence, I do not consider the improvements sufficient." We addressed all the comments in the original review that were about wording and style, and the remaining ones were related to further related research (belief revision, gIBIS, etc.). In the original revision we added discussion on some of these points to the paper, and indicated that we would not include further discussions on points we felt were out of scope - for example, we felt that including an extensive comparison with the gIBIS modeling language including examples would not be appropriate in this paper, which is already relatively long and contains a lot of discussion on related work already (over 3 pages). In our original reply to reviewers, we discussed these considerations in quite some detail, complete with references and respectful, rational arguments for why we thought extending the paper would not make sense. The reviewer's comment that we "simply refused" their suggestions is therefore, we feel, a not entirely fair representation of our original revision and reply.
+
+Having said this, we tried to meet the reviewer's wishes by adding some further discussion on some of the points raised in the first review to the paper and the reply to reviewers. If again the reviewer does not deem this sufficient, we would like to ask if you, as the acting editor, could ask the reviewer to clearly indicate what he/she expects and why, and perhaps arbitrate on whether our efforts are indeed sufficient.
+
+Thank you in advance.
+
+Best wishes,
+
+Marc van Zee
+Floris Bex
+Sepideh Ganavati
