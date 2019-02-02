@@ -61,7 +61,7 @@ Att & Generic counterargument & Att & Generic counterargument & \textsf{DISABLE}
 \label{table:argument-schemes}
 \end{table*}
 
-In the rest of this section we discuss the individual parts of the GRL framework. In Section~\ref{sect:overview:as}, we continue our discussion of the argument schemes and critical questions for practical reasoning and argumentation, fitting these schemes and questions into our framework. In Section~\ref{sect:overview:lang}, we discuss the language for RationalGRL models and we provide a metamodel, linking the new concepts of our language to GRL. In Section~\ref{sect:overview:examples}, we provide extensive examples from our case study.  
+In the rest of this section we discuss the individual parts of the RationalGRL framework. In Section~\ref{sect:overview:as}, we continue our discussion of the argument schemes and critical questions for practical reasoning and argumentation, fitting these schemes and questions into our framework. In Section~\ref{sect:overview:lang}, we discuss the language for RationalGRL models and we provide a metamodel, linking the new concepts of our language to GRL. In Section~\ref{sect:overview:examples}, we provide extensive examples from our case study.  
 
 \subsection{The RationalGRL Argument Schemes and Critical Questions for Practical Reasoning}
 \label{sect:overview:as}
@@ -97,17 +97,17 @@ The complete metamodel of the language can be found in Figure~\ref{fig:metamodel
 
 \begin{figure*}[t]
 \includegraphics[width=\textwidth]{metamodel/metamodel2}
-\caption{The RationalGRL metamodel. The \emph{Goal model construction} package (bottom) is the GRL metamodel. The \emph{Practical reasoning \& argumentation} package is the RationalGRL extension}
+\caption{The RationalGRL Metamodel. The \emph{Goal model construction} package (bottom) is the GRL metamodel. The \emph{Practical reasoning \& argumentation} package is the RationalGRL extension}
 \label{fig:metamodel}
 \end{figure*}
 
 The metamodel consists of two packages, \emph{Practical reasoning \& argumentation} and \emph{Goal model construction}, which correspond to the relevant activities in the RationalGRL framework (cf. Figure~\ref{fig:rationalgrl-framework}). The goal model construction package is simply the GRL metamodel. It consists of \textsf{GRLModelElements}, which can be either \textsf{GRLLinkableElements} or \textsf{ElementLinks}. A \textsf{GRLLinkableElement} can again be specialized into an \textsf{Actor} or an \textsf{IntentionalElement} (which is either a \textsf{Softgoal}, \textsf{Goal}, \textsf{Task}, \textsf{Resource}, or a \textsf{Belief}). Intentional elements can be part of an actor, and \textsf{GRLLinkableElements} are connected through \textsf{ElementLinks} of different types (i.e., \textsf{Contribution, Decomposition}, or \textsf{Dependency}). Finally, a \textsf{GRLmodel} is composed of \textsf{GRLModelElements}.
 
-The practical reasoning and argumentation package depicts the concepts we introduced in Section~\ref{sect:overview:as}. An \textsf{ArgumentScheme} represents a scheme containing variables. When an argument scheme is instantiated, we obtain an \textsf{Argument}. Therefore, each argument is associated with at most one scheme, but a scheme can be instantiated in multiple ways. A \textsf{RationalGRLmodel} is composed out of arguments and attack relations.
+The practical reasoning and argumentation package depicts the concepts we introduced in Section~\ref{sect:overview:as}. An \textsf{ArgumentScheme} represents a scheme containing variables. When an argument scheme is instantiated, we obtain an \textsf{Argument}. Therefore, each argument is associated with at most one scheme, but a scheme can be instantiated in multiple ways. A \textsf{RationalGRLmodel} is composed of arguments and attack relations.
 
-The \textsf{OperationTypes} in the Argumentation package correspond to the operations we informally introduced in Section~\ref{sect:overview}. These operations are performed by instantiating an argument scheme or answering a critical question in a certain way. An \textsf{INTRO} operation introduces a new RationalGRL element. A \textsf{DISABLE} operation creates a new argument that attacks another argument or GRL element, effectively disabling it. The \textsf{REPLACE} operation replaces a RationalGRL element with a new element. Instantiating an argument scheme from Table~\ref{table:argument-schemes} always leads to an \textsf{INTRO} operation, that is, it always introduces a new RationalGRL element. Answering a critical question can have different effects depending on the critical question and the answer. Table~\ref{table:argument-schemes} shows these effects for the different critical questions and answers. For example, answering CQ0 with ``no'' disables the argument based on AS0. 
+The \textsf{OperationTypes} in the argumentation package correspond to the operations we informally introduced in Section~\ref{sect:overview}. These operations are performed by instantiating an argument scheme or answering a critical question in a certain way. An \textsf{INTRO} operation introduces a new RationalGRL element. A \textsf{DISABLE} operation creates a new argument that attacks another argument or GRL element, effectively disabling it. The \textsf{REPLACE} operation replaces a RationalGRL element with a new element. Instantiating an argument scheme from Table~\ref{table:argument-schemes} always leads to an \textsf{INTRO} operation, that is, it always introduces a new RationalGRL element. Answering a critical question can have different effects depending on the critical question and the answer. Table~\ref{table:argument-schemes} shows these effects for the different critical questions and answers. For example, answering CQ0 with ``no'' disables the argument based on AS0. 
 
-There are two important links between the \emph{practical reasoning \& argumentation} and \emph{goal model construction} packages. First, each \textsf{GRLModelElement} is an \textsf{Argument}. This means that each model element inherits the \textsf{AcceptStatus} as well, allowing GRL elements to be accepted or rejected. This, furthermore, means that argument schemes can be applied to all GRL elements, capturing the intuition that each GRL element can be regarded as an instantiated argument scheme. Note that besides arguments about elements of the GRL model, we also have a \textsf{GenericArgument} which is simply a counter-argument to an existing argument that does not relate to any of the GRL elements. Finally, the relation between \textsf{GRLModelElement} and \textsf{Argument} means that, as we already briefly indicated when discussing the framework in Figure~\ref{fig:rationalgrl-framework}, the class of \textsf{RationalGRLmodel} is a superclass of \textsf{GRLmodel}: besides arguments about GRL elements, we can also have arguments that does not relate to any of the GRL elements.
+There are two important links between the \emph{practical reasoning \& argumentation} and \emph{goal model construction} packages. First, each \textsf{GRLModelElement} is an \textsf{Argument}. This means that each model element inherits the \textsf{AcceptStatus} as well, allowing GRL elements to be accepted or rejected. This, furthermore, means that argument schemes can be applied to all GRL elements, capturing the intuition that each GRL element can be regarded as an instantiated argument scheme. Note that besides arguments about elements of the GRL model, we also have a \textsf{GenericArgument} which is simply a counter-argument to an existing argument that does not relate to any of the GRL elements. Finally, the relation between \textsf{GRLModelElement} and \textsf{Argument} means that, as we already briefly indicated when discussing the framework in Figure~\ref{fig:rationalgrl-framework}, the class of \textsf{RationalGRLmodel} is a superclass of \textsf{GRLmodel}: besides arguments about GRL elements, we can also have arguments that do not relate to any of the GRL elements.
 
 \subsection{From Practical Reasoning to RationalGRL Models: Examples from the Case Study}
 \label{sect:overview:examples}
@@ -119,7 +119,7 @@ We now discuss the interactions between the \emph{practical reasoning \& argumen
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{img/fig_example_AS.pdf}
-\caption{RationalGRL model (right) with instantiated argument schemes (left): Introducing new elements (operation \textsf{INTRO)}}. 
+\caption{RationalGRL Model (right) with Instantiated Argument Schemes (left): Introducing New Elements (Operation \textsf{INTRO)}}. 
 \label{fig:example_AS}
 \end{figure}
 
@@ -131,18 +131,18 @@ We start by showing how instantiating argument schemes leads to the introduction
 \begin{figure}[b]
 \centering
 \includegraphics[]{img/fig_example_disable.pdf}
-\caption{Disabling elements (operation \textsf{DISABLE)}.}
+\caption{Disabling Elements (Operation \textsf{DISABLE)}.}
 \label{fig:example_disable}
 \end{figure}
 
-The excerpt from transcript $t_1$ used in this example is shown in Table~\ref{table:transcripts:traffic-light} in Appendix~\ref{sect:transcripts:excerpts}. In this example, participants first sum up functionality of the traffic simulator, which can be captured as instantiations of AS2. On left side of Figure~\ref{fig:example_disable} one such instantiation is shown, which leads to the addition of the task \emph{Add traffic light} in the RationalGRL model on the right side of Figure~\ref{fig:example_disable}. However, participant P1 notes that the problem description states that all intersections have traffic lights by default, so the task \emph{Add traffic light} is not necessary. This is captured using critical question CQ11. A negative answer to this question (cf. Table~\ref{table:argument-schemes}) should disable the original argument based on AS2 by attacking it. On the left side of Figure~\ref{fig:example_disable} a new argument (CQ11) attacks the original argument based on argument scheme AS2. This new argument is also added to the RationalGRL model on the right of Figure~\ref{fig:example_disable}, where it attacks the original task \emph{Add traffic light}. This attack leads to the original argument being \emph{rejected} (cf. Section~\ref{sect:background:pras} and Section~\ref{sect:formalframework:rationalgrl}), indicated by being greyed out. As a result of this, the corresponding GRL task \emph{Add traffic light} is also disabled. 
+The excerpt from transcript $t_1$ used in this example is shown in Table~\ref{table:transcripts:traffic-light} in Appendix~\ref{sect:transcripts:excerpts}. In this example, participants first sum up functionality of the traffic simulator, which can be captured as instantiations of AS2. On left side of Figure~\ref{fig:example_disable} one such instantiation is shown, which leads to the addition of the task \emph{Add traffic light} in the RationalGRL model on the right side of Figure~\ref{fig:example_disable}. However, participant P1 notes that the problem description states that all intersections have traffic lights by default, so the task \emph{Add traffic light} is not necessary. This is captured using critical question CQ11. A negative answer to this question (cf. Table~\ref{table:argument-schemes}) should disable the original argument based on AS2 by attacking it. On the left side of Figure~\ref{fig:example_disable} a new argument (CQ11) attacks the original argument based on argument scheme AS2. This new argument is also added to the RationalGRL model on the right-hand side of Figure~\ref{fig:example_disable}, where it attacks the original task \emph{Add traffic light}. This attack leads to the original argument being \emph{rejected} (cf. Section~\ref{sect:background:pras} and Section~\ref{sect:formalframework:rationalgrl}), indicated by being greyed out. As a result of this, the corresponding GRL task \emph{Add traffic light} is also disabled. 
 
 \paragraph{Example 3: Changing a decomposition type by answering critical questions (\textsf{REPLACE})} 
 
 \begin{figure}[t]
 \centering
 \includegraphics[]{img/fig_example_replace.pdf}
-\caption{Replacing an element (operation \textsf{REPLACE)}.}
+\caption{Replacing an Element (Operation \textsf{REPLACE)}.}
 \label{fig:examples:replace}
 \end{figure}
 
@@ -152,7 +152,7 @@ The excerpt of transcript $t_3$ used for this example is shown in Table~\ref{tab
 \begin{figure}[b]
 \centering
 \includegraphics[]{img/fig_example_rename.pdf}
-\caption{Renaming an element name (operation \textsf{REPLACE)}.}
+\caption{Renaming an Element Name (Operation \textsf{REPLACE)}.}
 \label{fig:examples:clarification}
 \end{figure}
 
@@ -166,16 +166,16 @@ The transcript excerpt of this example is shown in Table~\ref{table:transcript:t
 \begin{figure}[t]
 \centering
 \includegraphics[]{img/reinstate1.pdf}
-\caption{Disabling an element (operation \textsf{DISABLE)}.}
+\caption{Disabling an Element (Operation \textsf{DISABLE)}.}
 \label{fig:examples:relevant-actor}
 \end{figure}
 
-The excerpt from transcript $t_3$ used in this example is shown in Table~\ref{table:transcript:irrelevant-actor} in Appendix~\ref{sect:transcripts:excerpts}. Actor \emph{Development Team} is introduced with an argument based on AS0 (Figure~\ref{fig:examples:relevant-actor}). This is then attacked by arguing that the professor will develop the software, so there will not be any development team (CQ0). 
+The excerpt from transcript $t_3$ used in this example is shown in Table~\ref{table:transcript:irrelevant-actor} in Appendix~\ref{sect:transcripts:excerpts}. Actor \emph{Development Team} is introduced with an argument based on AS0 (Figure~\ref{fig:examples:relevant-actor}). This is then attacked by arguing that the professor will develop the software, thus, there will not be any development team (CQ0). 
 
 \begin{figure}[b]
 \centering
 \includegraphics[]{img/reinstate2.pdf}
-\caption{Defending an element by attacking its disabling attacker (operation \textsf{DISABLE)}.}
+\caption{Defending an Element by Attacking its Disabling Attacker (Operation \textsf{DISABLE)}.}
 \label{fig:examples:relevant-actor2}
 \end{figure}
 
