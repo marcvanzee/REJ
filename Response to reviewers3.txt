@@ -58,7 +58,7 @@ The argumentation formalism we propose is a non-monotonic logic, that is, earlie
 ======= COMMENT #8
 Finally, "defending" a binary framework simply by a reference is insufficient. Since the authors propose such a framework, they need to clearly point out its limitations in this regard.
 ======= REPLY #8
-We already included some discussion in the previous revision. We have included an extra sentence on why we think numerical, more fine-grained frameworks are not very suitable.
+We already included some discussion in the previous revision. We have included an extra sentence on why we think numerical, more fine-grained frameworks are not very suitable. Furthermore, note that the framework is not "binary" in the sense that arguments can only be true or false (as in classical logic): arguments which are at one point considered defeated or overruled can later become justified again if new arguments are added.
 
 ======= COMMENT #9
 From an editorial perspective, a careful proof reading of grammar would be necessary.
