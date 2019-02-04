@@ -2,7 +2,7 @@ We thank the reviewers for their work.
 
 Reviewer 1 again proposes to accept the paper. Reviewer 2 recommends rejection. The editor proposes that we perform major revisions.
 
-We have worked hard to improve the paper since the first submission. We propose a new framework, inserting argument schemes and formal argument semantics into goal modelling in a way that hasn't been done before. We formally ground this framework in a logical framework for argumentation that has been accepted as a de-facto standard for non-monotonic argumentation inside and outside the field of AI. We give an simply development process, and a fully-working tool. We have further performed an extensive coding analysis, plus a modest expert survey. 
+We have worked hard to improve the paper since the first submission. We propose a new framework, inserting argument schemes and formal argument semantics into goal modelling in a way that hasn't been done before. We formally ground this framework in a logical framework for argumentation that has been accepted as a de-facto standard for non-monotonic argumentation inside and outside the field of AI. We give a simple development process, and a fully-working tool. We have further performed an extensive coding analysis, plus a modest expert survey. 
 
 One remark that has been made since the beginning is that, because we propose a new process/language/tool, we should test these in an industrial-strength case-study. However, we remain convinced that a large case study or experiment (where e.g. one compares test and control groups) would take an unreasonable amount of time and space given the material that is already in the paper. See e.g. Estrada et al. (2006) "An empirical evaluation of the i* framework in a model-based software generation environment", who took 9 months to conduct the case study. Furthermore, there are many papers on goal-modeling and related subjects in REJ that perform less empirical evaluation than we do, and the few that do have industrial-strength case studies evaluate a modeling language or tool that was introduced earlier. We are not directly aware of papers on goal modeling languages doing extensive experimentation with test and control groups. Hence, we believe that asking us to do an industrial strength case-study or test-control group experiment is unreasonable for this paper, more so because this would likely yield enough new insights for a completely new paper. 
 
@@ -63,4 +63,4 @@ We already included some discussion in the previous revision. We have included a
 ======= COMMENT #9
 From an editorial perspective, a careful proof reading of grammar would be necessary.
 ======= REPLY #9
-We have revised our entire article in detail and correct a large number of grammatical mistakes.
+We have revised our entire article in detail and corrected a large number of grammatical mistakes.
